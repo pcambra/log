@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file
+ * Log install
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function log_schema() {
+  $schema['log'] = array(
+    'description' => 'Logs',
+    'fields' => array(
+      'lid' => array(
+        'description' => 'Log ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'description' => 'Timestamp of the log',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'name' => array(
+        'description' => 'Log name',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'type' => array(
+        'description' => 'Log type',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'uid' => array(
+        'description' => 'The log owner',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('lid'),
+    'indexes' => array(
+      'timestamp' => array('timestamp'),
+      'name' => array('name'),
+      'type' => array('type'),
+      'uid' => array('uid'),
+    ),
+  );
+  $schema['log_type'] = array(
+    'description' => 'Stores information about all defined log types.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Unique log type ID.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The machine-readable name of this log type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'label' => array(
+        'description' => 'The human-readable name of this log type.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ) + entity_exportable_schema_fields(),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'type' => array('type'),
+    ),
+  );
+  return $schema;
+}

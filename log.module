@@ -1,0 +1,370 @@
+<?php
+
+/**
+ * @file
+ * Log
+ * A general purpose record keeping system.
+ */
+
+/****************************************************************
+ * Drupal hooks
+ * **************************************************************/
+
+/**
+ * Implements hook_permission().
+ */
+function log_permission() {
+  return array(
+    'administer log module' => array(
+      'title' => t('Administer log module'),
+      'description' => t('Gives full access to everything in the log module.'),
+      'restrict access' => TRUE,
+    ),
+    'administer log types' => array(
+      'title' => t('Administer log '),
+      'restrict access' => TRUE,
+    ),
+    'create log entities' => array(
+      'title' => t('Create log entities'),
+    ),
+    'view own log entities' => array(
+      'title' => t('View own log entities'),
+    ),
+    'edit own log entities' => array(
+      'title' => t('Edit own log entities'),
+    ),
+    'delete own log entities' => array(
+      'title' => t('Delete own log entities'),
+    ),
+    'view any log entities' => array(
+      'title' => t('View any log entities'),
+      'restrict access' => TRUE,
+    ),
+    'edit any log entities' => array(
+      'title' => t('Edit any log entities'),
+      'restrict access' => TRUE,
+    ),
+    'delete any log entities' => array(
+      'title' => t('Delete any log entities'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function log_menu() {
+  $items = array();
+
+  $items['log/add'] = array(
+    'title' => 'Add log',
+    'page callback' => 'log_add_types_page',
+    'access callback' => 'log_access',
+    'access arguments' => array('create'),
+    'file' => 'log.admin.inc',
+  );
+
+  $log_uri = 'log/%log';
+  $log_uri_argument_position = 1;
+
+  $items[$log_uri] = array(
+    'title callback' => 'entity_label',
+    'title arguments' => array('log', $log_uri_argument_position),
+    'page callback' => 'log_view',
+    'page arguments' => array($log_uri_argument_position),
+    'access callback' => 'log_access',
+    'access arguments' => array('view', $log_uri_argument_position),
+    'file' => 'log.pages.inc',
+  );
+
+  $items[$log_uri . '/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items[$log_uri . '/delete'] = array(
+    'title' => 'Delete log',
+    'title callback' => 'log_label',
+    'title arguments' => array($log_uri_argument_position),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('log_delete_form', $log_uri_argument_position),
+    'access callback' => 'log_access',
+    'access arguments' => array('edit', $log_uri_argument_position),
+    'file' => 'log.admin.inc',
+  );
+
+  $items[$log_uri . '/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('log_form', $log_uri_argument_position),
+    'access callback' => 'log_access',
+    'access arguments' => array('edit', $log_uri_argument_position),
+    'file' => 'log.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+  );
+
+  foreach (log_types() as $type => $info) {
+    $items['log/add/' . $type] = array(
+      'title' => 'Add log',
+      'page callback' => 'log_add',
+      'page arguments' => array(2),
+      'access callback' => 'log_access',
+      'access arguments' => array('create'),
+      'file' => 'log.admin.inc',
+    );
+  }
+
+  $items['admin/structure/log-types/%log_type/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('log_type_form_delete_confirm', 4),
+    'access arguments' => array('administer log types'),
+    'weight' => 1,
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'log.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function log_entity_info() {
+  $return = array(
+    'log' => array(
+      'label' => t('Log'),
+      'entity class' => 'Log',
+      'controller class' => 'LogController',
+      'base table' => 'log',
+      'fieldable' => TRUE,
+      'entity keys' => array(
+        'id' => 'lid',
+        'bundle' => 'type',
+      ),
+      'bundle keys' => array(
+        'bundle' => 'type',
+      ),
+      'bundles' => array(),
+      'load hook' => 'log_load',
+      'view modes' => array(
+        'full' => array(
+          'label' => t('Default'),
+          'custom settings' => FALSE,
+        ),
+      ),
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+      'module' => 'log',
+      'access callback' => 'log_access',
+    ),
+  );
+  $return['log_type'] = array(
+    'label' => t('Log type'),
+    'entity class' => 'LogType',
+    'controller class' => 'LogTypeController',
+    'base table' => 'log_type',
+    'fieldable' => FALSE,
+    'bundle of' => 'log',
+    'exportable' => TRUE,
+    'entity keys' => array(
+      'id' => 'id',
+      'name' => 'type',
+      'label' => 'label',
+    ),
+    'module' => 'log',
+    // Enable the entity API's admin UI.
+    'admin ui' => array(
+      'path' => 'admin/structure/log-types',
+      'file' => 'log.admin.inc',
+      'controller class' => 'LogTypeUIController',
+    ),
+    'access callback' => 'log_type_access',
+  );
+
+  return $return;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function log_entity_info_alter(&$entity_info) {
+  foreach (log_types() as $type => $info) {
+    $entity_info['log']['bundles'][$type] = array(
+      'label' => $info->label,
+      'admin' => array(
+        'path' => 'admin/structure/log-types/manage/%log_type',
+        'real path' => 'admin/structure/log-types/manage/' . $type,
+        'bundle argument' => 4,
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function log_entity_property_info_alter(&$info) {
+  $properties = &$info['log']['properties'];
+  $properties['uid'] = array(
+    'label' => t('Owner'),
+    'type' => 'user',
+    'description' => t('The owner of the log.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer log module',
+    'required' => TRUE,
+    'schema field' => 'uid',
+  );
+  $properties['timestamp'] = array(
+    'label' => t('Timestamp'),
+    'type' => 'date',
+    'description' => t('The timestamp of the log.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer log module',
+    'required' => TRUE,
+    'schema field' => 'timestamp',
+  );
+}
+
+/***************************************************************
+ * Access functions
+ * *************************************************************/
+
+/**
+ * Access callback for log entities.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'.
+ * @param $log
+ *   Optionally a specific log entity to check.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ *
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function log_access($op, $log = NULL, $account = NULL) {
+
+  // If an account isn't provided, use the currently logged in user.
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+
+  // If the user has 'administer log module' permission, grant them access.
+  if (user_access('administer log module', $account)) {
+    return TRUE;
+  }
+
+  // If a new log is being created, check access.
+  if ($op == 'create') {
+    return user_access('create log entities', $account);
+  }
+
+  // If a log was provided and the operation is view/update/edit...
+  if (isset($log) && ($op == 'view' || $op == 'update' || $op == 'delete')) {
+
+    // First check to see if the user has access to all entities.
+    if (user_access($op . ' all log entities', $account)) {
+      return TRUE;
+    }
+
+    // If the user can claim ownership of the log, check their access.
+    if ($log->uid == $account->uid) {
+      return user_access($op . ' own log entities', $account);
+    }
+  }
+
+  // If all else fails, deny access.
+  return FALSE;
+}
+
+/**
+ * Access callback for log type.
+ */
+function log_type_access($op, $log = NULL) {
+  return user_access('administer log types');
+}
+
+/***************************************************************
+ * Log API functions
+ * *************************************************************/
+
+/**
+ * Load a log.
+ */
+function log_load($lid, $reset = FALSE) {
+  $logs = log_load_multiple(array($lid), array(), $reset);
+  return reset($logs);
+}
+
+/**
+ * Load multiple logs based on certain conditions.
+ */
+function log_load_multiple($lids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('log', $lids, $conditions, $reset);
+}
+
+/**
+ * Save log.
+ */
+function log_save($log) {
+  entity_save('log', $log);
+}
+
+/**
+ * Delete single log.
+ */
+function log_delete($log) {
+  entity_delete('log', entity_id('log' ,$log));
+}
+
+/**
+ * Delete multiple logs.
+ */
+function log_delete_multiple($log_ids) {
+  entity_delete_multiple('log', $log_ids);
+}
+
+/***************************************************************
+ * Log type API functions
+ * *************************************************************/
+
+/**
+ * Load log Type.
+ */
+function log_type_load($log_type) {
+  return log_types($log_type);
+}
+
+/**
+ * List of log Types.
+ */
+function log_types($type_name = NULL) {
+  $types = entity_load_multiple_by_name('log_type', isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+/**
+ * Save log type entity.
+ */
+function log_type_save($log_type) {
+  entity_save('log_type', $log_type);
+}
+
+/**
+ * Delete single case type.
+ */
+function log_type_delete($log_type) {
+  entity_delete('log_type', entity_id('log_type' ,$log_type));
+}
+
+/**
+ * Delete multiple case types.
+ */
+function log_type_delete_multiple($log_type_ids) {
+  entity_delete_multiple('log_type', $log_type_ids);
+}

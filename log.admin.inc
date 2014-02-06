@@ -54,14 +54,6 @@ function log_form($form, &$form_state, $log) {
     '#weight' => -100,
   );
 
-  $form['timestamp'] = array(
-    '#type' => 'textfield',
-    '#required' => TRUE,
-    '#title' => t('Timestamp'),
-    '#default_value' => $log->timestamp,
-    '#weight' => -99,
-  );
-
   $form['uid'] = array(
     '#type' => 'value',
     '#value' => $log->uid,

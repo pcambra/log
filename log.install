@@ -18,12 +18,6 @@ function log_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
-      'timestamp' => array(
-        'description' => 'Timestamp of the log',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ),
       'name' => array(
         'description' => 'Log name',
         'type' => 'varchar',
@@ -43,13 +37,26 @@ function log_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'created' => array(
+        'description' => 'Timestamp when the log was created',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'Timestamp when the log was last modified',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
     ),
     'primary key' => array('lid'),
     'indexes' => array(
-      'timestamp' => array('timestamp'),
       'name' => array('name'),
       'type' => array('type'),
       'uid' => array('uid'),
+      'created' => array('created'),
+      'modified' => array('changed'),
     ),
   );
   $schema['log_type'] = array(

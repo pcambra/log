@@ -218,14 +218,23 @@ function log_entity_property_info_alter(&$info) {
     'required' => TRUE,
     'schema field' => 'uid',
   );
-  $properties['timestamp'] = array(
-    'label' => t('Timestamp'),
+  $properties['created'] = array(
+    'label' => t('Created'),
     'type' => 'date',
-    'description' => t('The timestamp of the log.'),
+    'description' => t('The timestamp when the log was created.'),
     'setter callback' => 'entity_property_verbatim_set',
     'setter permission' => 'administer log module',
     'required' => TRUE,
-    'schema field' => 'timestamp',
+    'schema field' => 'created',
+  );
+  $properties['changed'] = array(
+    'label' => t('Changed'),
+    'type' => 'date',
+    'description' => t('The timestamp when the log was last modified.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer log module',
+    'required' => TRUE,
+    'schema field' => 'changed',
   );
 }
 

@@ -23,16 +23,24 @@ class Log extends Entity {
  */
 class LogController extends EntityAPIController {
 
+  // Initialize an empty object.
   public function create(array $values = array()) {
     global $user;
     $values += array(
       'lid' => NULL,
-      'timestamp' => REQUEST_TIME,
       'name' => '',
       'type' => '',
       'uid' => $user->uid,
+      'created' => REQUEST_TIME,
+      'changed' => REQUEST_TIME,
     );
     return parent::create($values);
+  }
+
+  // Set the changed timestamp when a log entity is saved.
+  public function save($entity, DatabaseTransaction $transaction = NULL) {
+    $entity->changed = REQUEST_TIME;
+    return parent::save($entity, $transaction);
   }
 }
 

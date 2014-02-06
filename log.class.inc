@@ -10,8 +10,7 @@
  */
 class Log extends Entity {
   protected function defaultLabel() {
-    $log_type = log_type_load($this->type);
-    return $log_type->label . ': ' . $this->name;
+    return $this->name;
   }
 
   protected function defaultUri() {

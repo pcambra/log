@@ -29,7 +29,7 @@ function log_add($type) {
   $log_type = log_types($type);
 
   $log = entity_create('log', array('type' => $type));
-  drupal_set_title(t('Create @name', array('@name' => entity_label('log_type', $log_type))));
+  drupal_set_title(t('Log @name', array('@name' => entity_label('log_type', $log_type))));
 
   $output = drupal_get_form('log_form', $log);
 

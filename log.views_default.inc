@@ -34,9 +34,10 @@ function log_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'lid' => 'lid',
-    'timestamp' => 'timestamp',
-    'type' => 'type',
     'name' => 'name',
+    'type' => 'type',
+    'created' => 'created',
+    'changed' => 'changed',
     'nothing' => 'nothing',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
@@ -48,9 +49,9 @@ function log_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'timestamp' => array(
+    'name' => array(
       'sortable' => 1,
-      'default_sort_order' => 'desc',
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -62,9 +63,16 @@ function log_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'name' => array(
+    'created' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -86,34 +94,38 @@ function log_views_default_views() {
   $handler->display->display_options['fields']['lid']['table'] = 'log';
   $handler->display->display_options['fields']['lid']['field'] = 'lid';
   $handler->display->display_options['fields']['lid']['exclude'] = TRUE;
-  /* Field: Log: Timestamp */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'log';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
-  /* Field: Log: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'log';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
   /* Field: Log: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'log';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['path'] = 'log/[lid]';
+  /* Field: Log: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'log';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  /* Field: Log: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'log';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  /* Field: Log: Changed */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'log';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/log/[lid]/edit">Edit</a> | <a href="/log/[lid]/delete">Delete</a>';
-  /* Sort criterion: Log: Timestamp */
-  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['table'] = 'log';
-  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
-  $handler->display->display_options['sorts']['timestamp']['expose']['label'] = 'Timestamp';
-  $handler->display->display_options['sorts']['timestamp']['granularity'] = 'minute';
+  /* Sort criterion: Log: Changed */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'log';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['changed']['expose']['label'] = 'Modified date';
   /* Filter criterion: Log: Name */
   $handler->display->display_options['filters']['name']['id'] = 'name';
   $handler->display->display_options['filters']['name']['table'] = 'log';
@@ -145,18 +157,33 @@ function log_views_default_views() {
     2 => '2',
     1 => 0,
   );
-  /* Filter criterion: Log: Timestamp */
-  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['table'] = 'log';
-  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['group'] = 1;
-  $handler->display->display_options['filters']['timestamp']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['timestamp']['expose']['operator_id'] = 'timestamp_op';
-  $handler->display->display_options['filters']['timestamp']['expose']['label'] = 'Timestamp';
-  $handler->display->display_options['filters']['timestamp']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['timestamp']['expose']['operator'] = 'timestamp_op';
-  $handler->display->display_options['filters']['timestamp']['expose']['identifier'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['expose']['remember_roles'] = array(
+  /* Filter criterion: Log: Created */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'log';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['group'] = 1;
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Created date';
+  $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+  );
+  /* Filter criterion: Log: Changed */
+  $handler->display->display_options['filters']['changed']['id'] = 'changed';
+  $handler->display->display_options['filters']['changed']['table'] = 'log';
+  $handler->display->display_options['filters']['changed']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed']['group'] = 1;
+  $handler->display->display_options['filters']['changed']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['changed']['expose']['operator_id'] = 'changed_op';
+  $handler->display->display_options['filters']['changed']['expose']['label'] = 'Changed date';
+  $handler->display->display_options['filters']['changed']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['changed']['expose']['operator'] = 'changed_op';
+  $handler->display->display_options['filters']['changed']['expose']['identifier'] = 'changed';
+  $handler->display->display_options['filters']['changed']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
   );
@@ -174,7 +201,7 @@ function log_views_default_views() {
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'management';
 
-  $export['log'] = $view;
+  $export['logs'] = $view;
 
   return $export;
 }

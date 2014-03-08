@@ -131,6 +131,16 @@ function log_menu() {
 }
 
 /**
+ * Implements hook_admin_paths().
+ */
+function log_admin_paths() {
+  $paths = array(
+    'log*' => TRUE,
+  );
+  return $paths;
+}
+
+/**
  * Implements hook_entity_info().
  */
 function log_entity_info() {

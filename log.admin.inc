@@ -177,7 +177,7 @@ function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
   // Machine-readable type name.
   $form['type'] = array(
     '#type' => 'machine_name',
-    '#default_value' => isset($log_type->type) ? $log_type->type : '',
+    '#default_value' => !empty($log_type->type) ? $log_type->type : '',
     '#maxlength' => 32,
     '#disabled' => $log_type->isLocked() && $op != 'clone',
     '#machine_name' => array(

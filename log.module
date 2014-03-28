@@ -383,7 +383,25 @@ function log_delete_multiple($log_ids) {
  * @return string
  */
 function log_name_generate($log) {
-  return 'Log ' . $log->id;
+
+  // Load the log type.
+  $log_type = log_type_load($log->type);
+
+  // Get the name pattern from the log type, or use a default.
+  $pattern = !empty($log_type->name_pattern) ? $log_type->name_pattern : 'Log [log:id]';
+
+  // If Token is installed, run replacements.
+  if (module_exists('token')) {
+    $name = token_replace($pattern, array('log' => $log));
+  }
+
+  // If Token is not available, at least replace the default [log:id].
+  else {
+    $name = str_replace('[log:id]', $log->id, $pattern);
+  }
+
+  // Return a sanitized name.
+  return check_plain($name);
 }
 
 /***************************************************************

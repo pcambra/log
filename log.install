@@ -81,6 +81,13 @@ function log_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'name_pattern' => array(
+        'description' => 'A pattern for autogeneating the log name, using tokens.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
     ) + entity_exportable_schema_fields(),
     'primary key' => array('id'),
     'unique keys' => array(

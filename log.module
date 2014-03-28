@@ -400,6 +400,9 @@ function log_name_generate($log) {
     $name = str_replace('[log:id]', $log->id, $pattern);
   }
 
+  // Strip extraneous spaces (explode on spaces, remove empty items, implode with spaces).
+  $name = implode(' ', array_filter(explode(' ', $name)));
+
   // Return a sanitized name.
   return check_plain($name);
 }

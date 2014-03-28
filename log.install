@@ -12,7 +12,7 @@ function log_schema() {
   $schema['log'] = array(
     'description' => 'Logs',
     'fields' => array(
-      'lid' => array(
+      'id' => array(
         'description' => 'Log ID',
         'type' => 'serial',
         'unsigned' => TRUE,
@@ -50,7 +50,7 @@ function log_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('lid'),
+    'primary key' => array('id'),
     'indexes' => array(
       'name' => array('name'),
       'type' => array('type'),

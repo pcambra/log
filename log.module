@@ -152,7 +152,7 @@ function log_entity_info() {
       'base table' => 'log',
       'fieldable' => TRUE,
       'entity keys' => array(
-        'id' => 'lid',
+        'id' => 'id',
         'bundle' => 'type',
       ),
       'bundle keys' => array(
@@ -326,16 +326,16 @@ function log_type_access($op, $log = NULL) {
 /**
  * Load a log.
  */
-function log_load($lid, $reset = FALSE) {
-  $logs = log_load_multiple(array($lid), array(), $reset);
+function log_load($id, $reset = FALSE) {
+  $logs = log_load_multiple(array($id), array(), $reset);
   return reset($logs);
 }
 
 /**
  * Load multiple logs based on certain conditions.
  */
-function log_load_multiple($lids = array(), $conditions = array(), $reset = FALSE) {
-  return entity_load('log', $lids, $conditions, $reset);
+function log_load_multiple($ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('log', $ids, $conditions, $reset);
 }
 
 /**

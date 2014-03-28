@@ -27,7 +27,7 @@ class LogController extends EntityAPIController {
   public function create(array $values = array()) {
     global $user;
     $values += array(
-      'lid' => NULL,
+      'id' => NULL,
       'name' => '',
       'type' => '',
       'uid' => $user->uid,

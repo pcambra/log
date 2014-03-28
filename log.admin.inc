@@ -46,13 +46,17 @@ function log_form($form, &$form_state, $log) {
     '#value' => $log,
   );
 
-  $form['name'] = array(
-    '#type' => 'textfield',
-    '#required' => TRUE,
-    '#title' => t('Name'),
-    '#default_value' => $log->name,
-    '#weight' => -100,
-  );
+  // Only display the name field for existing log types.
+  // Names for new logs will be generated on save.
+  if (!empty($log->name)) {
+    $form['name'] = array(
+      '#type' => 'textfield',
+      '#required' => TRUE,
+      '#title' => t('Name'),
+      '#default_value' => $log->name,
+      '#weight' => -100,
+    );
+  }
 
   $form['uid'] = array(
     '#type' => 'value',

@@ -248,6 +248,21 @@ function log_entity_property_info_alter(&$info) {
   );
 }
 
+/**
+ * Implements hook_[entity]_insert().
+ */
+function log_log_insert($log) {
+
+  // If the log's name is not set, autogenerate it.
+  if (empty($log->name)) {
+    $name = log_name_generate($log);
+    db_update('log')
+      ->fields(array('name' => $name))
+      ->condition('id', $log->id)
+      ->execute();
+  }
+}
+
 /***************************************************************
  * Views hooks
  * *************************************************************/
@@ -357,6 +372,18 @@ function log_delete($log) {
  */
 function log_delete_multiple($log_ids) {
   entity_delete_multiple('log', $log_ids);
+}
+
+/**
+ * Generate a log name.
+ *
+ * @param $log
+ *   The log entity.
+ *
+ * @return string
+ */
+function log_name_generate($log) {
+  return 'Log ' . $log->id;
 }
 
 /***************************************************************

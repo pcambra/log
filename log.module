@@ -219,6 +219,16 @@ function log_entity_info_alter(&$entity_info) {
  */
 function log_entity_property_info_alter(&$info) {
   $properties = &$info['log']['properties'];
+  $properties['type'] = array(
+    'label' => t("Log type"),
+    'type' => 'token',
+    'description' => t("The type of the log."),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer log module',
+    'options list' => 'log_type_get_names',
+    'required' => TRUE,
+    'schema field' => 'type',
+  );
   $properties['uid'] = array(
     'label' => t('Owner'),
     'type' => 'user',
@@ -445,4 +455,19 @@ function log_type_delete($log_type) {
  */
 function log_type_delete_multiple($log_type_ids) {
   entity_delete_multiple('log_type', $log_type_ids);
+}
+
+/**
+ * Get the names of all log types.
+ *
+ * @return array
+ *   Returns an array of log type names, keyed by machine name.
+ */
+function log_type_get_names() {
+  $names = array();
+  $types = log_types();
+  foreach ($types as $type) {
+    $names[$type->type] = $type->label;
+  }
+  return $names;
 }

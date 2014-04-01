@@ -422,14 +422,14 @@ function log_name_generate($log) {
  * *************************************************************/
 
 /**
- * Load log Type.
+ * Load log type.
  */
 function log_type_load($log_type) {
   return log_types($log_type);
 }
 
 /**
- * List of log Types.
+ * List of log types.
  */
 function log_types($type_name = NULL) {
   $types = entity_load_multiple_by_name('log_type', isset($type_name) ? array($type_name) : FALSE);
@@ -444,14 +444,14 @@ function log_type_save($log_type) {
 }
 
 /**
- * Delete single case type.
+ * Delete single log type.
  */
 function log_type_delete($log_type) {
   entity_delete('log_type', entity_id('log_type' ,$log_type));
 }
 
 /**
- * Delete multiple case types.
+ * Delete multiple log types.
  */
 function log_type_delete_multiple($log_type_ids) {
   entity_delete_multiple('log_type', $log_type_ids);

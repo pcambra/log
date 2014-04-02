@@ -51,8 +51,8 @@ function log_form($form, &$form_state, $log) {
   if (!empty($log->name)) {
     $form['name'] = array(
       '#type' => 'textfield',
-      '#required' => TRUE,
       '#title' => t('Name'),
+      '#description' => t('Leave this blank to automatically generate a name.'),
       '#default_value' => $log->name,
       '#weight' => -100,
     );

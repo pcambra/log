@@ -263,13 +263,24 @@ function log_entity_property_info_alter(&$info) {
  */
 function log_log_insert($log) {
 
-  // If the log's name is not set, autogenerate it.
+  // If the log's name is not set, automatically generate it.
   if (empty($log->name)) {
     $name = log_name_generate($log);
     db_update('log')
       ->fields(array('name' => $name))
       ->condition('id', $log->id)
       ->execute();
+  }
+}
+
+/**
+ * Implements hook_[entity]_update().
+ */
+function log_log_update($log) {
+
+  // If the log's name is not set, automatically generate it.
+  if (empty($log->name)) {
+    $log->name = log_name_generate($log);
   }
 }
 

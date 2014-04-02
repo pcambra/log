@@ -407,6 +407,14 @@ function log_delete_multiple($log_ids) {
  */
 function log_name_generate($log) {
 
+  // Placeholder for the name we will return.
+  $name = '';
+
+  // If the log doesn't have an id, bail!
+  if (empty($log->id)) {
+    return $name;
+  }
+
   // Load the log type.
   $log_type = log_type_load($log->type);
 

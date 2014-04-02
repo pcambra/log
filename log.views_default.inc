@@ -101,7 +101,7 @@ function log_views_default_views() {
   $handler->display->display_options['fields']['name']['label'] = 'Log name';
   $handler->display->display_options['fields']['name']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['path'] = 'log/[id]';
-  /* Field: Log: Type */
+  /* Field: Log: Log type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'log';
   $handler->display->display_options['fields']['type']['field'] = 'type';
@@ -120,7 +120,7 @@ function log_views_default_views() {
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Operations';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/log/[id]/edit">Edit</a> | <a href="/log/[id]/delete">Delete</a>';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="/log/[id]/edit?destination=logs/all">Edit</a> | <a href="/log/[id]/delete?destination=logs/all">Delete</a>';
   /* Sort criterion: Log: Changed */
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
   $handler->display->display_options['sorts']['changed']['table'] = 'log';
@@ -143,7 +143,7 @@ function log_views_default_views() {
     2 => '2',
     1 => 0,
   );
-  /* Filter criterion: Log: Type */
+  /* Filter criterion: Log: Log type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'log';
   $handler->display->display_options['filters']['type']['field'] = 'type';

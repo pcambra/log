@@ -48,7 +48,7 @@ function log_form($form, &$form_state, $log) {
 
   // Only display the name field for existing log types.
   // Names for new logs will be generated on save.
-  if (!empty($log->name)) {
+  if (!empty($log->id)) {
     $form['name'] = array(
       '#type' => 'textfield',
       '#title' => t('Name'),

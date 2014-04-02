@@ -271,11 +271,7 @@ function log_log_insert($log) {
 
   // If the log's name is not set, automatically generate it.
   if (empty($log->name)) {
-    $name = log_name_generate($log);
-    db_update('log')
-      ->fields(array('name' => $name))
-      ->condition('id', $log->id)
-      ->execute();
+    log_name_generate($log);
   }
 }
 
@@ -286,7 +282,7 @@ function log_log_update($log) {
 
   // If the log's name is not set, automatically generate it.
   if (empty($log->name)) {
-    $log->name = log_name_generate($log);
+    log_name_generate($log);
   }
 }
 
@@ -430,8 +426,17 @@ function log_name_generate($log) {
   // Strip extraneous spaces (explode on spaces, remove empty items, implode with spaces).
   $name = implode(' ', array_filter(explode(' ', $name)));
 
-  // Return a sanitized name.
-  return check_plain($name);
+  // Sanitize it!
+  $name = check_plain($name);
+
+  // Update the log's name in the database.
+  db_update('log')
+    ->fields(array('name' => $name))
+    ->condition('id', $log->id)
+    ->execute();
+
+  // Return it.
+  return $name;
 }
 
 /***************************************************************

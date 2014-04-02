@@ -21,7 +21,7 @@ function log_permission() {
       'restrict access' => TRUE,
     ),
     'administer log types' => array(
-      'title' => t('Administer log '),
+      'title' => t('Administer log types'),
       'restrict access' => TRUE,
     ),
     'create log entities' => array(

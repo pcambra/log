@@ -219,10 +219,16 @@ function log_entity_info_alter(&$entity_info) {
  */
 function log_entity_property_info_alter(&$info) {
   $properties = &$info['log']['properties'];
+  $properties['name'] = array(
+    'label' => t('Name'),
+    'description' => t('The name of the log item.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'schema field' => 'name',
+  );
   $properties['type'] = array(
-    'label' => t("Log type"),
+    'label' => t('Log type'),
     'type' => 'token',
-    'description' => t("The type of the log."),
+    'description' => t('The type of the log.'),
     'setter callback' => 'entity_property_verbatim_set',
     'setter permission' => 'administer log module',
     'options list' => 'log_type_get_names',

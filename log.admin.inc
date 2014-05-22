@@ -83,10 +83,16 @@ function log_form($form, &$form_state, $log) {
   // Show Delete button if allowed.
   $log_id = entity_id('log' ,$log);
   if (!empty($log_id) && log_access('delete', $log)) {
+
+    // Get the destination query parameter. If it is the current path, change to <front>
+    // (because the current path won't exist once the log is deleted).
+    $destination = drupal_get_destination();
+    if ($destination['destination'] == current_path()) {
+      $destination['destination'] = '<front>';
+    }
     $form['actions']['delete'] = array(
-      '#type' => 'submit',
-      '#value' => t('Delete'),
-      '#submit' => array('log_form_submit_delete'),
+      '#type' => 'markup',
+      '#markup' => l(t('Delete'), 'log/' . $log_id . '/delete', array('query' => $destination)),
     );
   }
 
@@ -115,12 +121,6 @@ function log_form_submit($form, &$form_state) {
   $form_state['redirect'] = $log_uri['path'];
 
   drupal_set_message(t('Log %title saved.', array('%title' => entity_label('log', $log))));
-}
-
-function log_form_submit_delete($form, &$form_state) {
-  $log = $form_state['values']['log'];
-  $log_uri = entity_uri('log', $log);
-  $form_state['redirect'] = $log_uri['path'] . '/delete';
 }
 
 /**

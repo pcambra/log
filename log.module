@@ -423,7 +423,7 @@ function log_name_generate($log) {
 
   // If Token is installed, run replacements.
   if (module_exists('token')) {
-    $name = token_replace($pattern, array('log' => $log));
+    $name = token_replace($pattern, array('log' => $log), array('clear' => TRUE));
   }
 
   // If Token is not available, at least replace the default [log:id].

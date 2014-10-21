@@ -269,10 +269,8 @@ function log_entity_property_info_alter(&$info) {
  */
 function log_log_insert($log) {
 
-  // If the log's name is not set, automatically generate it.
-  if (empty($log->name)) {
-    log_name_generate($log);
-  }
+  // Generate the log's name.
+  log_name_generate($log);
 }
 
 /**
@@ -280,10 +278,8 @@ function log_log_insert($log) {
  */
 function log_log_update($log) {
 
-  // If the log's name is not set, automatically generate it.
-  if (empty($log->name)) {
-    log_name_generate($log);
-  }
+  // Generate the log's name.
+  log_name_generate($log);
 }
 
 /***************************************************************
@@ -404,19 +400,23 @@ function log_delete_multiple($log_ids) {
  *   The log entity.
  *
  * @return string
+ *   The log name.
  */
 function log_name_generate($log) {
 
-  // Placeholder for the name we will return.
-  $name = '';
-
   // If the log doesn't have an id, bail!
   if (empty($log->id)) {
-    return $name;
+    return $log->name;
   }
 
   // Load the log type.
   $log_type = log_type_load($log->type);
+
+  // If the log type's name is editable, only generate a name if
+  // the current name is editable.
+  if (!empty($log_type->name_edit) && !empty($log->name)) {
+    return $log->name;
+  }
 
   // Get the name pattern from the log type, or use a default.
   $pattern = !empty($log_type->name_pattern) ? $log_type->name_pattern : 'Log [log:id]';

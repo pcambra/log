@@ -82,11 +82,18 @@ function log_schema() {
         'default' => '',
       ),
       'name_pattern' => array(
-        'description' => 'A pattern for autogeneating the log name, using tokens.',
+        'description' => 'Pattern for auto-generating the log name, using tokens.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
         'default' => '',
+      ),
+      'name_edit' => array(
+        'description' => 'Boolean: log name is user editable.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
       ),
 
       // The following fields are required to make Log types exportable via
@@ -113,4 +120,18 @@ function log_schema() {
     ),
   );
   return $schema;
+}
+
+/**
+ * Add a field to log types that allow their names to be editable by users.
+ */
+function log_update_7000(&$sandbox) {
+  $spec = array(
+    'description' => 'Boolean: log name is user editable.',
+    'type' => 'int',
+    'size' => 'tiny',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  db_add_field('log_type', 'name_edit', $spec);
 }

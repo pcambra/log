@@ -6,6 +6,23 @@
  */
 
 /**
+ * Log settings form.
+ */
+function log_settings_form($form, &$form_state) {
+
+  // Use admin theme for log viewing/editing.
+  $form['log_admin_theme'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use admin theme for log viewing/editing logs'),
+    '#description' => t('If checked, this will use the administration theme for the log viewing pages, and the log edit forms.'),
+    '#default_value' => variable_get('log_admin_theme', TRUE),
+  );
+
+  // Return as a system settings form.
+  return system_settings_form($form);
+}
+
+/**
  * Generates the log type editing form.
  */
 function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
@@ -97,11 +114,11 @@ function log_type_form_submit(&$form, &$form_state) {
   log_type_save($log_type);
 
   // Redirect user back to list of log types.
-  $form_state['redirect'] = 'admin/structure/log-types';
+  $form_state['redirect'] = 'admin/config/log/types';
 }
 
 function log_type_form_submit_delete(&$form, &$form_state) {
-  $form_state['redirect'] = 'admin/structure/log-types/' . $form_state['log_type']->type . '/delete';
+  $form_state['redirect'] = 'admin/config/log/types/' . $form_state['log_type']->type . '/delete';
 }
 
 /**
@@ -133,5 +150,5 @@ function log_type_form_delete_confirm_submit($form, &$form_state) {
   watchdog('log_type', '@type: deleted %title.', array('@type' => $log_type->type, '%title' => $log_type->label));
   drupal_set_message(t('@type %title has been deleted.', array('@type' => $log_type->type, '%title' => $log_type->label)));
 
-  $form_state['redirect'] = 'admin/structure/log-types';
+  $form_state['redirect'] = 'admin/config/log/types';
 }

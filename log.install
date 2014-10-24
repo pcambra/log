@@ -123,6 +123,13 @@ function log_schema() {
 }
 
 /**
+ * Implements hook_uninstall().
+ */
+function log_uninstall() {
+  variable_del('log_admin_theme');
+}
+
+/**
  * Add a field to log types that allow their names to be editable by users.
  */
 function log_update_7000(&$sandbox) {

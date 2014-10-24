@@ -117,7 +117,30 @@ function log_menu() {
     );
   }
 
-  $items['admin/structure/log-types/%log_type/delete'] = array(
+  /**
+   * Log admin paths
+   */
+
+  // Log settings form
+  $items['admin/config/log'] = array(
+    'title' => 'Log',
+    'description' => 'Configure log module.',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $items['admin/config/log/settings'] = array(
+    'title' => 'Log settings',
+    'description' => 'Administer log settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('log_settings_form', 4),
+    'access arguments' => array('administer log module'),
+    'file' => 'log.admin.inc',
+  );
+
+  // Log type delete form
+  $items['admin/config/log/types/%log_type/delete'] = array(
     'title' => 'Delete',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('log_type_form_delete_confirm', 4),
@@ -134,9 +157,13 @@ function log_menu() {
  * Implements hook_admin_paths().
  */
 function log_admin_paths() {
-  $paths = array(
-    'log*' => TRUE,
-  );
+
+  // Display log paths with the admin theme, if specified.
+  if (variable_get('log_admin_theme', TRUE)) {
+    $paths = array(
+      'log*' => TRUE,
+    );
+  }
   return $paths;
 }
 
@@ -188,7 +215,7 @@ function log_entity_info() {
     'module' => 'log',
     // Enable the entity API's admin UI.
     'admin ui' => array(
-      'path' => 'admin/structure/log-types',
+      'path' => 'admin/config/log/types',
       'file' => 'log.admin.inc',
       'controller class' => 'LogTypeUIController',
     ),
@@ -206,8 +233,8 @@ function log_entity_info_alter(&$entity_info) {
     $entity_info['log']['bundles'][$type] = array(
       'label' => $info->label,
       'admin' => array(
-        'path' => 'admin/structure/log-types/manage/%log_type',
-        'real path' => 'admin/structure/log-types/manage/' . $type,
+        'path' => 'admin/config/log/types/manage/%log_type',
+        'real path' => 'admin/config/log/types/manage/' . $type,
         'bundle argument' => 4,
       ),
     );

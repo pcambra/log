@@ -163,8 +163,8 @@ function log_admin_paths() {
     $paths = array(
       'log*' => TRUE,
     );
+    return $paths;
   }
-  return $paths;
 }
 
 /**

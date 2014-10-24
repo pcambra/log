@@ -62,7 +62,7 @@ function log_menu() {
     'page callback' => 'log_add_types_page',
     'access callback' => 'log_access',
     'access arguments' => array('create'),
-    'file' => 'log.admin.inc',
+    'file' => 'log.pages.inc',
   );
 
   $log_uri = 'log/%log';
@@ -92,7 +92,7 @@ function log_menu() {
     'page arguments' => array('log_delete_form', $log_uri_argument_position),
     'access callback' => 'log_access',
     'access arguments' => array('edit', $log_uri_argument_position),
-    'file' => 'log.admin.inc',
+    'file' => 'log.pages.inc',
   );
 
   $items[$log_uri . '/edit'] = array(
@@ -101,7 +101,7 @@ function log_menu() {
     'page arguments' => array('log_form', $log_uri_argument_position),
     'access callback' => 'log_access',
     'access arguments' => array('edit', $log_uri_argument_position),
-    'file' => 'log.admin.inc',
+    'file' => 'log.pages.inc',
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
@@ -113,7 +113,7 @@ function log_menu() {
       'page arguments' => array(2),
       'access callback' => 'log_access',
       'access arguments' => array('create'),
-      'file' => 'log.admin.inc',
+      'file' => 'log.pages.inc',
     );
   }
 

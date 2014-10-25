@@ -232,7 +232,7 @@ function log_entity_info_alter(&$entity_info) {
       'admin' => array(
         'path' => 'admin/config/log/types/manage/%log_type',
         'real path' => 'admin/config/log/types/manage/' . $type,
-        'bundle argument' => 4,
+        'bundle argument' => 5,
       ),
     );
   }

@@ -3,4 +3,5 @@ description = "A general purpose record keeping system."
 core = 7.x
 package = "Log"
 dependencies[] = entity
+configure = admin/config/log
 files[] = log.class.inc

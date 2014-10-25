@@ -19,7 +19,9 @@ function log_view($log) {
 function log_add_types_page() {
   $items = array();
   foreach (log_types() as $log_type_key => $log_type) {
-    $items[] = l(entity_label('log_type', $log_type), 'log/add/' . $log_type_key);
+    if (log_access('create', $log_type)) {
+      $items[] = l(entity_label('log_type', $log_type), 'log/add/' . $log_type_key);
+    }
   }
   return array(
     'list' => array(

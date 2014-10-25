@@ -14,7 +14,7 @@
  * Implements hook_permission().
  */
 function log_permission() {
-  return array(
+  $perms = array(
     'administer log module' => array(
       'title' => t('Administer log module'),
       'description' => t('Gives full access to everything in the log module.'),
@@ -24,31 +24,30 @@ function log_permission() {
       'title' => t('Administer log types'),
       'restrict access' => TRUE,
     ),
-    'create log entities' => array(
-      'title' => t('Create log entities'),
-    ),
-    'view own log entities' => array(
-      'title' => t('View own log entities'),
-    ),
-    'edit own log entities' => array(
-      'title' => t('Edit own log entities'),
-    ),
-    'delete own log entities' => array(
-      'title' => t('Delete own log entities'),
-    ),
-    'view any log entities' => array(
-      'title' => t('View any log entities'),
-      'restrict access' => TRUE,
-    ),
-    'edit any log entities' => array(
-      'title' => t('Edit any log entities'),
-      'restrict access' => TRUE,
-    ),
-    'delete any log entities' => array(
-      'title' => t('Delete any log entities'),
-      'restrict access' => TRUE,
-    ),
   );
+
+  // Add permissions for each log type.
+  foreach (log_types() as $log_type) {
+    $type = $log_type->type;
+    $ops = array('view', 'edit', 'delete');
+    $scopes = array('any', 'own');
+    $perms += array(
+      "create $type log entities" => array(
+        'title' => t('Create new %type_name log entities', array('%type_name' => $log_type->label)),
+      ),
+    );
+    foreach ($ops as $op) {
+      foreach ($scopes as $scope) {
+        $perms += array(
+          "$op $scope $type log entities" => array(
+            'title' => t(drupal_ucfirst($op) . ' ' . $scope . ' %type_name log entities', array('%type_name' => $log_type->label)),
+          ),
+        );
+      }
+    }
+  }
+
+  return $perms;
 }
 
 /**
@@ -60,10 +59,19 @@ function log_menu() {
   $items['log/add'] = array(
     'title' => 'Add log',
     'page callback' => 'log_add_types_page',
-    'access callback' => 'log_access',
-    'access arguments' => array('create'),
+    'access callback' => 'log_add_access',
     'file' => 'log.pages.inc',
   );
+  foreach (log_types() as $type => $info) {
+    $items['log/add/' . $type] = array(
+      'title' => 'Add log',
+      'page callback' => 'log_add',
+      'page arguments' => array(2),
+      'access callback' => 'log_access',
+      'access arguments' => array('create', 2),
+      'file' => 'log.pages.inc',
+    );
+  }
 
   $log_uri = 'log/%log';
   $log_uri_argument_position = 1;
@@ -106,17 +114,6 @@ function log_menu() {
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
   );
 
-  foreach (log_types() as $type => $info) {
-    $items['log/add/' . $type] = array(
-      'title' => 'Add log',
-      'page callback' => 'log_add',
-      'page arguments' => array(2),
-      'access callback' => 'log_access',
-      'access arguments' => array('create'),
-      'file' => 'log.pages.inc',
-    );
-  }
-
   /**
    * Log admin paths
    */
@@ -126,7 +123,7 @@ function log_menu() {
     'title' => 'Log',
     'description' => 'Configure log module.',
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer log module'),
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
   );
@@ -328,7 +325,7 @@ function log_views_api() {
  * Access callback for log entities.
  *
  * @param $op
- *   The operation being performed. One of 'view', 'update', 'create', 'delete'.
+ *   The operation being performed. One of 'view', 'edit', 'create', 'delete'.
  * @param $log
  *   Optionally a specific log entity to check.
  * @param $account
@@ -338,34 +335,94 @@ function log_views_api() {
  *   Whether access is allowed or not.
  */
 function log_access($op, $log = NULL, $account = NULL) {
+  $rights = &drupal_static(__FUNCTION__, array());
 
-  // If an account isn't provided, use the currently logged in user.
+  if (!$log || !in_array($op, array('create', 'view', 'edit', 'delete'), TRUE)) {
+    // If there was no log to check against, or the $op was not one of the
+    // supported ones, we return access denied.
+    return FALSE;
+  }
+  // If no user object is supplied, the access check is for the current user.
   if (empty($account)) {
     global $user;
     $account = $user;
   }
 
+  // $log may be either an object or a log type. Since log types cannot be
+  // an integer, use either id or type as the static cache id.
+
+  $cid = is_object($log) ? $log->id : $log;
+
+  // If we've already checked access for this log, user and op, return from
+  // cache.
+  if (isset($rights[$account->uid][$cid][$op])) {
+    return $rights[$account->uid][$cid][$op];
+  }
+
   // If the user has 'administer log module' permission, grant them access.
   if (user_access('administer log module', $account)) {
+    $rights[$account->uid][$cid][$op] = TRUE;
     return TRUE;
   }
 
-  // If a new log is being created, check access.
-  if ($op == 'create') {
-    return user_access('create log entities', $account);
+  // Check access to the log based on it's type.
+  $type = is_string($log) ? $log : $log->type;
+  $log_types = log_types();
+  $type_names = array();
+  foreach ($log_types as $name => $log_type) {
+    $type_names[] = $name;
   }
-
-  // If a log was provided and the operation is view/update/edit...
-  if (isset($log) && ($op == 'view' || $op == 'update' || $op == 'delete')) {
-
-    // First check to see if the user has access to all entities.
-    if (user_access($op . ' all log entities', $account)) {
+  if (in_array($type, $type_names)) {
+    if ($op == 'create' && user_access('create ' . $type . ' log entities', $account)) {
+      $rights[$account->uid][$cid][$op] = TRUE;
       return TRUE;
     }
 
-    // If the user can claim ownership of the log, check their access.
-    if ($log->uid == $account->uid) {
-      return user_access($op . ' own log entities', $account);
+    if ($op == 'view') {
+      if (user_access('view any ' . $type . ' log entities', $account) || (user_access('view own ' . $type . ' log entities', $account) && ($account->uid == $log->uid))) {
+        $rights[$account->uid][$cid][$op] = TRUE;
+        return TRUE;
+      }
+    }
+
+    if ($op == 'edit') {
+      if (user_access('edit any ' . $type . ' log entities', $account) || (user_access('edit own ' . $type . ' log entities', $account) && ($account->uid == $log->uid))) {
+        $rights[$account->uid][$cid][$op] = TRUE;
+        return TRUE;
+      }
+    }
+
+    if ($op == 'delete') {
+      if (user_access('delete any ' . $type . ' log entities', $account) || (user_access('delete own ' . $type . ' log entities', $account) && ($account->uid == $log->uid))) {
+        $rights[$account->uid][$cid][$op] = TRUE;
+        return TRUE;
+      }
+    }
+  }
+
+  // If all else fails, deny access.
+  return FALSE;
+}
+
+/**
+ * Access callback: Checks whether the user has permission to add a log.
+ *
+ * @return boolean
+ *   TRUE if the user has add permission, otherwise FALSE.
+ */
+function log_add_access($account = NULL) {
+
+  // If no user object is supplied, the access check is for the current user.
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+
+  // Check each of the log types to see if the user has access.
+  $types = log_types();
+  foreach ($types as $type) {
+    if (log_access('create', $type->type, $account)) {
+      return TRUE;
     }
   }
 

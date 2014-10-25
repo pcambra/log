@@ -132,7 +132,7 @@ function log_form_submit($form, &$form_state) {
 
   $form_state['redirect'] = $log_uri['path'];
 
-  drupal_set_message(t('Log %title saved.', array('%title' => entity_label('log', $log))));
+  drupal_set_message(t('%title saved.', array('%title' => entity_label('log', $log))));
 }
 
 /**
@@ -147,7 +147,7 @@ function log_delete_form($form, &$form_state, $log) {
   $form['log_type_id'] = array('#type' => 'value', '#value' => entity_id('log' ,$log));
   $log_uri = entity_uri('log', $log);
   return confirm_form($form,
-    t('Are you sure you want to delete log %title?', array('%title' => entity_label('log', $log))),
+    t('Are you sure you want to delete %title?', array('%title' => entity_label('log', $log))),
     $log_uri['path'],
     t('This action cannot be undone.'),
     t('Delete'),
@@ -162,7 +162,7 @@ function log_delete_form_submit($form, &$form_state) {
   $log = $form_state['values']['log'];
   log_delete($log);
 
-  drupal_set_message(t('Log %title deleted.', array('%title' => entity_label('log', $log))));
+  drupal_set_message(t('%title was deleted.', array('%title' => entity_label('log', $log))));
 
   $form_state['redirect'] = '<front>';
 }

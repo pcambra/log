@@ -289,6 +289,30 @@ function log_entity_property_info_alter(&$info) {
 }
 
 /**
+ * Implements hook_field_extra_fields().
+ */
+function log_field_extra_fields() {
+  $log_types = log_types();
+  $extra_fields = array(
+    'log' => array(),
+  );
+  foreach ($log_types as $type) {
+    $extra_fields['log'][$type->type] = array(
+      'form' => array(
+
+        // Add log name field to field UI.
+        'name' => array(
+          'label' => t('Name'),
+          'description' => t('The name of the log entry.'),
+          'weight' => -10,
+        ),
+      ),
+    );
+  }
+  return $extra_fields;
+}
+
+/**
  * Implements hook_[entity]_insert().
  */
 function log_log_insert($log) {

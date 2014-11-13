@@ -10,7 +10,12 @@
  */
 class Log extends Entity {
   protected function defaultLabel() {
-    return $this->name;
+    if (!empty($this->name)) {
+      return $this->name;
+    }
+    else {
+      return 'Log';
+    }
   }
 
   protected function defaultUri() {

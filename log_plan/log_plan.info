@@ -1,0 +1,5 @@
+name = "Log Plan"
+description = "A planning module that utilizes log entities."
+core = 7.x
+package = "Log"
+dependencies[] = log

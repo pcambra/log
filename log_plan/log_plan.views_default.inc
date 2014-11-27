@@ -128,7 +128,6 @@ function log_plan_views_default_views() {
   /* Display: Plan */
   $handler = $view->new_display('page', 'Plan', 'page');
   $handler->display->display_options['path'] = 'plan';
-  $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Plan';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';

@@ -500,7 +500,7 @@ function log_delete_multiple($log_ids) {
 function log_name_generate($log) {
 
   // If the log doesn't have an id, bail!
-  if (empty($log->id)) {
+  if (empty($log->id) || !is_numeric($log->id)) {
     return $log->name;
   }
 
@@ -508,13 +508,13 @@ function log_name_generate($log) {
   $log_type = log_type_load($log->type);
 
   // If the log type's name is editable, only generate a name if
-  // the current name is editable.
+  // the current name is empty.
   if (!empty($log_type->name_edit) && !empty($log->name)) {
     return $log->name;
   }
 
-  // Get the name pattern from the log type, or use a default.
-  $pattern = !empty($log_type->name_pattern) ? $log_type->name_pattern : 'Log [log:id]';
+  // Get the name pattern from the log type.
+  $pattern = $log_type->name_pattern;
 
   // If Token is installed, run replacements.
   if (module_exists('token')) {
@@ -531,6 +531,11 @@ function log_name_generate($log) {
 
   // Sanitize it!
   $name = check_plain($name);
+
+  // If the name is empty, set it to a sensible default.
+  if (empty($name)) {
+    $name = 'Log ' . $log->id;
+  }
 
   // Update the log's name in the database.
   db_update('log')

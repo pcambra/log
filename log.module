@@ -518,7 +518,7 @@ function log_name_generate($log) {
 
   // If Token is installed, run replacements.
   if (module_exists('token')) {
-    $name = token_replace($pattern, array('log' => $log), array('clear' => TRUE));
+    $name = token_replace($pattern, array('log' => $log), array('clear' => TRUE, 'sanitize' => FALSE));
   }
 
   // If Token is not available, at least replace the default [log:id].
@@ -528,9 +528,6 @@ function log_name_generate($log) {
 
   // Strip extraneous spaces (explode on spaces, remove empty items, implode with spaces).
   $name = implode(' ', array_filter(explode(' ', $name)));
-
-  // Sanitize it!
-  $name = check_plain($name);
 
   // If the name is empty, set it to a sensible default.
   if (empty($name)) {

@@ -77,7 +77,7 @@ class LogTypeController extends EntityAPIControllerExportable {
       'type' => '',
       'label' => '',
       'name_pattern' => '',
-      'name_edit' => 0,
+      'name_edit' => FALSE,
     );
     return parent::create($values);
   }

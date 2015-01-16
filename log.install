@@ -37,6 +37,10 @@ function log_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'timestamp' => array(
+        'description' => 'Timestamp of the event being logged',
+        'type' => 'int',
+      ),
       'created' => array(
         'description' => 'Timestamp when the log was created',
         'type' => 'int',
@@ -55,6 +59,7 @@ function log_schema() {
       'name' => array('name'),
       'type' => array('type'),
       'uid' => array('uid'),
+      'timestamp' => array('timestamp'),
       'created' => array('created'),
       'modified' => array('changed'),
     ),
@@ -141,4 +146,18 @@ function log_update_7000(&$sandbox) {
     'default' => 0,
   );
   db_add_field('log_type', 'name_edit', $spec);
+}
+
+/**
+ * Add 'timestamp' field to Logs.
+ */
+function log_update_7001(&$sandbox) {
+
+  // Add timestamp field to Logs.
+  $timestamp = array(
+    'description' => 'Timestamp of the event being logged',
+    'type' => 'int',
+  );
+  db_add_field('log', 'timestamp', $timestamp);
+  db_add_index('log', 'timestamp', array('timestamp'));
 }

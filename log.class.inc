@@ -36,6 +36,7 @@ class LogController extends EntityAPIController {
       'name' => '',
       'type' => '',
       'uid' => $user->uid,
+      'timestamp' => REQUEST_TIME,
       'created' => REQUEST_TIME,
       'changed' => REQUEST_TIME,
     );

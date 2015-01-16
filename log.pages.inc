@@ -9,8 +9,22 @@
  * Log view callback.
  */
 function log_view($log) {
+
+  // Set the title of the page to the log's label.
   drupal_set_title(entity_label('log', $log));
-  return entity_view('log', array(entity_id('log', $log) => $log), 'full');
+
+  // Build the log entity render array.
+  $output = entity_view('log', array(entity_id('log', $log) => $log), 'full');
+
+  // Add the log's timestamp to the render array.
+  if (!empty($log->timestamp)) {
+    $date = date('M j Y', $log->timestamp);
+    $output['log'][$log->id]['timestamp'] = array(
+      '#markup' => '<strong>Date:</strong> ' . $date,
+      '#weight' => -100,
+    );
+  }
+  return $output;
 }
 
 /**
@@ -66,9 +80,20 @@ function log_form($form, &$form_state, $log) {
       '#title' => t('Name'),
       '#description' => t('Leave this blank to automatically generate a name.'),
       '#default_value' => $log->name,
-      '#weight' => -100,
     );
   }
+
+  // Timestamp
+  $timestamp_default = !empty($log->timestamp) ? date('Y-m-d H:i:s', $log->timestamp) : '';
+  $form['timestamp'] = array(
+    '#type' => 'date_select',
+    '#title' => t('Date'),
+    '#date_format' => 'M j Y',
+    '#date_type' => DATE_FORMAT_UNIX,
+    '#date_year_range' => '-10:+3',
+    '#default_value' => $timestamp_default,
+    '#required' => TRUE,
+  );
 
   $form['uid'] = array(
     '#type' => 'value',
@@ -122,16 +147,24 @@ function log_form_validate($form, &$form_state) {
  * Log submit handler.
  */
 function log_form_submit($form, &$form_state) {
+
+  // Load the log entity from the form values.
   $log = $form_state['values']['log'];
 
+  // Convert the date to a timestamp.
+  $form_state['values']['timestamp'] = strtotime($form_state['values']['timestamp']);
+
+  // Build the entity from the form values.
   entity_form_submit_build_entity('log', $log, $form, $form_state);
 
+  // Save the log.
   log_save($log);
 
+  // Redirect to the log.
   $log_uri = entity_uri('log', $log);
-
   $form_state['redirect'] = $log_uri['path'];
 
+  // Print a message.
   drupal_set_message(t('%title saved.', array('%title' => entity_label('log', $log))));
 }
 

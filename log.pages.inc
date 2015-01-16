@@ -95,6 +95,23 @@ function log_form($form, &$form_state, $log) {
     '#required' => TRUE,
   );
 
+  // Only display the done field if it's not automatic.
+  if (empty($log_type->done)) {
+    $form['done'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Done'),
+      '#description' => t('Mark this log as done.'),
+      '#default_value' => $log->done,
+    );
+  }
+  else {
+    $form['done'] = array(
+      '#type' => 'value',
+      '#value' => TRUE,
+    );
+  }
+
+  // Log user id.
   $form['uid'] = array(
     '#type' => 'value',
     '#value' => $log->uid,

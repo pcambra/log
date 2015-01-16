@@ -39,6 +39,7 @@ class LogController extends EntityAPIController {
       'timestamp' => REQUEST_TIME,
       'created' => REQUEST_TIME,
       'changed' => REQUEST_TIME,
+      'done' => FALSE,
     );
     return parent::create($values);
   }
@@ -78,6 +79,7 @@ class LogTypeController extends EntityAPIControllerExportable {
       'label' => '',
       'name_pattern' => '',
       'name_edit' => FALSE,
+      'done' => FALSE,
     );
     return parent::create($values);
   }

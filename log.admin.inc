@@ -86,6 +86,14 @@ function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
     '#default_value' => !empty($log_type->name_edit) ? $log_type->name_edit : FALSE,
   );
 
+  // Automatically mark logs of this type as done.
+  $form['done'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically done'),
+    '#description' => t('Automatically mark logs of this type as "done".'),
+    '#default_value' => !empty($log_type->done) ? $log_type->done : FALSE,
+  );
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',

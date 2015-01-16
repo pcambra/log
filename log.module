@@ -295,6 +295,14 @@ function log_entity_property_info_alter(&$info) {
     'required' => TRUE,
     'schema field' => 'changed',
   );
+  $properties['done'] = array(
+    'label' => t('Done'),
+    'description' => t('Whether the log is done.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer log module',
+    'schema field' => 'done',
+    'type' => 'boolean',
+  );
 }
 
 /**
@@ -322,6 +330,15 @@ function log_field_extra_fields() {
       'description' => t('The timestamp of the log entry.'),
       'weight' => -5,
     );
+
+    // Display the done field, if it isn't automatic.
+    if (empty($type->done)) {
+      $extra_fields['log'][$type->type]['form']['done'] = array(
+        'label' => t('Done'),
+        'description' => t('Whether or not the log is done.'),
+        'weight' => 100,
+      );
+    }
   }
   return $extra_fields;
 }

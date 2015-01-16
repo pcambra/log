@@ -53,6 +53,13 @@ function log_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'done' => array(
+        'description' => 'Boolean indicating whether the log is done (the event happened).',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
     ),
     'primary key' => array('id'),
     'indexes' => array(
@@ -62,6 +69,7 @@ function log_schema() {
       'timestamp' => array('timestamp'),
       'created' => array('created'),
       'modified' => array('changed'),
+      'done' => array('done')
     ),
   );
   $schema['log_type'] = array(
@@ -95,6 +103,13 @@ function log_schema() {
       ),
       'name_edit' => array(
         'description' => 'Boolean: log name is user editable.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'done' => array(
+        'description' => 'Boolean: automatically mark logs of this type as done.',
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
@@ -160,4 +175,25 @@ function log_update_7001(&$sandbox) {
   );
   db_add_field('log', 'timestamp', $timestamp);
   db_add_index('log', 'timestamp', array('timestamp'));
+}
+
+/**
+ * Add 'done' fields to Logs and Log Types.
+ */
+function log_update_7002(&$sandbox) {
+
+  // Add done field to Logs and Log Types.
+  $done = array(
+    'description' => 'Boolean: automatically mark logs of this type as done.',
+    'type' => 'int',
+    'size' => 'tiny',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  db_add_field('log', 'done', $done);
+  db_add_field('log_type', 'done', $done);
+  db_add_index('log', 'done', array('done'));
+
+  // Mark all existing log items with timestamps before now as "done".
+  db_query('UPDATE {log} SET done = 1 WHERE timestamp <= :now', array(':now' => REQUEST_TIME));
 }

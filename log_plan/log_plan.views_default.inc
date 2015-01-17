@@ -34,15 +34,20 @@ function log_plan_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'id' => 'id',
+    'timestamp' => 'timestamp',
     'name' => 'name',
     'type' => 'type',
-    'created' => 'created',
-    'changed' => 'changed',
-    'nothing' => 'nothing',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'timestamp' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -63,31 +68,22 @@ function log_plan_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'created' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'changed' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'nothing' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
   /* Field: Log: Log ID */
   $handler->display->display_options['fields']['id']['id'] = 'id';
   $handler->display->display_options['fields']['id']['table'] = 'log';
   $handler->display->display_options['fields']['id']['field'] = 'id';
   $handler->display->display_options['fields']['id']['exclude'] = TRUE;
+  /* Field: Log: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'log';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = 'Date';
+  $handler->display->display_options['fields']['timestamp']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['alter']['path'] = 'log/[id]';
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'M j Y';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
   /* Field: Log: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'log';
@@ -99,6 +95,10 @@ function log_plan_views_default_views() {
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'log';
   $handler->display->display_options['fields']['type']['field'] = 'type';
+  /* Sort criterion: Log: Timestamp */
+  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['sorts']['timestamp']['table'] = 'log';
+  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   /* Sort criterion: Log: Log ID */
   $handler->display->display_options['sorts']['id']['id'] = 'id';
   $handler->display->display_options['sorts']['id']['table'] = 'log';
@@ -114,6 +114,39 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['name']['expose']['label'] = 'Search';
   $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
   $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
+  /* Filter criterion: Date: Date (log) */
+  $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['table'] = 'log';
+  $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
+  $handler->display->display_options['filters']['date_filter']['group'] = 1;
+  $handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
+  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Start date';
+  $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
+  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['expose']['remember_roles'] = array();
+  $handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
+  $handler->display->display_options['filters']['date_filter']['year_range'] = '-10:+3';
+  $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
+    'log.timestamp' => 'log.timestamp',
+  );
+  /* Filter criterion: Date: Date (log) */
+  $handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
+  $handler->display->display_options['filters']['date_filter_1']['table'] = 'log';
+  $handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['date_filter_1']['group'] = 1;
+  $handler->display->display_options['filters']['date_filter_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['date_filter_1']['expose']['operator_id'] = 'date_filter_1_op';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'Date (log)';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['operator'] = 'date_filter_1_op';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['identifier'] = 'date_filter_1';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['remember_roles'] = array();
+  $handler->display->display_options['filters']['date_filter_1']['year_range'] = '-10:+3';
+  $handler->display->display_options['filters']['date_filter_1']['date_fields'] = array(
+    'log.timestamp' => 'log.timestamp',
+  );
   /* Filter criterion: Log: Log type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'log';
@@ -128,7 +161,6 @@ function log_plan_views_default_views() {
   /* Display: Plan */
   $handler = $view->new_display('page', 'Plan', 'page');
   $handler->display->display_options['path'] = 'plan';
-  $handler->display->display_options['menu']['title'] = 'Plan';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;

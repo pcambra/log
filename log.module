@@ -178,6 +178,7 @@ function log_entity_info() {
       'entity keys' => array(
         'id' => 'id',
         'bundle' => 'type',
+        'label' => 'name',
       ),
       'bundle keys' => array(
         'bundle' => 'type',

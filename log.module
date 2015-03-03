@@ -362,6 +362,51 @@ function log_log_update($log) {
   log_name_generate($log);
 }
 
+/**
+ * Implements hook_action_info().
+ */
+function log_action_info() {
+  return array(
+    'log_done_action' => array(
+      'type' => 'log',
+      'label' => t('Mark as done'),
+      'configurable' => FALSE,
+      'triggers' => array('any'),
+    )
+  );
+}
+
+/***************************************************************
+ * Log action callbacks
+ * *************************************************************/
+
+/**
+ * Action function for log_done_action.
+ *
+ * Marks a log as done.
+ *
+ * @param object $entity
+ *   The log entity object.
+ * @param array $context
+ *   Array with parameters for this action.
+ */
+function log_done_action($entity, $context = array()) {
+
+  // Pull the log out of the context.
+  $log = $context['log'];
+
+  // Only proceed if the log is not already done.
+  if ($log->done) {
+    return;
+  }
+
+  // Mark the log as done.
+  $log->done = TRUE;
+
+  // Save the log
+  log_save($log);
+}
+
 /***************************************************************
  * Access functions
  * *************************************************************/

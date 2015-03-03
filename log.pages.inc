@@ -109,21 +109,17 @@ function log_form($form, &$form_state, $log) {
     '#required' => TRUE,
   );
 
-  // Only display the done field if it's not automatic.
-  if (empty($log_type->done)) {
-    $form['done'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Done'),
-      '#description' => t('Mark this log as done.'),
-      '#default_value' => $log->done,
-    );
+  // If the log is new, and the log type marks new logs as "done" by default,
+  // mark the log as done.
+  if (empty($log->id) && !empty($log_type->done)) {
+    $log->done = TRUE;
   }
-  else {
-    $form['done'] = array(
-      '#type' => 'value',
-      '#value' => TRUE,
-    );
-  }
+  $form['done'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Done'),
+    '#description' => t('Mark this log as done.'),
+    '#default_value' => $log->done,
+  );
 
   // Log user id.
   $form['uid'] = array(

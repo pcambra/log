@@ -168,6 +168,15 @@ function log_form($form, &$form_state, $log) {
  */
 function log_form_validate($form, &$form_state) {
 
+  // If a new log is marked "done", but the timestamp is in the future, display
+  // a warning, but allow the user to continue if they submit the form again.
+  if (empty($form_state['values']['log']->id) && empty($form_state['log_done_warning']) ) {
+    $timestamp = strtotime($form_state['values']['timestamp']);
+    if (!empty($form_state['values']['done']) && $timestamp > REQUEST_TIME) {
+      form_set_error('done', t('You marked this log item as "done", but it has a date in the future. If you are OK with this fact, click save again.'));
+      $form_state['log_done_warning'] = TRUE;
+    }
+  }
 }
 
 /**

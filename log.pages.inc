@@ -16,14 +16,28 @@ function log_view($log) {
   // Build the log entity render array.
   $output = entity_view('log', array(entity_id('log', $log) => $log), 'full');
 
-  // Add the log's timestamp to the render array.
+  // Add the log's "done" status.
+  if ($log->done) {
+    $status = 'DONE';
+  }
+  else {
+    $status = 'NOT DONE';
+    drupal_set_message('This log item is not done.', 'warning');
+  }
+  $output['log'][$log->id]['done'] = array(
+    '#markup' => '<div style="float: right;">Status: <strong>' . $status . '</strong></div>',
+    '#weight' => -100,
+  );
+
+  // Add the log's timestamp.
   if (!empty($log->timestamp)) {
     $date = date('M j Y', $log->timestamp);
     $output['log'][$log->id]['timestamp'] = array(
-      '#markup' => '<strong>Date:</strong> ' . $date,
-      '#weight' => -100,
+      '#markup' => '<p><strong>Date:</strong> ' . $date . '</p>',
+      '#weight' => -99,
     );
   }
+
   return $output;
 }
 

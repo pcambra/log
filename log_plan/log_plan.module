@@ -17,7 +17,7 @@ function log_plan_permission() {
   $perms = array(
     'view log plan' => array(
       'title' => t('View log plan'),
-      'description' => t('Allow access to the log plan View at /plan'),
+      'description' => t('Allow access to the log plan Views'),
     ),
   );
 

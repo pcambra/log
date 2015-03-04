@@ -158,9 +158,9 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
 
-  /* Display: Plan */
-  $handler = $view->new_display('page', 'Plan', 'page');
-  $handler->display->display_options['path'] = 'plan';
+  /* Display: Plan (Page) */
+  $handler = $view->new_display('page', 'Plan (Page)', 'page');
+  $handler->display->display_options['path'] = 'log/plan';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;

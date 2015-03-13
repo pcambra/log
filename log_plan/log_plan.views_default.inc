@@ -132,6 +132,13 @@ function log_plan_views_default_views() {
       'override_label' => 1,
       'label' => 'Done',
     ),
+    'action::log_undone_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 1,
+      'label' => 'Not Done',
+    ),
     'action::views_bulk_operations_modify_action' => array(
       'selected' => 0,
       'postpone_processing' => 0,
@@ -153,6 +160,13 @@ function log_plan_views_default_views() {
       'settings' => array(
         'url' => '',
       ),
+    ),
+    'action::log_reschedule_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
     ),
     'action::system_send_email_action' => array(
       'selected' => 0,
@@ -235,7 +249,6 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Start date';
   $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
   $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
-  $handler->display->display_options['filters']['date_filter']['expose']['remember_roles'] = array();
   $handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
   $handler->display->display_options['filters']['date_filter']['year_range'] = '-10:+3';
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
@@ -252,7 +265,6 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'End date';
   $handler->display->display_options['filters']['date_filter_1']['expose']['operator'] = 'date_filter_1_op';
   $handler->display->display_options['filters']['date_filter_1']['expose']['identifier'] = 'date_filter_1';
-  $handler->display->display_options['filters']['date_filter_1']['expose']['remember_roles'] = array();
   $handler->display->display_options['filters']['date_filter_1']['year_range'] = '-10:+3';
   $handler->display->display_options['filters']['date_filter_1']['date_fields'] = array(
     'log.timestamp' => 'log.timestamp',

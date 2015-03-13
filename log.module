@@ -370,7 +370,13 @@ function log_action_info() {
       'label' => t('Mark as done'),
       'configurable' => FALSE,
       'triggers' => array('any'),
-    )
+    ),
+    'log_undone_action' => array(
+      'type' => 'log',
+      'label' => t('Mark as not done'),
+      'configurable' => FALSE,
+      'triggers' => array('any'),
+    ),
   );
 }
 
@@ -400,6 +406,33 @@ function log_done_action($entity, $context = array()) {
 
   // Mark the log as done.
   $log->done = TRUE;
+
+  // Save the log
+  log_save($log);
+}
+
+/**
+ * Action function for log_undone_action.
+ *
+ * Marks a log as not done.
+ *
+ * @param object $entity
+ *   The log entity object.
+ * @param array $context
+ *   Array with parameters for this action.
+ */
+function log_undone_action($entity, $context = array()) {
+
+  // Pull the log out of the context.
+  $log = $context['log'];
+
+  // Only proceed if the log is already done.
+  if (!$log->done) {
+    return;
+  }
+
+  // Mark the log as done.
+  $log->done = FALSE;
 
   // Save the log
   log_save($log);

@@ -377,6 +377,12 @@ function log_action_info() {
       'configurable' => FALSE,
       'triggers' => array('any'),
     ),
+    'log_reschedule_action' => array(
+      'type' => 'log',
+      'label' => t('Reschedule'),
+      'configurable' => TRUE,
+      'triggers' => array('any'),
+    ),
   );
 }
 
@@ -429,6 +435,56 @@ function log_undone_action($log, $context = array()) {
   $log->done = FALSE;
 
   // Save the log
+  log_save($log);
+}
+
+/**
+ * Log reschedule action configuration form.
+ */
+function log_reschedule_action_form($context, $form_state) {
+
+  // "Date" field: default to current date.
+  $form['timestamp'] = array(
+    '#type' => 'date_select',
+    '#title' => t('Date'),
+    '#date_format' => 'M j Y',
+    '#date_type' => DATE_FORMAT_UNIX,
+    '#date_year_range' => '-10:+3',
+    '#default_value' => REQUEST_TIME,
+    '#required' => TRUE,
+  );
+
+  return $form;
+}
+
+/**
+ * Log reschedule action configuration form submit.
+ */
+function log_reschedule_action_submit($form, $form_state) {
+  return array(
+    'timestamp' => $form_state['values']['timestamp'],
+  );
+}
+
+/**
+ * Action function for log_reschedule_action.
+ *
+ * Changes the date of a log.
+ *
+ * @param object $log
+ *   The log entity object.
+ * @param array $context
+ *   Array with parameters for this action.
+ */
+function log_reschedule_action($log, $context = array()) {
+
+  // Set the date.
+  $log->timestamp = strtotime($context['timestamp']);
+
+  // Mark the log as "not done".
+  $log->done = FALSE;
+
+  // Save the movement.
   log_save($log);
 }
 

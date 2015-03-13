@@ -443,7 +443,35 @@ function log_undone_action($log, $context = array()) {
  */
 function log_reschedule_action_form($context, $form_state) {
 
-  // "Date" field: default to current date.
+  // Build a list of the assets being moved.
+  if (!empty($form_state['selection'])) {
+    $logs = array();
+    $query = db_select('log', 'l');
+    $query->addField('l', 'name');
+    $query->condition('l.id', $form_state['selection']);
+    $results = $query->execute();
+    foreach ($results as $result) {
+      $logs[] = $result->name;
+    }
+
+    // If there is more than one log, theme an item list.
+    if (count($logs) > 1) {
+      $markup = theme('item_list', array('items' => $logs, 'title' => t('Reschedule:')));
+    }
+
+    // Otherwise, display the one.
+    else {
+      $markup = '<h3>' . t('Reschedule') . ' ' . reset($logs) . '</h3>';
+    }
+
+    // Display the asset(s) in the form.
+    $form['logs'] = array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    );
+  }
+
+  // Default timestamp to today.
   $form['timestamp'] = array(
     '#type' => 'date_select',
     '#title' => t('Date'),

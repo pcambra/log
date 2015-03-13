@@ -472,13 +472,26 @@ function log_reschedule_action_form($context, $form_state) {
   }
 
   // Default timestamp to today.
+  $timestamp = REQUEST_TIME;
+
+  // If only one log item is selected, use it's timestamp as the default.
+  if (!empty($logs) && count($logs) == 1) {
+    $log_id = reset($form_state['selection']);
+    $log = log_load($log_id);
+    $timestamp = $log->timestamp;
+  }
+
+  // Convert the timestamp to the format Date API expects.
+  $default_value = date('Y-m-d H:i', $timestamp);
+
+  // "Date" field
   $form['timestamp'] = array(
     '#type' => 'date_select',
     '#title' => t('Date'),
     '#date_format' => 'M j Y',
     '#date_type' => DATE_FORMAT_UNIX,
     '#date_year_range' => '-10:+3',
-    '#default_value' => REQUEST_TIME,
+    '#default_value' => $default_value,
     '#required' => TRUE,
   );
 

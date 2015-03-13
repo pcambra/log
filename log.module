@@ -389,15 +389,12 @@ function log_action_info() {
  *
  * Marks a log as done.
  *
- * @param object $entity
+ * @param object $log
  *   The log entity object.
  * @param array $context
  *   Array with parameters for this action.
  */
-function log_done_action($entity, $context = array()) {
-
-  // Pull the log out of the context.
-  $log = $context['log'];
+function log_done_action($log, $context = array()) {
 
   // Only proceed if the log is not already done.
   if ($log->done) {
@@ -416,15 +413,12 @@ function log_done_action($entity, $context = array()) {
  *
  * Marks a log as not done.
  *
- * @param object $entity
+ * @param object $log
  *   The log entity object.
  * @param array $context
  *   Array with parameters for this action.
  */
-function log_undone_action($entity, $context = array()) {
-
-  // Pull the log out of the context.
-  $log = $context['log'];
+function log_undone_action($log, $context = array()) {
 
   // Only proceed if the log is already done.
   if (!$log->done) {

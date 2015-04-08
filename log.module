@@ -735,6 +735,12 @@ function log_name_generate($log) {
     $name = 'Log ' . $log->id;
   }
 
+  // If the name length is greater than 255 (the size of the database column),
+  // truncate it with word-safe boundaries and an ellipsis.
+  if (strlen($name) > 255) {
+   $name = truncate_utf8($name, 255, TRUE, TRUE);
+  }
+
   // Update the log's name in the database.
   db_update('log')
     ->fields(array('name' => $name))

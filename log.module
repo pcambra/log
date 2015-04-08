@@ -442,8 +442,46 @@ function log_undone_action($log, $context = array()) {
  * Log reschedule action configuration form.
  */
 function log_reschedule_action_form($context, $form_state) {
+  return _log_action_date_form($context, $form_state, 'Reschedule');
+}
 
-  // Build a list of the assets being moved.
+/**
+ * Log reschedule action configuration form submit.
+ */
+function log_reschedule_action_submit($form, $form_state) {
+  return _log_action_date_form_submit($form, $form_state);
+}
+
+/**
+ * Action function for log_reschedule_action.
+ *
+ * Changes the date of a log.
+ *
+ * @param object $log
+ *   The log entity object.
+ * @param array $context
+ *   Array with parameters for this action.
+ */
+function log_reschedule_action($log, $context = array()) {
+  _log_action_date_form_action($log, $context);
+}
+
+/**
+ * Log action form with date field (helper function).
+ *
+ * @param $context
+ *   The context passed into the action form function.
+ * @param $form_state
+ *   The form state passed into the action form function.
+ * @param $name
+ *   The action name.
+ *
+ * @return array
+ *   Returns a form array.
+ */
+function _log_action_date_form($context, $form_state, $name) {
+
+  // Build a list of the logs being cloned.
   if (!empty($form_state['selection'])) {
     $logs = array();
     $query = db_select('log', 'l');
@@ -456,15 +494,15 @@ function log_reschedule_action_form($context, $form_state) {
 
     // If there is more than one log, theme an item list.
     if (count($logs) > 1) {
-      $markup = theme('item_list', array('items' => $logs, 'title' => t('Reschedule:')));
+      $markup = theme('item_list', array('items' => $logs, 'title' => t($name) . ':'));
     }
 
     // Otherwise, display the one.
     else {
-      $markup = '<h3>' . t('Reschedule') . ' ' . reset($logs) . '</h3>';
+      $markup = '<h3>' . t($name) . ' ' . reset($logs) . '</h3>';
     }
 
-    // Display the asset(s) in the form.
+    // Display the log(s) in the form.
     $form['logs'] = array(
       '#type' => 'markup',
       '#markup' => $markup,
@@ -499,25 +537,31 @@ function log_reschedule_action_form($context, $form_state) {
 }
 
 /**
- * Log reschedule action configuration form submit.
+ * Log action form with date field submit (helper function).
+ *
+ * @param $form
+ *   The form passed into the action form submit function,
+ * @param $form_state
+ *   The form state passed into the action form submit function.
+ *
+ * @return array
+ *   Returns an array that will end up in the action's context.
  */
-function log_reschedule_action_submit($form, $form_state) {
+function _log_action_date_form_submit($form, $form_state) {
   return array(
     'timestamp' => $form_state['values']['timestamp'],
   );
 }
 
 /**
- * Action function for log_reschedule_action.
+ * Log action form with date field (action helper function).
  *
- * Changes the date of a log.
- *
- * @param object $log
- *   The log entity object.
- * @param array $context
- *   Array with parameters for this action.
+ * @param $log
+ *   The log passed into the action function,
+ * @param $context
+ *   The context passed into the action function.
  */
-function log_reschedule_action($log, $context = array()) {
+function _log_action_date_form_action($log, $context) {
 
   // Set the date.
   $log->timestamp = strtotime($context['timestamp']);
@@ -525,7 +569,7 @@ function log_reschedule_action($log, $context = array()) {
   // Mark the log as "not done".
   $log->done = FALSE;
 
-  // Save the movement.
+  // Save the log.
   log_save($log);
 }
 

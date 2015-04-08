@@ -377,6 +377,12 @@ function log_action_info() {
       'configurable' => FALSE,
       'triggers' => array('any'),
     ),
+    'log_clone_action' => array(
+      'type' => 'log',
+      'label' => t('Clone'),
+      'configurable' => TRUE,
+      'triggers' => array('any'),
+    ),
     'log_reschedule_action' => array(
       'type' => 'log',
       'label' => t('Reschedule'),
@@ -463,6 +469,39 @@ function log_reschedule_action_submit($form, $form_state) {
  *   Array with parameters for this action.
  */
 function log_reschedule_action($log, $context = array()) {
+  _log_action_date_form_action($log, $context);
+}
+
+/**
+ * Log clone action configuration form.
+ */
+function log_clone_action_form($context, $form_state) {
+  return _log_action_date_form($context, $form_state, 'Clone');
+}
+
+/**
+ * Log clone action configuration form submit.
+ */
+function log_clone_action_submit($form, $form_state) {
+  return _log_action_date_form_submit($form, $form_state);
+}
+
+/**
+ * Action function for log_clone_action.
+ *
+ * Clones a log and gives it a new timestamp.
+ *
+ * @param object $log
+ *   The log entity object.
+ * @param array $context
+ *   Array with parameters for this action.
+ */
+function log_clone_action($log, $context = array()) {
+
+  // Clear the log id.
+  unset($log->id);
+
+  // Set the date and save.
   _log_action_date_form_action($log, $context);
 }
 

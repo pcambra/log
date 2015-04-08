@@ -476,7 +476,7 @@ function log_reschedule_action($log, $context = array()) {
  * Log clone action configuration form.
  */
 function log_clone_action_form($context, $form_state) {
-  return _log_action_date_form($context, $form_state, 'Clone');
+  return _log_action_date_form($context, $form_state, 'Clone', FALSE);
 }
 
 /**
@@ -514,11 +514,13 @@ function log_clone_action($log, $context = array()) {
  *   The form state passed into the action form function.
  * @param $name
  *   The action name.
+ * @param $default_timestamp
+ *   Whether or not to use the log's timestamp as default (defaults to TRUE).
  *
  * @return array
  *   Returns a form array.
  */
-function _log_action_date_form($context, $form_state, $name) {
+function _log_action_date_form($context, $form_state, $name, $default_timestamp = TRUE) {
 
   // Build a list of the logs being cloned.
   if (!empty($form_state['selection'])) {
@@ -551,8 +553,9 @@ function _log_action_date_form($context, $form_state, $name) {
   // Default timestamp to today.
   $timestamp = REQUEST_TIME;
 
-  // If only one log item is selected, use it's timestamp as the default.
-  if (!empty($logs) && count($logs) == 1) {
+  // If only one log item is selected, and the $default_timestamp parameter is
+  // set, use it's timestamp as the default.
+  if (!empty($logs) && count($logs) == 1 && $default_timestamp) {
     $log_id = reset($form_state['selection']);
     $log = log_load($log_id);
     $timestamp = $log->timestamp;

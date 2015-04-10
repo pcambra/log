@@ -9,6 +9,10 @@
  * Log class.
  */
 class Log extends Entity {
+
+  /**
+   * {@inheritdoc}
+   */
   protected function defaultLabel() {
     if (!empty($this->name)) {
       return $this->name;
@@ -18,9 +22,13 @@ class Log extends Entity {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function defaultUri() {
     return array('path' => 'log/' . $this->identifier());
   }
+
 }
 
 /**
@@ -28,7 +36,9 @@ class Log extends Entity {
  */
 class LogController extends EntityAPIController {
 
-  // Initialize an empty object.
+  /**
+   * {@inheritdoc}
+   */
   public function create(array $values = array()) {
     global $user;
     $values += array(
@@ -44,11 +54,16 @@ class LogController extends EntityAPIController {
     return parent::create($values);
   }
 
-  // Set the changed timestamp when a log entity is saved.
+  /**
+   * {@inheritdoc}
+   */
   public function save($entity, DatabaseTransaction $transaction = NULL) {
+
+    // Set the changed timestamp when a log entity is saved.
     $entity->changed = REQUEST_TIME;
     return parent::save($entity, $transaction);
   }
+
 }
 
 /**
@@ -59,19 +74,30 @@ class LogType extends Entity {
   public $label;
   public $weight = 0;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct($values = array()) {
     parent::__construct($values, 'log_type');
   }
 
-  function isLocked() {
+  /**
+   * {@inheritdoc}
+   */
+  public function isLocked() {
     return isset($this->status) && empty($this->is_new) && (($this->status & ENTITY_IN_CODE) || ($this->status & ENTITY_FIXED));
   }
+
 }
 
 /**
  * Log type controller class.
  */
 class LogTypeController extends EntityAPIControllerExportable {
+
+  /**
+   * {@inheritdoc}
+   */
   public function create(array $values = array()) {
     $values += array(
       'id' => NULL,
@@ -83,6 +109,7 @@ class LogTypeController extends EntityAPIControllerExportable {
     );
     return parent::create($values);
   }
+
 }
 
 /**
@@ -97,4 +124,5 @@ class LogTypeUIController extends EntityDefaultUIController {
     $items[$this->path]['description'] = 'Manage log types.';
     return $items;
   }
+
 }

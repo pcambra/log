@@ -2,13 +2,21 @@
 
 /**
  * @file
- * Log admin pages
+ * Log admin pages.
  */
 
 /**
  * Log settings form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ *
+ * @return array
+ *   Returns the form array.
  */
-function log_settings_form($form, &$form_state) {
+function log_settings_form(array $form, array &$form_state) {
 
   // Use admin theme for log viewing/editing.
   $form['log_admin_theme'] = array(
@@ -24,8 +32,20 @@ function log_settings_form($form, &$form_state) {
 
 /**
  * Generates the log type editing form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ * @param string $log_type
+ *   The log type.
+ * @param string $op
+ *   The operation being performed.
+ *
+ * @return array
+ *   Returns the form array.
  */
-function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
+function log_type_form(array $form, array &$form_state, $log_type, $op = 'edit') {
 
   if ($op == 'clone') {
     $log_type->label .= ' (cloned)';
@@ -107,7 +127,7 @@ function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
       '#value' => t('Delete log type'),
       '#weight' => 45,
       '#limit_validation_errors' => array(),
-      '#submit' => array('log_type_form_submit_delete')
+      '#submit' => array('log_type_form_submit_delete'),
     );
   }
   return $form;
@@ -115,8 +135,13 @@ function log_type_form($form, &$form_state, $log_type, $op = 'edit') {
 
 /**
  * Submit handler for creating/editing log_type.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
-function log_type_form_submit(&$form, &$form_state) {
+function log_type_form_submit(array $form, array &$form_state) {
   $log_type = entity_ui_form_submit_build_entity($form, $form_state);
   // Save and go back.
   log_type_save($log_type);
@@ -125,23 +150,43 @@ function log_type_form_submit(&$form, &$form_state) {
   $form_state['redirect'] = 'admin/config/log/types';
 }
 
-function log_type_form_submit_delete(&$form, &$form_state) {
+/**
+ * Submit handler for deleting log_type.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ */
+function log_type_form_submit_delete(array $form, array &$form_state) {
   $form_state['redirect'] = 'admin/config/log/types/' . $form_state['log_type']->type . '/delete';
 }
 
 /**
  * Log type delete form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ * @param string $log_type
+ *   The log type.
+ *
+ * @return array
+ *   Returns a delete confirm form array.
  */
-function log_type_form_delete_confirm($form, &$form_state, $log_type) {
+function log_type_form_delete_confirm(array $form, array &$form_state, $log_type) {
   $form['log_type'] = array(
     '#type' => 'value',
     '#value' => $log_type,
   );
   // Always provide entity id in the same form key as in the entity edit form.
-  $form['log_type_id'] = array('#type' => 'value', '#value' => entity_id('log_type' ,$log_type));
+  $form['log_type_id'] = array(
+    '#type' => 'value',
+    '#value' => entity_id('log_type', $log_type));
   return confirm_form($form,
     t('Are you sure you want to delete log type %title?', array('%title' => entity_label('log_type', $log_type))),
-    'log/' . entity_id('log_type' ,$log_type),
+    'log/' . entity_id('log_type', $log_type),
     t('This action cannot be undone.'),
     t('Delete'),
     t('Cancel')
@@ -150,8 +195,13 @@ function log_type_form_delete_confirm($form, &$form_state, $log_type) {
 
 /**
  * Log type delete form submit handler.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
-function log_type_form_delete_confirm_submit($form, &$form_state) {
+function log_type_form_delete_confirm_submit(array $form, array &$form_state) {
   $log_type = $form_state['values']['log_type'];
   log_type_delete($log_type);
 

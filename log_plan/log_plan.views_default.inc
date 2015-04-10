@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Default log plan Views
+ * Default log plan Views.
  */
 
 /**

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Log install
+ * Log install.
  */
 
 /**
@@ -69,7 +69,7 @@ function log_schema() {
       'timestamp' => array('timestamp'),
       'created' => array('created'),
       'modified' => array('changed'),
-      'done' => array('done')
+      'done' => array('done'),
     ),
   );
   $schema['log_type'] = array(
@@ -117,7 +117,7 @@ function log_schema() {
       ),
 
       // The following fields are required to make Log types exportable via
-      // Entity API and Ctools. See
+      // Entity API and Ctools.
       'status' => array(
         'type' => 'int',
         'not null' => TRUE,
@@ -151,8 +151,11 @@ function log_uninstall() {
 
 /**
  * Add a field to log types that allow their names to be editable by users.
+ *
+ * @param array $sandbox
+ *   The update sandbox array.
  */
-function log_update_7000(&$sandbox) {
+function log_update_7000(array &$sandbox) {
   $spec = array(
     'description' => 'Boolean: log name is user editable.',
     'type' => 'int',
@@ -165,8 +168,11 @@ function log_update_7000(&$sandbox) {
 
 /**
  * Add 'timestamp' field to Logs.
+ *
+ * @param array $sandbox
+ *   The update sandbox array.
  */
-function log_update_7001(&$sandbox) {
+function log_update_7001(array &$sandbox) {
 
   // Add timestamp field to Logs.
   $timestamp = array(
@@ -179,8 +185,11 @@ function log_update_7001(&$sandbox) {
 
 /**
  * Add 'done' fields to Logs and Log Types.
+ *
+ * @param array $sandbox
+ *   The update sandbox array.
  */
-function log_update_7002(&$sandbox) {
+function log_update_7002(array &$sandbox) {
 
   // Add done field to Logs and Log Types.
   $done = array(

@@ -2,13 +2,19 @@
 
 /**
  * @file
- * Log pages
+ * Log pages.
  */
 
 /**
  * Log view callback.
+ *
+ * @param Log $log
+ *   The log entity.
+ *
+ * @return array
+ *   Returns the entity render array.
  */
-function log_view($log) {
+function log_view(Log $log) {
 
   // Set the title of the page to the log's label.
   drupal_set_title(entity_label('log', $log));
@@ -22,7 +28,7 @@ function log_view($log) {
   }
   else {
     $status = 'NOT DONE';
-    drupal_set_message('This log item is not done.', 'warning');
+    drupal_set_message(t('This log item is not done.'), 'warning');
   }
   $output['log'][$log->id]['done'] = array(
     '#markup' => '<div style="float: right;">Status: <strong>' . $status . '</strong></div>',
@@ -62,6 +68,12 @@ function log_add_types_page() {
 
 /**
  * Add new log page callback.
+ *
+ * @param string $type
+ *   The log type.
+ *
+ * @return array
+ *   Returns the log form array.
  */
 function log_add($type) {
   $log_type = log_types($type);
@@ -76,8 +88,18 @@ function log_add($type) {
 
 /**
  * Log Form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ * @param Log $log
+ *   The log entity.
+ *
+ * @return array
+ *   Returns the log form array.
  */
-function log_form($form, &$form_state, $log) {
+function log_form(array $form, array &$form_state, Log $log) {
 
   $form['log'] = array(
     '#type' => 'value',
@@ -97,7 +119,7 @@ function log_form($form, &$form_state, $log) {
     );
   }
 
-  // Timestamp
+  // Timestamp.
   $timestamp_default = !empty($log->timestamp) ? date('Y-m-d H:i:s', $log->timestamp) : '';
   $form['timestamp'] = array(
     '#type' => 'date_select',
@@ -145,11 +167,11 @@ function log_form($form, &$form_state, $log) {
   );
 
   // Show Delete button if allowed.
-  $log_id = entity_id('log' ,$log);
+  $log_id = entity_id('log', $log);
   if (!empty($log_id) && log_access('delete', $log)) {
 
-    // Get the destination query parameter. If it is the current path, change to <front>
-    // (because the current path won't exist once the log is deleted).
+    // Get the destination query parameter. If it is the current path, change to
+    // <front> (because the current path won't exist once the log is deleted).
     $destination = drupal_get_destination();
     if ($destination['destination'] == current_path()) {
       $destination['destination'] = '<front>';
@@ -165,12 +187,17 @@ function log_form($form, &$form_state, $log) {
 
 /**
  * Log validate handler.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
-function log_form_validate($form, &$form_state) {
+function log_form_validate(array $form, array &$form_state) {
 
   // If a new log is marked "done", but the timestamp is in the future, display
   // a warning, but allow the user to continue if they submit the form again.
-  if (empty($form_state['values']['log']->id) && empty($form_state['log_done_warning']) ) {
+  if (empty($form_state['values']['log']->id) && empty($form_state['log_done_warning'])) {
     $timestamp = strtotime($form_state['values']['timestamp']);
     if (!empty($form_state['values']['done']) && $timestamp > REQUEST_TIME) {
       form_set_error('done', t('You marked this log item as "done", but it has a date in the future. If you are OK with this fact, click save again.'));
@@ -181,8 +208,13 @@ function log_form_validate($form, &$form_state) {
 
 /**
  * Log submit handler.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
-function log_form_submit($form, &$form_state) {
+function log_form_submit(array $form, array &$form_state) {
 
   // Load the log entity from the form values.
   $log = $form_state['values']['log'];
@@ -206,14 +238,26 @@ function log_form_submit($form, &$form_state) {
 
 /**
  * Delete confirmation form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ * @param Log $log
+ *   The log entity to delete.
+ *
+ * @return array
+ *   Returns a form array.
  */
-function log_delete_form($form, &$form_state, $log) {
+function log_delete_form(array $form, array &$form_state, Log $log) {
   $form['log'] = array(
     '#type' => 'value',
     '#value' => $log,
   );
   // Always provide entity id in the same form key as in the entity edit form.
-  $form['log_type_id'] = array('#type' => 'value', '#value' => entity_id('log' ,$log));
+  $form['log_type_id'] = array(
+    '#type' => 'value',
+    '#value' => entity_id('log', $log));
   $log_uri = entity_uri('log', $log);
   return confirm_form($form,
     t('Are you sure you want to delete %title?', array('%title' => entity_label('log', $log))),
@@ -226,8 +270,13 @@ function log_delete_form($form, &$form_state, $log) {
 
 /**
  * Delete form submit handler.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
-function log_delete_form_submit($form, &$form_state) {
+function log_delete_form_submit(array $form, array &$form_state) {
   $log = $form_state['values']['log'];
   log_delete($log);
 

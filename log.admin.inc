@@ -21,7 +21,7 @@ function log_settings_form(array $form, array &$form_state) {
   // Use admin theme for log viewing/editing.
   $form['log_admin_theme'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Use admin theme for log viewing/editing logs'),
+    '#title' => t('Use admin theme for viewing/editing logs'),
     '#description' => t('If checked, this will use the administration theme for the log viewing pages, and the log edit forms.'),
     '#default_value' => variable_get('log_admin_theme', TRUE),
   );

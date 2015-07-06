@@ -98,7 +98,7 @@ function log_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('log_delete_form', $log_uri_argument_position),
     'access callback' => 'log_access',
-    'access arguments' => array('edit', $log_uri_argument_position),
+    'access arguments' => array('update', $log_uri_argument_position),
     'file' => 'log.pages.inc',
   );
 
@@ -107,7 +107,7 @@ function log_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('log_form', $log_uri_argument_position),
     'access callback' => 'log_access',
-    'access arguments' => array('edit', $log_uri_argument_position),
+    'access arguments' => array('update', $log_uri_argument_position),
     'file' => 'log.pages.inc',
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
@@ -653,7 +653,7 @@ function _log_action_date_form_action(Log $log, array $context) {
  * Access callback for log entities.
  *
  * @param string $op
- *   The operation being performed. One of 'view', 'edit', 'create', 'delete'.
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'.
  * @param Log|string $log
  *   Optionally a specific log entity to check, or a log type.
  * @param object $account
@@ -665,7 +665,7 @@ function _log_action_date_form_action(Log $log, array $context) {
 function log_access($op, $log = NULL, $account = NULL) {
   $rights = &drupal_static(__FUNCTION__, array());
 
-  if (!$log || !in_array($op, array('create', 'view', 'edit', 'delete'), TRUE)) {
+  if (!$log || !in_array($op, array('create', 'view', 'update', 'delete'), TRUE)) {
     // If there was no log to check against, or the $op was not one of the
     // supported ones, we return access denied.
     return FALSE;
@@ -712,7 +712,7 @@ function log_access($op, $log = NULL, $account = NULL) {
       }
     }
 
-    if ($op == 'edit') {
+    if ($op == 'update') {
       if (user_access('edit any ' . $type . ' log entities', $account) || (user_access('edit own ' . $type . ' log entities', $account) && ($account->uid == $log->uid))) {
         $rights[$account->uid][$cid][$op] = TRUE;
         return TRUE;

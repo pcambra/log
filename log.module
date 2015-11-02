@@ -390,6 +390,66 @@ function log_action_info() {
   );
 }
 
+/**
+ * Implements hook_filter_info().
+ */
+function log_filter_info() {
+  $filters['log_filter'] = array(
+    'title' => t('Parse log placeholders.'),
+    'description' => t('Create links to logs with [log:ID] placeholders.'),
+    'process callback' => 'log_filter_log',
+    'tips callback' => 'log_filter_log_tips',
+  );
+  return $filters;
+}
+
+/***************************************************************
+ * Log filter callback
+ * *************************************************************/
+
+/**
+ * Parse log placeholders.
+ */
+function log_filter_log($text) {
+  $matches = array();
+  preg_match_all('/\[log:[0-9]+\]/', $text, $matches);
+  if (!empty($matches[0])) {
+    foreach ($matches[0] as $match) {
+
+      // Extract the log id.
+      $id = str_replace('[log:', '', $match);
+      $id = str_replace(']', '', $id);
+
+      // Load the log.
+      $log = log_load($id);
+
+      // If no log was found, skip.
+      if (empty($log)) {
+        continue;
+      }
+
+      // Generate replacement text.
+      $parsed = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', entity_uri('log', $log));
+
+      // Replace all occurrences with the parsed version.
+      $text = str_replace($match, $parsed, $text);
+    }
+  }
+  return $text;
+}
+
+/**
+ * Tips for parsing log placeholders.
+ */
+function log_filter_log_tips($filter, $format, $long = FALSE) {
+  if ($long) {
+    return t('Create links to logs with [log:ID] placeholders. Replace ID with the numerical ID of the log. The link will contain the log ID and title.');
+  }
+  else {
+    return t('Create links to logs with [log:ID] placeholders.');
+  }
+}
+
 /***************************************************************
  * Log action callbacks
  * *************************************************************/

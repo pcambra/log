@@ -429,7 +429,8 @@ function log_filter_log($text) {
       }
 
       // Generate replacement text.
-      $parsed = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', entity_uri('log', $log));
+      $uri = entity_uri('log', $log);
+      $parsed = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', $uri['path']);
 
       // Replace all occurrences with the parsed version.
       $text = str_replace($match, $parsed, $text);

@@ -101,6 +101,7 @@ function log_add($type) {
  */
 function log_form(array $form, array &$form_state, Log $log) {
 
+  // Store the log entity in the form for use later.
   $form['log'] = array(
     '#type' => 'value',
     '#value' => $log,

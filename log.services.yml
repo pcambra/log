@@ -1,0 +1,6 @@
+services:
+  access_check.log.add:
+    class: Drupal\log\Access\LogAddAccessCheck
+    arguments: ['@entity.manager']
+    tags:
+      - { name: access_check, applies_to: _log_add_access }

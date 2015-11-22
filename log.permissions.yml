@@ -1,0 +1,15 @@
+administer log types:
+  title: 'Administer Log types'
+  description: 'Maintain the types of content available and the fields that are associated with those types.'
+  restrict access: true
+
+administer logs:
+  title: 'Administer Log entities'
+  description: 'Allow to access the administration form to configure Log entities.'
+
+view logs:
+  title: 'View Log entities'
+  description: 'Allow to access Log entities.'
+
+permission_callbacks:
+  - \Drupal\log\LogPermissions::logTypePermissions

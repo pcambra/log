@@ -1,0 +1,236 @@
+<?php
+
+/**
+ * @file
+ * Contains \Drupal\log\Entity\Log.
+ */
+
+namespace Drupal\log\Entity;
+
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\log\LogInterface;
+use Drupal\user\UserInterface;
+
+/**
+ * Defines the Log entity.
+ *
+ * @ingroup log
+ *
+ * @ContentEntityType(
+ *   id = "log",
+ *   label = @Translation("Log"),
+ *   bundle_label = @Translation("Log type"),
+ *   handlers = {
+ *     "storage" = "Drupal\log\LogStorage",
+ *     "storage_schema" = "Drupal\log\LogStorageSchema",
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
+ *     "access" = "Drupal\log\LogAccessControlHandler",
+ *     "views_data" = "Drupal\log\LogViewsData",
+ *     "form" = {
+ *       "default" = "Drupal\log\Form\LogForm",
+ *       "edit" = "Drupal\log\Form\LogForm",
+ *       "delete" = "Drupal\log\Form\LogDeleteForm",
+ *     },
+ *     "route_provider" = {
+ *       "html" = "Drupal\log\Entity\LogRouteProvider",
+ *     },
+ *     "list_builder" = "Drupal\log\LogListBuilder",
+ *   },
+ *   base_table = "log",
+ *   data_table = "log_field_data",
+ *   revision_table = "log_revision",
+ *   revision_data_table = "log_field_revision",
+ *   admin_permission = "administer log",
+ *   entity_keys = {
+ *     "id" = "id",
+ *     "revision" = "vid",
+ *     "bundle" = "type",
+ *     "label" = "name",
+ *     "uid" = "uid",
+ *     "uuid" = "uuid"
+ *   },
+ *   bundle_entity_type = "log_type",
+ *   field_ui_base_route = "entity.log_type.edit_form",
+ *   common_reference_target = TRUE,
+ *   permission_granularity = "bundle",
+ *   links = {
+ *     "canonical" = "/log/{log}",
+ *     "edit-form" = "/log/{log}/edit",
+ *     "delete-form" = "/log/{log}/delete"
+ *   }
+ * )
+ */
+class Log extends ContentEntityBase implements LogInterface {
+  use EntityChangedTrait;
+  /**
+   * {@inheritdoc}
+   */
+  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
+    parent::preCreate($storage_controller, $values);
+    $values += array(
+      'user_id' => \Drupal::currentUser()->id(),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwner() {
+    return $this->get('user_id')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->get('user_id')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    $this->set('user_id', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    $this->set('user_id', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields['id'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('ID'))
+      ->setDescription(t('The ID of the Log entity.'))
+      ->setReadOnly(TRUE);
+
+    $fields['uuid'] = BaseFieldDefinition::create('uuid')
+      ->setLabel(t('UUID'))
+      ->setDescription(t('The UUID of the Log entity.'))
+      ->setReadOnly(TRUE);
+
+    $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Authored by'))
+      ->setDescription(t('The user ID of author of the Log entity.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'user')
+      ->setSetting('handler', 'default')
+      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'author',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => '60',
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
+      ->setDescription(t('The name of the Log entity.'))
+      ->setRevisionable(TRUE)
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['vid'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Revision ID'))
+      ->setDescription(t('The log revision ID.'))
+      ->setReadOnly(TRUE)
+      ->setSetting('unsigned', TRUE);
+
+    $fields['type'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Type'))
+      ->setDescription(t('The log type.'))
+      ->setSetting('target_type', 'log_type')
+      ->setReadOnly(TRUE);
+
+    $fields['langcode'] = BaseFieldDefinition::create('language')
+      ->setLabel(t('Language'))
+      ->setDescription(t('The node language code.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('view', array(
+        'type' => 'hidden',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'language_select',
+        'weight' => 2,
+      ));
+
+    $fields['created'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Authored on'))
+      ->setDescription(t('The time that the node was created.'))
+      ->setDisplayOptions('view', array(
+        'label' => 'hidden',
+        'type' => 'timestamp',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'datetime_timestamp',
+        'weight' => 10,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['changed'] = BaseFieldDefinition::create('changed')
+      ->setLabel(t('Changed'))
+      ->setDescription(t('The time that the node was last edited.'));
+
+    $fields['revision_timestamp'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Revision timestamp'))
+      ->setDescription(t('The time that the current revision was created.'))
+      ->setQueryable(FALSE)
+      ->setRevisionable(TRUE);
+
+    $fields['revision_uid'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Revision user ID'))
+      ->setDescription(t('The user ID of the author of the current revision.'))
+      ->setSetting('target_type', 'user')
+      ->setQueryable(FALSE)
+      ->setRevisionable(TRUE);
+
+    return $fields;
+  }
+
+}

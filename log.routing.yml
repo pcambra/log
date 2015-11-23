@@ -14,11 +14,10 @@ log.add:
     _controller: '\Drupal\log\Controller\LogController::add'
     _title_callback: '\Drupal\log\Controller\LogController::addPageTitle'
   requirements:
-    _node_add_access: 'log:{log_type}'
+    _log_add_access: 'log:{log_type}'
   options:
-    _node_operation_route: TRUE
     parameters:
-      node_type:
+      log_type:
         with_config_overrides: TRUE
 
 # Log routing definition

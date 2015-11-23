@@ -116,6 +116,43 @@ class Log extends ContentEntityBase implements LogInterface {
   /**
    * {@inheritdoc}
    */
+  public function getRevisionCreationTime() {
+    return $this->get('revision_timestamp')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionCreationTime($timestamp) {
+    $this->set('revision_timestamp', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionAuthor() {
+    return $this->get('revision_uid')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionAuthorId($uid) {
+    $this->set('revision_uid', $uid);
+    return $this;
+  }
+
+  /**
+   * @return array
+   */
+  public static function getCurrentUserId() {
+    return array(\Drupal::currentUser()->id());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))
@@ -133,7 +170,7 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'default')
-      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      ->setDefaultValueCallback('Drupal\log\Entity\Log::getCurrentUserId')
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
@@ -188,7 +225,7 @@ class Log extends ContentEntityBase implements LogInterface {
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language'))
-      ->setDescription(t('The node language code.'))
+      ->setDescription(t('The log language code.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setDisplayOptions('view', array(
@@ -201,7 +238,7 @@ class Log extends ContentEntityBase implements LogInterface {
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
-      ->setDescription(t('The time that the node was created.'))
+      ->setDescription(t('The time that the log was created.'))
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
         'type' => 'timestamp',
@@ -215,7 +252,7 @@ class Log extends ContentEntityBase implements LogInterface {
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the node was last edited.'));
+      ->setDescription(t('The time that the log was last edited.'));
 
     $fields['revision_timestamp'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Revision timestamp'))

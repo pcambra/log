@@ -24,14 +24,6 @@ class LogForm extends ContentEntityForm {
     /* @var $entity \Drupal\log\Entity\Log */
     $entity = $this->entity;
 
-    $form = parent::form($form, $form_state);
-
-//    // Changed must be sent to the client, for later overwrite error checking.
-//    $form['changed'] = array(
-//      '#type' => 'hidden',
-//      '#default_value' => $entity->getChangedTime(),
-//    );
-
     $form['langcode'] = array(
       '#title' => $this->t('Language'),
       '#type' => 'language_select',
@@ -45,6 +37,7 @@ class LogForm extends ContentEntityForm {
       '#default_value' => TRUE,
     );
 
+    $form = parent::form($form, $form_state);
     return $form;
   }
 

@@ -5,7 +5,7 @@
  * Contains \Drupal\log\Entity\Form\LogDeleteForm.
  */
 
-namespace Drupal\log\Entity\Form;
+namespace Drupal\log\Form;
 
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;

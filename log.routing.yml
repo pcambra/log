@@ -44,7 +44,7 @@ entity.log.edit_form:
     _entity_form: log.edit
     _title: 'Edit Log'
   requirements:
-    _entity_access: 'log.edit'
+    _entity_access: 'log.update'
 
 entity.log.delete_form:
   path: '/log/{log}/delete'

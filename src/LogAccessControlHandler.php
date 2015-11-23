@@ -29,11 +29,11 @@ class LogAccessControlHandler extends EntityAccessControlHandler {
         break;
 
       case 'update':
-        return AccessResult::allowedIfHasPermissions($account, "edit any {$entity->bundle()} log");
+        return AccessResult::allowedIfHasPermission($account, "edit any {$entity->bundle()} log");
         break;
 
       case 'delete':
-        return AccessResult::allowedIfHasPermissions($account, "delete any {$entity->bundle()} log");
+        return AccessResult::allowedIfHasPermission($account, "delete any {$entity->bundle()} log");
         break;
 
       default:

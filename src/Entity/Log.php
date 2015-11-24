@@ -151,6 +151,13 @@ class Log extends ContentEntityBase implements LogInterface {
   }
 
   /**
+   * @return array
+   */
+  public static function getCurrentTimestamp() {
+    return array(REQUEST_TIME);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
@@ -235,6 +242,36 @@ class Log extends ContentEntityBase implements LogInterface {
         'type' => 'language_select',
         'weight' => 2,
       ));
+
+    $fields['timestamp'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(t('Date'))
+      ->setDescription(t('Timestamp of the event being logged.'))
+      ->setDefaultValueCallback('Drupal\log\Entity\Log::getCurrentTimestamp')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'timestamp',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'datetime_timestamp',
+        'weight' => 10,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['done'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Done'))
+      ->setDescription(t('Boolean indicating whether the log is done (the event happened).'))
+      ->setDefaultValue(TRUE)
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'boolean',
+        'weight' => 0,
+      ))
+      ->setDisplayOptions('form', array(
+        'settings' => array('display_label' => TRUE),
+        'weight' => 0,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))

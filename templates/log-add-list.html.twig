@@ -1,16 +1,15 @@
 {#
 /**
  * @file
- * Default theme implementation to list node types available for adding content.
+ * Default theme implementation to list log types available for adding log.
  *
- * This list is displayed on the Add content admin page.
+ * This list is displayed on the Add log admin page.
  *
  * Available variables:
- * - types: A list of content types, each with the following properties:
+ * - types: A list of log types, each with the following properties:
  *   - add_link: Link to create a piece of content of this type.
- *   - description: Description of this type of content.
  *
- * @see template_preprocess_node_add_list()
+ * @see template_preprocess_log_add_list()
  *
  * @ingroup themeable
  */
@@ -23,9 +22,9 @@
   </dl>
 {% else %}
   <p>
-    {% set create_content = path('log.type_add') %}
+    {% set create_log = path('entity.log_type.add_form') %}
     {% trans %}
-      You have not created any content types yet. Go to the <a href="{{ create_content }}">content type creation page</a> to add a new content type.
+      You have not created any log types yet. Go to the <a href="{{ create_log }}">log type creation page</a> to add a new log type.
     {% endtrans %}
   </p>
 {% endif %}

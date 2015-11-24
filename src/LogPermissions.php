@@ -48,29 +48,31 @@ class LogPermissions {
   protected function buildPermissions(LogType $type) {
     $type_id = $type->id();
     $type_params = array('%type_name' => $type->label());
+    $ops = array('view', 'edit', 'delete');
+    $scopes = array('any', 'own');
 
-    return array(
-      "create $type_id log" => array(
-        'title' => $this->t('%type_name: Create new log', $type_params),
-      ),
-      "edit any $type_id log" => array(
-        'title' => $this->t('%type_name: Edit any log', $type_params),
-      ),
-      "delete any $type_id log" => array(
-        'title' => $this->t('%type_name: Delete any log', $type_params),
-      ),
-      "view $type_id revisions" => array(
-        'title' => $this->t('%type_name: View revisions', $type_params),
-      ),
-      "revert $type_id revisions" => array(
-        'title' => $this->t('%type_name: Revert revisions', $type_params),
-        'description' => t('Role requires permission <em>view revisions</em> and <em>edit rights</em> for logs in question, or <em>administer logs</em>.'),
-      ),
-      "delete $type_id revisions" => array(
-        'title' => $this->t('%type_name: Delete revisions', $type_params),
-        'description' => $this->t('Role requires permission to <em>view revisions</em> and <em>delete rights</em> for logs in question, or <em>administer logs</em>.'),
-      ),
-    );
+    $permissions = [];
+    $permissions["create $type_id log entities"] = [
+      'title' => $this->t('%type_name: Create new log entities', $type_params),
+    ];
+    foreach ($ops as $op) {
+      foreach ($scopes as $scope) {
+        $scope_params = $type_params + ['%scope' => $scope, '%op' => ucfirst($op)];
+        $permissions["$op $scope $type_id log entities"] = [
+          'title' => $this->t('%type_name: %op %scope log entities', $scope_params),
+        ];
+      }
+    }
+    $permissions["view $type_id revisions"] = [
+      'title' => $this->t('%type_name: View log revisions', $type_params),
+    ];
+    $permissions["revert $type_id revisions"] = [
+      'title' => $this->t('%type_name: Revert log revisions', $type_params),
+    ];
+    $permissions["delete $type_id revisions"] = [
+      'title' => $this->t('%type_name: Delete log revisions', $type_params),
+    ];
+    return $permissions;
   }
 
 }

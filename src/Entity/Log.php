@@ -161,14 +161,10 @@ class Log extends ContentEntityBase implements LogInterface {
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))
       ->setDescription(t('The ID of the Log entity.'))
-      ->setReadOnly(TRUE);
-
-    $fields['uuid'] = BaseFieldDefinition::create('uuid')
-      ->setLabel(t('UUID'))
-      ->setDescription(t('The UUID of the Log entity.'))
       ->setReadOnly(TRUE);
 
     $fields['user_id'] = BaseFieldDefinition::create('entity_reference')
@@ -182,11 +178,11 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
         'type' => 'author',
-        'weight' => 0,
+        'weight' => 99,
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
+        'weight' => 99,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => '60',
@@ -196,27 +192,20 @@ class Log extends ContentEntityBase implements LogInterface {
       ))
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Log entity.'))
+    $fields['created'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Authored on'))
+      ->setDescription(t('The time that the log was created.'))
       ->setRevisionable(TRUE)
-      ->setSettings(array(
-        'max_length' => 255,
-        'text_processing' => 0,
-      ))
-      ->setDefaultValue('')
       ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'label' => 'hidden',
+        'type' => 'timestamp',
+        'weight' => 0,
       ))
       ->setDisplayOptions('form', array(
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'datetime_timestamp',
+        'weight' => 99,
       ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('form', TRUE);
 
     $fields['vid'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Revision ID'))
@@ -242,67 +231,76 @@ class Log extends ContentEntityBase implements LogInterface {
         'type' => 'language_select',
         'weight' => 2,
       ));
-
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
+      ->setDescription(t('The name of the Log entity.'))
+      ->setRevisionable(TRUE)
+      ->setSettings(array(
+        'max_length' => 255,
+        'text_processing' => 0,
+      ))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
     $fields['timestamp'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Date'))
       ->setDescription(t('Timestamp of the event being logged.'))
       ->setDefaultValueCallback('Drupal\log\Entity\Log::getCurrentTimestamp')
+      ->setRevisionable(TRUE)
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'timestamp',
-        'weight' => 0,
+        'weight' => 80,
       ))
       ->setDisplayOptions('form', array(
         'type' => 'datetime_timestamp',
-        'weight' => 10,
+        'weight' => 80,
       ))
       ->setDisplayConfigurable('form', TRUE);
-
     $fields['done'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Done'))
       ->setDescription(t('Boolean indicating whether the log is done (the event happened).'))
+      ->setRevisionable(TRUE)
       ->setDefaultValue(TRUE)
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'boolean',
-        'weight' => 0,
+        'weight' => 90,
       ))
       ->setDisplayOptions('form', array(
         'settings' => array('display_label' => TRUE),
-        'weight' => 0,
+        'weight' => 90,
       ))
       ->setDisplayConfigurable('form', TRUE);
 
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Authored on'))
-      ->setDescription(t('The time that the log was created.'))
-      ->setDisplayOptions('view', array(
-        'label' => 'hidden',
-        'type' => 'timestamp',
-        'weight' => 0,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'datetime_timestamp',
-        'weight' => 10,
-      ))
-      ->setDisplayConfigurable('form', TRUE);
-
+    // Read only.
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the log was last edited.'));
-
     $fields['revision_timestamp'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Revision timestamp'))
       ->setDescription(t('The time that the current revision was created.'))
       ->setQueryable(FALSE)
       ->setRevisionable(TRUE);
-
     $fields['revision_uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Revision user ID'))
       ->setDescription(t('The user ID of the author of the current revision.'))
       ->setSetting('target_type', 'user')
       ->setQueryable(FALSE)
       ->setRevisionable(TRUE);
+    $fields['uuid'] = BaseFieldDefinition::create('uuid')
+      ->setLabel(t('UUID'))
+      ->setDescription(t('The UUID of the Log entity.'))
+      ->setReadOnly(TRUE);
 
     return $fields;
   }

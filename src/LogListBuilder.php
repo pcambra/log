@@ -25,6 +25,7 @@ class LogListBuilder extends EntityListBuilder {
   public function buildHeader() {
     $header['id'] = $this->t('Log ID');
     $header['name'] = $this->t('Name');
+    $header['type'] = $this->t('Type');
     return $header + parent::buildHeader();
   }
 
@@ -37,11 +38,14 @@ class LogListBuilder extends EntityListBuilder {
     $row['name'] = $this->l(
       $entity->label(),
       new Url(
-        'entity.log.edit_form', array(
+        'entity.log.canonical', array(
           'log' => $entity->id(),
         )
       )
     );
+
+    // @todo Show type name.
+    $row['type'] = $entity->bundle();
     return $row + parent::buildRow($entity);
   }
 

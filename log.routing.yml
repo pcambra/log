@@ -22,12 +22,12 @@ log.add:
 
 # Log routing definition
 entity.log.collection:
-  path: '/log'
+  path: '/admin/log'
   defaults:
     _entity_list: 'log'
     _title: 'Log list'
   requirements:
-    _permission: 'view logs'
+    _permission: 'administer log module'
 
 entity.log.canonical:
   path: '/log/{log}'

@@ -7,9 +7,24 @@ log.type.*:
     id:
       type: string
       label: 'Machine-readable name'
-    name:
+    label:
       type: label
       label: 'Type'
+    description:
+      type: text
+      label: 'Description'
+    name_pattern:
+      type: string
+      label: 'Pattern for auto-generating the log name, using tokens.'
+    name_edit:
+      type: boolean
+      label: 'Boolean: log name is user editable.'
+    done:
+      type: boolean
+      label: 'Boolean: automatically mark logs of this type as done.'
+    new_revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
 
 condition.plugin.log_type:
   type: condition.plugin

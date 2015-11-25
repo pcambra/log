@@ -34,7 +34,8 @@ class LogForm extends ContentEntityForm {
     $form['revision'] = array(
       '#title' => $this->t('Revision'),
       '#type' => 'checkbox',
-      '#default_value' => TRUE,
+      '#default_value' => $entity->type->entity->isNewRevision(),
+      '#weight' => 99,
     );
 
     $form = parent::form($form, $form_state);

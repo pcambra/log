@@ -42,7 +42,12 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   },
  *   config_export = {
  *     "id",
- *     "label"
+ *     "label",
+ *     "description",
+ *     "name_pattern",
+ *     "name_edit",
+ *     "done",
+ *     "new_revision",
  *   }
  * )
  */
@@ -62,6 +67,75 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
    */
   protected $label;
 
+  /**
+   * A brief description of this log type.
+   *
+   * @var string
+   */
+  protected $description;
+
+  /**
+   * Pattern for auto-generating the log name, using tokens.
+   *
+   * @var string
+   */
+  protected $name_pattern;
+
+  /**
+   * Log name is user editable.
+   *
+   * @var bool
+   */
+  protected $name_edit = FALSE;
+
+  /**
+   * Automatically mark logs of this type as done.
+   *
+   * @var bool
+   */
+  protected $done = FALSE;
+
+  /**
+   * Default value of the 'Create new revision' checkbox of this log type.
+   *
+   * @var bool
+   */
+  protected $new_revision = TRUE;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNamePattern() {
+    return $this->name_pattern;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isNameEditable() {
+    return $this->name_edit;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isAutomaticallyDone() {
+    return $this->done;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isNewRevision() {
+    return $this->new_revision;
+  }
 
   /**
    * {@inheritdoc}

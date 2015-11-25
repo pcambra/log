@@ -5,7 +5,7 @@
  * Contains \Drupal\log\Entity\Log.
  */
 
-namespace Drupal\log\Entity;
+namespace Drupal\log;
 
 use Drupal\views\EntityViewsData;
 use Drupal\views\EntityViewsDataInterface;

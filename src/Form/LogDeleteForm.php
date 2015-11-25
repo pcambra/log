@@ -28,7 +28,7 @@ class LogDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('entity.log.collection');
+    return new Url('view.log_admin.collection');
   }
 
   /**

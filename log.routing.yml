@@ -20,15 +20,6 @@ log.add:
       log_type:
         with_config_overrides: TRUE
 
-# Log routing definition
-entity.log.collection:
-  path: '/admin/log'
-  defaults:
-    _entity_list: 'log'
-    _title: 'Log list'
-  requirements:
-    _permission: 'administer log module'
-
 entity.log.canonical:
   path: '/log/{log}'
   defaults:

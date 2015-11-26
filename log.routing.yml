@@ -16,33 +16,10 @@ log.add:
   requirements:
     _log_add_access: 'log:{log_type}'
   options:
+    _log_operation_route: TRUE
     parameters:
       log_type:
         with_config_overrides: TRUE
-
-entity.log.canonical:
-  path: '/log/{log}'
-  defaults:
-    _entity_view: 'log'
-    _title: 'Log'
-  requirements:
-    _entity_access: 'log.view'
-
-entity.log.edit_form:
-  path: '/log/{log}/edit'
-  defaults:
-    _entity_form: log.edit
-    _title: 'Edit Log'
-  requirements:
-    _entity_access: 'log.update'
-
-entity.log.delete_form:
-  path: '/log/{log}/delete'
-  defaults:
-    _entity_form: log.delete
-    _title: 'Delete Log'
-  requirements:
-    _entity_access: 'log.delete'
 
 # LogType routing definition
 entity.log_type.collection:

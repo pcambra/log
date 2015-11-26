@@ -11,6 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_help().
@@ -128,4 +129,32 @@ function log_log_access(LogInterface $log, $op, $account) {
  */
 function log_log_create_access(AccountInterface $account, array $context, $entity_bundle = NULL) {
   return AccessResult::allowedIfHasPermission($account, 'create ' . $entity_bundle . ' log entities')->cachePerPermissions();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the theme form to use the admin theme on log editing.
+ *
+ * @see log_form_system_themes_admin_form_submit()
+ */
+function log_form_system_themes_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['admin_theme']['log_use_admin_theme'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use the administration theme when editing or creating log entity'),
+    '#default_value' => \Drupal::configFactory()->getEditable('log.settings')->get('log_use_admin_theme'),
+  );
+  $form['#submit'][] = 'log_form_system_themes_admin_form_submit';
+}
+
+/**
+ * Form submission handler for system_themes_admin_form().
+ *
+ * @see log_form_system_themes_admin_form_alter()
+ */
+function log_form_system_themes_admin_form_submit($form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('log.settings')
+    ->set('log_use_admin_theme', $form_state->getValue('log_use_admin_theme'))
+    ->save();
+  \Drupal::service('router.builder')->setRebuildNeeded();
 }

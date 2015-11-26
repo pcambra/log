@@ -4,3 +4,8 @@ services:
     arguments: ['@entity.manager']
     tags:
       - { name: access_check, applies_to: _log_add_access }
+  log.admin_path.route_subscriber:
+    class: Drupal\log\EventSubscriber\LogAdminRouteSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }

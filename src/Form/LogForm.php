@@ -29,7 +29,6 @@ class LogForm extends ContentEntityForm {
       '#attributes' => array('class' => array('entity-meta')),
       '#weight' => 99,
     );
-    $form = parent::form($form, $form_state);
 
     $form['revision_information'] = array(
       '#type' => 'details',
@@ -62,6 +61,8 @@ class LogForm extends ContentEntityForm {
       '#languages' => Language::STATE_ALL,
       '#group' => 'author',
     );
+
+    $form = parent::form($form, $form_state);
 
     if (isset($form['user_id'])) {
       $form['user_id']['#group'] = 'author';

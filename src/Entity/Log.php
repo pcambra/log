@@ -65,15 +65,24 @@ use Drupal\user\UserInterface;
  * )
  */
 class Log extends ContentEntityBase implements LogInterface {
+
   use EntityChangedTrait;
+
   /**
    * {@inheritdoc}
    */
   public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
     parent::preCreate($storage_controller, $values);
-    $values += array(
-      'user_id' => \Drupal::currentUser()->id(),
-    );
+    // Set default value for name and done properties.
+    if (!empty($values['type'])) {
+      $type = \Drupal::entityManager()
+        ->getStorage('log_type')
+        ->load($values['type']);
+      $values += [
+        'name' => $type->getNamePattern(),
+        'done' => $type->isAutomaticallyDone(),
+      ];
+    }
   }
 
   /**
@@ -235,11 +244,11 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Log entity.'))
       ->setRevisionable(TRUE)
+      ->setDefaultValue('')
       ->setSettings(array(
         'max_length' => 255,
         'text_processing' => 0,
       ))
-      ->setDefaultValue('')
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'string',

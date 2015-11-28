@@ -24,11 +24,19 @@ class LogForm extends ContentEntityForm {
     /* @var $entity \Drupal\log\Entity\Log */
     $entity = $this->entity;
 
-    $form['langcode'] = array(
-      '#title' => $this->t('Language'),
-      '#type' => 'language_select',
-      '#default_value' => $entity->langcode->value,
-      '#languages' => Language::STATE_ALL,
+    $form['advanced'] = array(
+      '#type' => 'vertical_tabs',
+      '#attributes' => array('class' => array('entity-meta')),
+      '#weight' => 99,
+    );
+    $form = parent::form($form, $form_state);
+
+    $form['revision_information'] = array(
+      '#type' => 'details',
+      '#group' => 'advanced',
+      '#title' => t('Revision information'),
+      '#weight' => 20,
+      '#optional' => TRUE,
     );
 
     $form['revision'] = array(
@@ -36,9 +44,38 @@ class LogForm extends ContentEntityForm {
       '#type' => 'checkbox',
       '#default_value' => $entity->type->entity->isNewRevision(),
       '#weight' => 99,
+      '#group' => 'revision_information',
     );
 
-    $form = parent::form($form, $form_state);
+    $form['author'] = array(
+      '#type' => 'details',
+      '#title' => t('Authoring information'),
+      '#group' => 'advanced',
+      '#weight' => 90,
+      '#optional' => TRUE,
+    );
+
+    $form['langcode'] = array(
+      '#title' => $this->t('Language'),
+      '#type' => 'language_select',
+      '#default_value' => $entity->langcode->value,
+      '#languages' => Language::STATE_ALL,
+      '#group' => 'author',
+    );
+
+    if (isset($form['user_id'])) {
+      $form['user_id']['#group'] = 'author';
+    }
+
+    if (isset($form['created'])) {
+      $form['created']['#group'] = 'author';
+    }
+
+    if (isset($form['name'])) {
+      $form['name']['#access'] = $entity->type->entity->isNameEditable();
+    }
+
+
     return $form;
   }
 

@@ -37,7 +37,7 @@ function log_view(Log $log) {
 
   // Add the log's timestamp.
   if (!empty($log->timestamp)) {
-    $date = date('M j Y', $log->timestamp);
+    $date = format_date($log->timestamp);
     $output['log'][$log->id]['timestamp'] = array(
       '#markup' => '<p><strong>Date:</strong> ' . $date . '</p>',
       '#weight' => -99,
@@ -125,7 +125,7 @@ function log_form(array $form, array &$form_state, Log $log) {
   $form['timestamp'] = array(
     '#type' => 'date_select',
     '#title' => t('Date'),
-    '#date_format' => 'M j Y',
+    '#date_format' => 'M j Y H:i:s',
     '#date_type' => DATE_FORMAT_UNIX,
     '#date_year_range' => '-10:+3',
     '#default_value' => $timestamp_default,

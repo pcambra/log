@@ -56,7 +56,7 @@ class LogViewController extends EntityViewController {
    *   The page title.
    */
   public function title(EntityInterface $log) {
-    return $this->entityManager->getTranslationFromContext($log)->label();
+    return $log->label();
   }
 
 }

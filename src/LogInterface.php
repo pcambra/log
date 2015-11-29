@@ -18,6 +18,28 @@ use Drupal\user\EntityOwnerInterface;
  * @ingroup log
  */
 interface LogInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
-  // Add get/set methods for your configuration properties here.
 
+  /**
+   * Gets the log type.
+   *
+   * @return string
+   *   The log type.
+   */
+  public function getType();
+
+  /**
+   * Gets the log type name.
+   *
+   * @return string
+   *   The log type name.
+   */
+  public function getTypeName();
+
+  /**
+   * Gets the log creation timestamp.
+   *
+   * @return int
+   *   Creation timestamp of the log.
+   */
+  public function getCreatedTime();
 }

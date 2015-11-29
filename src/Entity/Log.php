@@ -12,6 +12,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Utility\Token;
 use Drupal\log\LogInterface;
 use Drupal\user\UserInterface;
 
@@ -68,6 +69,13 @@ class Log extends ContentEntityBase implements LogInterface {
 
   use EntityChangedTrait;
 
+  protected $tokenService;
+
+  public function __construct(array $values, $entity_type, $bundle, array $translations) {
+    parent::__construct($values, $entity_type, $bundle, $translations);
+    $this->tokenService = \Drupal::token();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -83,6 +91,27 @@ class Log extends ContentEntityBase implements LogInterface {
         'done' => $type->isAutomaticallyDone(),
       ];
     }
+  }
+
+  public function label() {
+    return $this->tokenService->replace(
+      parent::label(),
+      ['log' => $this]
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getType() {
+    return $this->bundle();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTypeName() {
+    return $this->get('type')->entity->label();
   }
 
   /**
@@ -199,7 +228,6 @@ class Log extends ContentEntityBase implements LogInterface {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
@@ -242,24 +270,20 @@ class Log extends ContentEntityBase implements LogInterface {
       ));
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Log entity.'))
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
-      ->setSettings(array(
-        'max_length' => 255,
-        'text_processing' => 0,
-      ))
+      ->setSetting('max_length', 255)
+      ->setSetting('text_processing', 0)
       ->setDisplayOptions('view', array(
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'label' => 'hidden',
+        'type' => 'log_name',
+        'weight' => -5,
       ))
       ->setDisplayOptions('form', array(
         'type' => 'string_textfield',
-        'weight' => -4,
+        'weight' => -5,
       ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('form', TRUE);
     $fields['timestamp'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Date'))
       ->setDescription(t('Timestamp of the event being logged.'))
@@ -268,12 +292,13 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'timestamp',
-        'weight' => 80,
+        'weight' => 10,
       ))
       ->setDisplayOptions('form', array(
         'type' => 'datetime_timestamp',
         'weight' => 80,
       ))
+      ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
     $fields['done'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Done'))
@@ -283,12 +308,13 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDisplayOptions('view', array(
         'label' => 'above',
         'type' => 'boolean',
-        'weight' => 90,
+        'weight' => 10,
       ))
       ->setDisplayOptions('form', array(
         'settings' => array('display_label' => TRUE),
         'weight' => 90,
       ))
+      ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     // Read only.

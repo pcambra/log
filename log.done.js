@@ -11,7 +11,7 @@
        */
 
       // When a date field is changed...
-      $('#edit-timestamp select', context).change(event, function() {
+      $('#edit-timestamp select', context).change(function(event) {
 
         // Get the select list values.
         var month = $(event.target).closest('#edit-timestamp').find('#edit-timestamp-month').val();

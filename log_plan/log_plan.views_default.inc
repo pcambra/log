@@ -250,8 +250,8 @@ function log_plan_views_default_views() {
   $handler->display->display_options['tab_options']['title'] = 'Logs';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
-  /* Display: Plan (Content pane) */
-  $handler = $view->new_display('panel_pane', 'Plan (Content pane)', 'panel_pane_1');
+  /* Display: Plan (Block) */
+  $handler = $view->new_display('block', 'Plan (Block)', 'block_plan');
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
@@ -270,12 +270,7 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
   $handler->display->display_options['filters']['date_filter']['group'] = 1;
-  $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Start date';
-  $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
-  $handler->display->display_options['filters']['date_filter']['year_range'] = '-10:+3';
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'log.timestamp' => 'log.timestamp',
   );
@@ -290,19 +285,9 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['done']['expose']['operator'] = 'done_op';
   $handler->display->display_options['filters']['done']['expose']['identifier'] = 'done';
   $handler->display->display_options['filters']['done']['expose']['required'] = TRUE;
-  $handler->display->display_options['allow']['use_pager'] = 0;
-  $handler->display->display_options['allow']['items_per_page'] = 0;
-  $handler->display->display_options['allow']['offset'] = 0;
-  $handler->display->display_options['allow']['link_to_view'] = 0;
-  $handler->display->display_options['allow']['more_link'] = 0;
-  $handler->display->display_options['allow']['path_override'] = 0;
-  $handler->display->display_options['allow']['title_override'] = 0;
-  $handler->display->display_options['allow']['exposed_form'] = 0;
-  $handler->display->display_options['allow']['fields_override'] = 0;
-  $handler->display->display_options['link_to_view'] = '1';
 
-  /* Display: Late tasks (Content pane) */
-  $handler = $view->new_display('panel_pane', 'Late tasks (Content pane)', 'panel_pane_2');
+  /* Display: Late tasks (Block) */
+  $handler = $view->new_display('block', 'Late tasks (Block)', 'block_late');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Late tasks';
   $handler->display->display_options['defaults']['use_more'] = FALSE;
@@ -324,12 +309,7 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['operator'] = '<';
   $handler->display->display_options['filters']['date_filter']['group'] = 1;
-  $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Start date';
-  $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
-  $handler->display->display_options['filters']['date_filter']['year_range'] = '-10:+3';
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'log.timestamp' => 'log.timestamp',
   );
@@ -344,15 +324,6 @@ function log_plan_views_default_views() {
   $handler->display->display_options['filters']['done']['expose']['operator'] = 'done_op';
   $handler->display->display_options['filters']['done']['expose']['identifier'] = 'done';
   $handler->display->display_options['filters']['done']['expose']['required'] = TRUE;
-  $handler->display->display_options['allow']['use_pager'] = 0;
-  $handler->display->display_options['allow']['items_per_page'] = 0;
-  $handler->display->display_options['allow']['offset'] = 0;
-  $handler->display->display_options['allow']['link_to_view'] = 0;
-  $handler->display->display_options['allow']['more_link'] = 0;
-  $handler->display->display_options['allow']['path_override'] = 0;
-  $handler->display->display_options['allow']['title_override'] = 0;
-  $handler->display->display_options['allow']['exposed_form'] = 0;
-  $handler->display->display_options['allow']['fields_override'] = 0;
 
   $export['log_plan'] = $view;
 

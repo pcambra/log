@@ -71,7 +71,7 @@ class Log extends ContentEntityBase implements LogInterface {
 
   protected $tokenService;
 
-  public function __construct(array $values, $entity_type, $bundle, array $translations) {
+  public function __construct(array $values, $entity_type, $bundle, array $translations = []) {
     parent::__construct($values, $entity_type, $bundle, $translations);
     $this->tokenService = \Drupal::token();
   }

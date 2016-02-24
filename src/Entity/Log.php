@@ -101,7 +101,7 @@ class Log extends ContentEntityBase implements LogInterface {
     $type = \Drupal::entityManager()
       ->getStorage('log_type')
       ->load($this->getType());
-    if (!$type->isNameEditable()) {
+    if (!$type->isNameEditable() && $this->isNew()) {
       $this->set('name', $this->tokenService->replace(
         $type->getNamePattern(),
         ['log' => $this]

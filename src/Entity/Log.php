@@ -93,11 +93,20 @@ class Log extends ContentEntityBase implements LogInterface {
     }
   }
 
-  public function label() {
-    return $this->tokenService->replace(
-      parent::label(),
-      ['log' => $this]
-    );
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+    $type = \Drupal::entityManager()
+      ->getStorage('log_type')
+      ->load($this->getType());
+    if (!$type->isNameEditable()) {
+      $this->set('name', $this->tokenService->replace(
+        $type->getNamePattern(),
+        ['log' => $this]
+      ));
+    }
   }
 
   /**

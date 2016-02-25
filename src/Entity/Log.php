@@ -111,7 +111,7 @@ class Log extends ContentEntityBase implements LogInterface {
         $type->getNamePattern(),
         ['log' => $this],
         [],
-        $bubbleable_metadata,
+        $bubbleable_metadata
       ));
     }
   }
@@ -292,7 +292,7 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setSetting('text_processing', 0)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
-        'type' => 'log_name',
+        'type' => 'string',
         'weight' => -5,
       ))
       ->setDisplayOptions('form', array(

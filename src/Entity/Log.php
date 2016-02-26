@@ -13,6 +13,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\log\LogInterface;
 use Drupal\user\UserInterface;
 
@@ -93,11 +94,26 @@ class Log extends ContentEntityBase implements LogInterface {
     }
   }
 
-  public function label() {
-    return $this->tokenService->replace(
-      parent::label(),
-      ['log' => $this]
-    );
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+    $type = \Drupal::entityManager()
+      ->getStorage('log_type')
+      ->load($this->getType());
+    if (!$type->isNameEditable() && $this->isNew()) {
+      // Pass in an empty bubblable metadata object, so we can avoid starting a
+      // renderer, for example if this happens in a REST resource creating
+      // context.
+      $bubbleable_metadata = new BubbleableMetadata();
+      $this->set('name', $this->tokenService->replace(
+        $type->getNamePattern(),
+        ['log' => $this],
+        [],
+        $bubbleable_metadata
+      ));
+    }
   }
 
   /**
@@ -276,7 +292,7 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setSetting('text_processing', 0)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',
-        'type' => 'log_name',
+        'type' => 'string',
         'weight' => -5,
       ))
       ->setDisplayOptions('form', array(

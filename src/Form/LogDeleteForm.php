@@ -45,10 +45,10 @@ class LogDeleteForm extends ContentEntityConfirmFormBase {
     $this->entity->delete();
 
     drupal_set_message(
-      $this->t('content @type: deleted @label.',
+      $this->t('Log %type: %label has been deleted.',
         [
-          '@type' => $this->entity->bundle(),
-          '@label' => $this->entity->label()
+          '%type' => $this->entity->bundle(),
+          '%label' => $this->entity->label()
         ]
         )
     );

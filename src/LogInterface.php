@@ -20,6 +20,14 @@ use Drupal\user\EntityOwnerInterface;
 interface LogInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 
   /**
+   * Gets the log name.
+   *
+   * @return string
+   *   The log name.
+   */
+  public function getName();
+
+  /**
    * Gets the log type.
    *
    * @return string

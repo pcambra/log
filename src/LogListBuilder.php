@@ -37,11 +37,7 @@ class LogListBuilder extends EntityListBuilder {
     $row['id'] = $entity->id();
     $row['name'] = $this->l(
       $entity->label(),
-      new Url(
-        'entity.log.canonical', array(
-          'log' => $entity->id(),
-        )
-      )
+      $entity->toUrl('canonical')
     );
 
     // @todo Show type name.

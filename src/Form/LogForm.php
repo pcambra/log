@@ -125,7 +125,7 @@ class LogForm extends ContentEntityForm {
           '%label' => $entity->label(),
         ]));
     }
-    $form_state->setRedirect('entity.log.canonical', ['log' => $entity->id()]);
+    $form_state->setRedirectUrl($entity->toUrl('canonical'));
   }
 
 }

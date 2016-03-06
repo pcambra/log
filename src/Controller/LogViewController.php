@@ -26,7 +26,7 @@ class LogViewController extends EntityViewController {
       $build['#attached']['html_head_link'][] = array(
         array(
           'rel' => $rel,
-          'href' => $log->url($rel),
+          'href' => $log->toUrl($rel),
         ),
         TRUE,
       );
@@ -36,7 +36,7 @@ class LogViewController extends EntityViewController {
         $build['#attached']['html_head_link'][] = array(
           array(
             'rel' => 'shortlink',
-            'href' => $log->url($rel, array('alias' => TRUE)),
+            'href' => $log->toUrl($rel, array('alias' => TRUE)),
           ),
           TRUE,
         );
@@ -44,19 +44,6 @@ class LogViewController extends EntityViewController {
     }
 
     return $build;
-  }
-
-  /**
-   * The _title_callback for the page that renders a single log.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $log
-   *   The current log.
-   *
-   * @return string
-   *   The page title.
-   */
-  public function title(EntityInterface $log) {
-    return $log->label();
   }
 
 }

@@ -38,7 +38,7 @@ use Drupal\user\UserInterface;
  *       "delete" = "Drupal\log\Form\LogDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\log\Entity\LogRouteProvider",
+ *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *   },

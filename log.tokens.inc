@@ -117,11 +117,11 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           break;
 
         case 'url':
-          $replacements[$original] = $log->url('canonical', $url_options);
+          $replacements[$original] = $log->toUrl('canonical', $url_options);
           break;
 
         case 'edit-url':
-          $replacements[$original] = $log->url('edit-form', $url_options);
+          $replacements[$original] = $log->toUrl('edit-form', $url_options);
           break;
 
         // Default values for the chained tokens handled below.

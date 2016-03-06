@@ -41,24 +41,3 @@ entity.log_type.add_form:
     _permission: 'administer log types'
   options:
     _admin_route: TRUE
-
-entity.log_type.edit_form:
-  path: '/admin/structure/logs/{log_type}'
-  defaults:
-    _entity_form: 'log_type.edit'
-    _title: 'Edit Log type'
-  requirements:
-    _permission: 'administer log types'
-  options:
-    _admin_route: TRUE
-
-entity.log_type.delete_form:
-  path: '/admin/structure/logs/{log_type}/delete'
-  defaults:
-    _entity_form: 'log_type.delete'
-    _title: 'Delete Log type'
-  requirements:
-    _permission: 'administer log types'
-  options:
-    _admin_route: TRUE
-

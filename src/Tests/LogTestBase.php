@@ -55,6 +55,7 @@ abstract class LogTestBase extends WebTestBase {
     $this->restrictedUser = $this->drupalCreateUser($this->getAdministratorPermissions());
     $this->adminUser = $this->drupalCreateUser($this->getAdministratorPermissions());
     $this->drupalLogin($this->adminUser);
+    drupal_flush_all_caches();
   }
 
   /**
@@ -65,7 +66,7 @@ abstract class LogTestBase extends WebTestBase {
    */
   protected function getUnauthorizedPermissions() {
     return [
-      'access content',
+      'view any default log entities',
     ];
   }
 
@@ -77,8 +78,8 @@ abstract class LogTestBase extends WebTestBase {
    */
   protected function getRestrictedPermissions() {
     return [
-      'view the administration theme',
       'access administration pages',
+      'administer logs',
       'create default log entities',
       'view own default log entities',
       'edit own default log entities',
@@ -94,8 +95,9 @@ abstract class LogTestBase extends WebTestBase {
    */
   protected function getAdministratorPermissions() {
     return [
-      'view the administration theme',
       'access administration pages',
+      'administer logs',
+      'administer log module',
       'create default log entities',
       'view any default log entities',
       'edit any default log entities',
@@ -114,7 +116,7 @@ abstract class LogTestBase extends WebTestBase {
   protected function createLogEntity($values = []) {
     $storage = \Drupal::service('entity_type.manager')->getStorage('log');
     $entity = $storage->create($values + [
-      'name' => $this->randomString(),
+      'name' => $this->randomMachineName(),
       'user_id' => $this->loggedInUser->id(),
       'created' => REQUEST_TIME,
       'type' => 'default',

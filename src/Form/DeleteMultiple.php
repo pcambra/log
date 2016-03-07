@@ -82,7 +82,7 @@ class DeleteMultiple extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('system.admin_content');
+    return new Url('view.log_admin.collection');
   }
 
   /**
@@ -198,7 +198,7 @@ class DeleteMultiple extends ConfirmFormBase {
       $this->tempStoreFactory->get('log_multiple_delete_confirm')->delete(\Drupal::currentUser()->id());
     }
 
-    $form_state->setRedirect('system.admin_content');
+    $form_state->setRedirectUrl($this->getCancelUrl());
   }
 
 }

@@ -26,7 +26,6 @@ class MarkAsDone extends ActionBase {
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    /** @var FieldItemListInterface $a */
     $entity->get('done')->setValue(TRUE);
     $entity->save();
   }

@@ -47,4 +47,4 @@ log.multiple_delete_confirm:
   defaults:
     _form: '\Drupal\log\Form\DeleteMultiple'
   requirements:
-    _permission: 'administer log types'
+    _custom_access: '\Drupal\log\Form\DeleteMultiple::access'

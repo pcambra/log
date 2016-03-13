@@ -7,10 +7,14 @@
 
 namespace Drupal\log\Form;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\log\LogTypeInterface;
+use Drupal\log\Entity\LogType;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,6 +56,35 @@ class DeleteMultiple extends ConfirmFormBase {
   public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityManagerInterface $manager) {
     $this->tempStoreFactory = $temp_store_factory;
     $this->storage = $manager->getStorage('log');
+  }
+
+  /**
+   * Checks access to the form.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account to check access for.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  public function access(AccountInterface $account) {
+    /** @var LogTypeInterface $type */
+    foreach (LogType::loadMultiple() as $type) {
+      // If the user has either access to deleting own log entities, or access
+      // to deleting all entities in at least one type, they should be able to
+      // access the bulk confirm form. If they for some reason try to go there
+      // to delete one they don't have access to, the entity access will forbid
+      // it anyway.
+      if ($account->hasPermission('delete own ' . $type->id() . ' log entities') || $account->hasPermission('delete any ' . $type->id() . ' log entities')) {
+        return AccessResult::allowed();
+      }
+    }
+    // In addition we grant access if the user can administer log entities.
+    if ($account->hasPermission('administer logs')) {
+      return AccessResult::allowed();
+    }
+    // If none of the above, the user is not allowed access.
+    return AccessResult::forbidden();
   }
 
   /**

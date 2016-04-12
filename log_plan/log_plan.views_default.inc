@@ -39,10 +39,10 @@ function log_plan_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'views_bulk_operations' => 'views_bulk_operations',
     'id' => 'id',
+    'done' => 'done',
     'timestamp' => 'timestamp',
     'name' => 'name',
     'type' => 'type',
-    'done' => 'done',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -52,6 +52,13 @@ function log_plan_views_default_views() {
       'empty_column' => 0,
     ),
     'id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'done' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -73,13 +80,6 @@ function log_plan_views_default_views() {
       'empty_column' => 0,
     ),
     'type' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'done' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -139,6 +139,13 @@ function log_plan_views_default_views() {
   $handler->display->display_options['fields']['id']['field'] = 'id';
   $handler->display->display_options['fields']['id']['exclude'] = TRUE;
   $handler->display->display_options['fields']['id']['separator'] = '';
+  /* Field: Log: Done */
+  $handler->display->display_options['fields']['done']['id'] = 'done';
+  $handler->display->display_options['fields']['done']['table'] = 'log';
+  $handler->display->display_options['fields']['done']['field'] = 'done';
+  $handler->display->display_options['fields']['done']['type'] = 'custom';
+  $handler->display->display_options['fields']['done']['type_custom_true'] = '✔';
+  $handler->display->display_options['fields']['done']['not'] = 0;
   /* Field: Log: Timestamp */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'log';
@@ -160,13 +167,6 @@ function log_plan_views_default_views() {
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'log';
   $handler->display->display_options['fields']['type']['field'] = 'type';
-  /* Field: Log: Done */
-  $handler->display->display_options['fields']['done']['id'] = 'done';
-  $handler->display->display_options['fields']['done']['table'] = 'log';
-  $handler->display->display_options['fields']['done']['field'] = 'done';
-  $handler->display->display_options['fields']['done']['type'] = 'custom';
-  $handler->display->display_options['fields']['done']['type_custom_true'] = '✔';
-  $handler->display->display_options['fields']['done']['not'] = 0;
   /* Sort criterion: Log: Timestamp */
   $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['table'] = 'log';

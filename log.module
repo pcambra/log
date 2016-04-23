@@ -93,8 +93,6 @@ function log_menu() {
 
   $items[$log_uri . '/delete'] = array(
     'title' => 'Delete log',
-    'title callback' => 'log_label',
-    'title arguments' => array($log_uri_argument_position),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('log_delete_form', $log_uri_argument_position),
     'access callback' => 'log_access',

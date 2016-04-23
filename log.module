@@ -411,6 +411,11 @@ function log_filter_info() {
  * Parse log placeholders.
  */
 function log_filter_log($text) {
+
+  // Maintain a static array of log links that have been generated already.
+  $links = &drupal_static(__FUNCTION__);
+
+  // Look for pattern matches and iterate through them.
   $matches = array();
   preg_match_all('/\[log:[0-9]+\]/', $text, $matches);
   if (!empty($matches[0])) {
@@ -420,22 +425,36 @@ function log_filter_log($text) {
       $id = str_replace('[log:', '', $match);
       $id = str_replace(']', '', $id);
 
-      // Load the log.
-      $log = log_load($id);
+      // If the log has not been loaded already...
+      if (empty($links[$id])) {
 
-      // If no log was found, skip.
-      if (empty($log)) {
-        continue;
+        // Load the log.
+        $log = log_load($id);
+
+        // If the log didn't load, skip it.
+        if (empty($log)) {
+          continue;
+        }
+
+        // Get the log URI.
+        $uri = entity_uri('log', $log);
+
+        // Generate a link with the log's label.
+        $link = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', $uri['path']);
+
+        // Store the link in the static cache.
+        $links[$id] = $link;
       }
 
-      // Generate replacement text.
-      $uri = entity_uri('log', $log);
-      $parsed = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', $uri['path']);
-
-      // Replace all occurrences with the parsed version.
-      $text = str_replace($match, $parsed, $text);
+      // If a link is available, replace all occurrences of the original token
+      // in the text.
+      if (!empty($links[$id])) {
+        $text = str_replace($match, $links[$id], $text);
+      }
     }
   }
+
+  // Return the formatted text.
   return $text;
 }
 

@@ -428,19 +428,16 @@ function log_filter_log($text) {
       // If the log has not been loaded already...
       if (empty($links[$id])) {
 
-        // Load the log.
-        $log = log_load($id);
+        // Load the log's name from the database.
+        $name = db_query('SELECT name FROM {log} WHERE id = :id', array(':id' => $id))->fetchField();
 
-        // If the log didn't load, skip it.
-        if (empty($log)) {
+        // If the name is empty, skip it.
+        if (empty($name)) {
           continue;
         }
 
-        // Get the log URI.
-        $uri = entity_uri('log', $log);
-
         // Generate a link with the log's label.
-        $link = l('[Log #' . $id . ': '. entity_label('log', $log) . ']', $uri['path']);
+        $link = l('[Log #' . $id . ': '. check_plain($name) . ']', 'log/' . $id);
 
         // Store the link in the static cache.
         $links[$id] = $link;

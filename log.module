@@ -277,7 +277,7 @@ function log_entity_property_info_alter(&$info) {
   $properties['created'] = array(
     'label' => t('Created'),
     'type' => 'date',
-    'description' => t('The timestamp when the log was created.'),
+    'description' => t('The timestamp when the log entity was created.'),
     'setter callback' => 'entity_property_verbatim_set',
     'setter permission' => 'administer log module',
     'required' => TRUE,
@@ -286,7 +286,7 @@ function log_entity_property_info_alter(&$info) {
   $properties['changed'] = array(
     'label' => t('Changed'),
     'type' => 'date',
-    'description' => t('The timestamp when the log was last modified.'),
+    'description' => t('The timestamp when the log entity was last modified.'),
     'setter callback' => 'entity_property_verbatim_set',
     'setter permission' => 'administer log module',
     'required' => TRUE,

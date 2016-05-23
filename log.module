@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Log
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function log_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the log module.
+    case 'help.page.log':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a log entity type for real world recordkeeping.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

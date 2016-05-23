@@ -22,3 +22,37 @@ function log_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function log_theme() {
+  $theme = [];
+  $theme['log'] = [
+    'render element' => 'elements',
+    'file' => 'log.page.inc',
+    'template' => 'log',
+  ];
+  $theme['log_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'log.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+* Implements hook_theme_suggestions_HOOK().
+*/
+function log_theme_suggestions_log(array $variables) {
+  $suggestions = array();
+  $entity = $variables['elements']['#log'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'log__' . $sanitized_view_mode;
+  $suggestions[] = 'log__' . $entity->bundle();
+  $suggestions[] = 'log__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'log__' . $entity->id();
+  $suggestions[] = 'log__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}

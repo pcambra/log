@@ -1,0 +1,16 @@
+# Log menu items definition
+entity.log.collection:
+  title: 'Log list'
+  route_name: entity.log.collection
+  description: 'List Log entities'
+  parent: system.admin_structure
+  weight: 100
+
+# Log type menu items definition
+entity.log_type.collection:
+  title: 'Log type'
+  route_name: entity.log_type.collection
+  description: 'List Log type (bundles)'
+  parent: system.admin_structure
+  weight: 99
+

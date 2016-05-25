@@ -83,14 +83,14 @@ class LogForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    *
-   * Updates the node object by processing the submitted values.
+   * Updates the log object by processing the submitted values.
    *
    * This function can be called by a "Next" button of a wizard to update the
    * form state's entity with the current step's values before proceeding to the
    * next step.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Build the node object from the submitted values.
+    // Build the log object from the submitted values.
     parent::submitForm($form, $form_state);
     $entity = $this->entity;
 

@@ -10,7 +10,7 @@ namespace Drupal\log\Plugin\views\field;
 use Drupal\system\Plugin\views\field\BulkForm;
 
 /**
- * Defines a node operations bulk form element.
+ * Defines a log operations bulk form element.
  *
  * @ViewsField("log_bulk_form")
  */

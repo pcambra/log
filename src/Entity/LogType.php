@@ -146,8 +146,9 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
 
+    // If the log type id changed, update all existing logs of that type.
     if ($update && $this->getOriginalId() != $this->id()) {
-      $update_count = node_type_update_nodes($this->getOriginalId(), $this->id());
+      $update_count = \Drupal::entityManager()->getStorage('log')->updateType($this->getOriginalId(), $this->id());
       if ($update_count) {
         drupal_set_message(\Drupal::translation()->formatPlural($update_count,
           'Changed the log type of 1 post from %old-type to %type.',
@@ -171,7 +172,7 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
     parent::postDelete($storage, $entities);
 
-    // Clear the node type cache to reflect the removal.
+    // Clear the log type cache to reflect the removal.
     $storage->resetCache(array_keys($entities));
   }
 }

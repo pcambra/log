@@ -24,7 +24,7 @@ class LogAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkFieldAccess($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
-    // Only users with the administer nodes permission can edit administrative
+    // Only users with the administer logs permission can edit administrative
     // fields.
     $administrative_fields = array('user_id', 'created');
     if ($operation == 'edit' && in_array($field_definition->getName(), $administrative_fields, TRUE)) {

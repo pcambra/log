@@ -125,6 +125,14 @@ class Log extends ContentEntityBase implements LogInterface {
   /**
    * {@inheritdoc}
    */
+  public function setName($name) {
+    $this->set('name', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getType() {
     return $this->bundle();
   }
@@ -141,6 +149,14 @@ class Log extends ContentEntityBase implements LogInterface {
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCreatedTime($timestamp) {
+    $this->set('created', $timestamp);
+    return $this;
   }
 
   /**

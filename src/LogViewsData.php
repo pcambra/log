@@ -19,6 +19,13 @@ class LogViewsData extends EntityViewsData implements EntityViewsDataInterface {
    */
   public function getViewsData() {
     $data = parent::getViewsData();
+    $data['log']['log_bulk_form'] = array(
+      'title' => t('Log operations bulk form'),
+      'help' => t('Add a form element that lets you run operations on multiple log entities.'),
+      'field' => array(
+        'id' => 'log_bulk_form',
+      ),
+    );
 
     return $data;
   }

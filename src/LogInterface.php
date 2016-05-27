@@ -9,7 +9,6 @@ namespace Drupal\log;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**

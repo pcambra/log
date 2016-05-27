@@ -17,7 +17,6 @@ use Drupal\Core\Url;
 use Drupal\log\LogTypeInterface;
 use Drupal\log\LogInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Session\AccountInterface;
 
 /**
  * Returns responses for Log routes.

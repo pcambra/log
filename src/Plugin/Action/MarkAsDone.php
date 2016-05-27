@@ -8,7 +8,6 @@
 namespace Drupal\log\Plugin\Action;
 
 use Drupal\Core\Action\ActionBase;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**

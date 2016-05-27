@@ -7,7 +7,6 @@
 
 namespace Drupal\log;
 
-use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 

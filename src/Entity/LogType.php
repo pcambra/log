@@ -16,7 +16,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *
  * @ConfigEntityType(
  *   id = "log_type",
- *   label = @Translation("Log types"),
+ *   label = @Translation("Log type"),
  *   handlers = {
  *     "access" = "Drupal\log\LogTypeAccessControlHandler",
  *     "form" = {

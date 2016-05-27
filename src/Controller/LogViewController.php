@@ -18,8 +18,8 @@ class LogViewController extends EntityViewController {
   /**
    * {@inheritdoc}
    */
-  public function view(EntityInterface $log, $view_mode = 'full', $langcode = NULL) {
-    $build = parent::view($log, $view_mode, $langcode);
+  public function view(EntityInterface $log, $view_mode = 'full') {
+    $build = parent::view($log, $view_mode);
 
     foreach ($log->uriRelationships() as $rel) {
       // Set the log path as the canonical URL to prevent duplicate content.

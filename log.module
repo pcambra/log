@@ -17,16 +17,16 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_help().
  */
 function log_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the log module.
-    case 'help.page.log':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Provides Log entity') . '</p>';
-      return $output;
+  $output = '';
 
-    default:
+  // Main module help for the log module.
+  if ($route_name == 'help.page.log') {
+    $output = '';
+    $output .= '<h3>' . t('About') . '</h3>';
+    $output .= '<p>' . t('Provides Log entity') . '</p>';
   }
+
+  return $output;
 }
 
 /**

@@ -3,5 +3,3 @@ type: module
 description: Provides Log entity
 core: 8.x
 package: Log
-dependencies:
-  - views

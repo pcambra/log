@@ -54,8 +54,16 @@ class LogAddAccessCheck implements AccessInterface {
     if ($log_type) {
       return $access_control_handler->createAccess($log_type->id(), $account, [], TRUE);
     }
+
+    $log_types = $this->entityManager->getStorage('log_type')->loadMultiple();
+
+    // Check if user can create log type.
+    if (empty($log_types)) {
+      return AccessResult::allowedIfHasPermission($account, 'administer log types');
+    }
+
     // If checking whether a log of any type may be created.
-    foreach ($this->entityManager->getStorage('log_type')->loadMultiple() as $log_type) {
+    foreach ($log_types as $log_type) {
       if (($access = $access_control_handler->createAccess($log_type->id(), $account, [], TRUE)) && $access->isAllowed()) {
         return $access;
       }

@@ -45,7 +45,7 @@ class LogCRUDTest extends LogTestBase {
     $log = Log::load($log_id);
     $this->assertNotNull($log, 'Log has been created.');
 
-    $this->assertRaw(\Drupal\Component\Utility\SafeMarkup::format('Created the %label Log.', ['%label' => $edit['name[0][value]']]));
+    $this->assertRaw(t('Created the %label Log.', ['%label' => $edit['name[0][value]']]));
     $this->assertText($edit['name[0][value]']);
     $this->assertText($this->loggedInUser->getDisplayName());
   }
@@ -82,7 +82,7 @@ class LogCRUDTest extends LogTestBase {
     ];
     $this->drupalPostForm($log->toUrl('edit-form'), $edit, t('Save'));
 
-    $this->assertRaw(\Drupal\Component\Utility\SafeMarkup::format('Saved the %label Log.', ['%label' => $edit['name[0][value]']]));
+    $this->assertRaw(t('Saved the %label Log.', ['%label' => $edit['name[0][value]']]));
     $this->assertText($edit['name[0][value]']);
   }
 
@@ -98,7 +98,7 @@ class LogCRUDTest extends LogTestBase {
     $log_id = $log->id();
 
     $this->drupalPostForm($log->toUrl('delete-form'), [], t('Delete'));
-    $this->assertRaw(\Drupal\Component\Utility\SafeMarkup::format('The @entity-type %label has been deleted.', array(
+    $this->assertRaw(t('The @entity-type %label has been deleted.', array(
       '@entity-type' => $log->getEntityType()->getLowercaseLabel(),
       '%label' => $label,
     )));

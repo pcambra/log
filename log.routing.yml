@@ -41,3 +41,10 @@ entity.log_type.add_form:
     _permission: 'administer log types'
   options:
     _admin_route: TRUE
+
+log.multiple_delete_confirm:
+  path: '/admin/content/log/delete'
+  defaults:
+    _form: '\Drupal\log\Form\DeleteMultiple'
+  requirements:
+    _custom_access: '\Drupal\log\Form\DeleteMultiple::access'

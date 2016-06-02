@@ -24,6 +24,9 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *       "edit" = "Drupal\log\Form\LogTypeForm",
  *       "delete" = "Drupal\log\Form\LogTypeDeleteForm"
  *     },
+ *     "route_provider" = {
+ *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
+ *     },
  *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *   },
  *   admin_permission = "administer site configuration",

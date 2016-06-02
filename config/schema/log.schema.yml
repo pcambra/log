@@ -40,3 +40,11 @@ condition.plugin.log_type:
       type: sequence
       sequence:
         type: string
+
+action.configuration.log_delete_action:
+  type: action_configuration_default
+  label: 'Delete log configuration'
+
+action.configuration.log_done_action:
+  type: action_configuration_default
+  label: 'Mark log as done configuration'

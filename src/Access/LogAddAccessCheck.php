@@ -51,6 +51,10 @@ class LogAddAccessCheck implements AccessInterface {
    */
   public function access(AccountInterface $account, LogTypeInterface $log_type = NULL) {
     $access_control_handler = $this->entityManager->getAccessControlHandler('log');
+    // If checking whether a log of a particular type may be created.
+    if ($account->hasPermission('administer log types')) {
+      return AccessResult::allowed()->cachePerPermissions();
+    }
     if ($log_type) {
       return $access_control_handler->createAccess($log_type->id(), $account, [], TRUE);
     }
@@ -60,7 +64,6 @@ class LogAddAccessCheck implements AccessInterface {
         return $access;
       }
     }
-
     // No opinion.
     return AccessResult::neutral();
   }

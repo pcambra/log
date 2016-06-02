@@ -115,7 +115,9 @@ class DeleteMultiple extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('view.log_admin.collection');
+
+    // Return the URL of the front page.
+    return Url::fromRoute('<front>');
   }
 
   /**

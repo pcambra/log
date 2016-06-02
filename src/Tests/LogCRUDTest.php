@@ -98,7 +98,10 @@ class LogCRUDTest extends LogTestBase {
     $log_id = $log->id();
 
     $this->drupalPostForm($log->toUrl('delete-form'), [], t('Delete'));
-    $this->assertRaw(\Drupal\Component\Utility\SafeMarkup::format('Log %type: %label has been deleted.', ['%type' => $type, '%label' => $label]));
+    $this->assertRaw(\Drupal\Component\Utility\SafeMarkup::format('The @entity-type %label has been deleted.', array(
+      '@entity-type' => $log->getEntityType()->getLowercaseLabel(),
+      '%label' => $label,
+    )));
     $this->assertNull(Log::load($log_id));
   }
 

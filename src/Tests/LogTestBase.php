@@ -33,58 +33,13 @@ abstract class LogTestBase extends WebTestBase {
   protected $adminUser;
 
   /**
-   * A test user with administrative privileges.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $restrictedUser;
-
-  /**
-   * A test user with administrative privileges.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $unauthorizedUser;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $this->unauthorizedUser = $this->drupalCreateUser($this->getAdministratorPermissions());
-    $this->restrictedUser = $this->drupalCreateUser($this->getAdministratorPermissions());
     $this->adminUser = $this->drupalCreateUser($this->getAdministratorPermissions());
     $this->drupalLogin($this->adminUser);
     drupal_flush_all_caches();
-  }
-
-  /**
-   * Gets the permissions for the admin user.
-   *
-   * @return string[]
-   *   The permissions.
-   */
-  protected function getUnauthorizedPermissions() {
-    return [
-      'view any default log entities',
-    ];
-  }
-
-  /**
-   * Gets the permissions for the admin user.
-   *
-   * @return string[]
-   *   The permissions.
-   */
-  protected function getRestrictedPermissions() {
-    return [
-      'access administration pages',
-      'administer logs',
-      'create default log entities',
-      'view own default log entities',
-      'edit own default log entities',
-      'delete own default log entities',
-    ];
   }
 
   /**

@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\log\LogInterface.
+ */
+
 namespace Drupal\log;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**
@@ -13,73 +19,35 @@ use Drupal\user\EntityOwnerInterface;
  */
 interface LogInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 
-  // Add get/set methods for your configuration properties here.
-
   /**
-   * Gets the Log type.
+   * Gets the log name.
    *
    * @return string
-   *   The Log type.
-   */
-  public function getType();
-
-  /**
-   * Gets the Log name.
-   *
-   * @return string
-   *   Name of the Log.
+   *   The log name.
    */
   public function getName();
 
   /**
-   * Sets the Log name.
+   * Gets the log type.
    *
-   * @param string $name
-   *   The Log name.
-   *
-   * @return \Drupal\log\LogInterface
-   *   The called Log entity.
+   * @return string
+   *   The log type.
    */
-  public function setName($name);
+  public function getType();
 
   /**
-   * Gets the Log creation timestamp.
+   * Gets the log type name.
+   *
+   * @return string
+   *   The log type name.
+   */
+  public function getTypeName();
+
+  /**
+   * Gets the log creation timestamp.
    *
    * @return int
-   *   Creation timestamp of the Log.
+   *   Creation timestamp of the log.
    */
   public function getCreatedTime();
-
-  /**
-   * Sets the Log creation timestamp.
-   *
-   * @param int $timestamp
-   *   The Log creation timestamp.
-   *
-   * @return \Drupal\log\LogInterface
-   *   The called Log entity.
-   */
-  public function setCreatedTime($timestamp);
-
-  /**
-   * Returns the Log published status indicator.
-   *
-   * Unpublished Log are only visible to restricted users.
-   *
-   * @return bool
-   *   TRUE if the Log is published.
-   */
-  public function isPublished();
-
-  /**
-   * Sets the published status of a Log.
-   *
-   * @param bool $published
-   *   TRUE to set this Log to published, FALSE to set it to unpublished.
-   *
-   * @return \Drupal\log\LogInterface
-   *   The called Log entity.
-   */
-  public function setPublished($published);
-
 }

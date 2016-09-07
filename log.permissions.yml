@@ -1,19 +1,16 @@
-add log entities:
-  title: 'Create new Log entities'
-
-administer log entities:
-  title: 'Administer Log entities'
-  description: 'Allow to access the administration form to configure Log entities.'
+administer log module:
+  title: 'Administer log module'
+  description: 'Gives full access to everything in the log module.'
   restrict access: true
 
-delete log entities:
-  title: 'Delete Log entities'
+administer log types:
+  title: 'Administer log types'
+  description: 'Maintain the types of content available and the fields that are associated with those types.'
+  restrict access: true
 
-edit log entities:
-  title: 'Edit Log entities'
+administer logs:
+  title: 'Administer Log entities'
+  description: 'Allow to access admin properties such as author uid or creation date.'
 
-view published log entities:
-  title: 'View published Log entities'
-
-view unpublished log entities:
-  title: 'View unpublished Log entities'
+permission_callbacks:
+  - \Drupal\log\LogPermissions::logTypePermissions

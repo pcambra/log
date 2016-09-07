@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\log\LogListBuilder.
+ */
+
 namespace Drupal\log;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -13,15 +18,14 @@ use Drupal\Core\Url;
  * @ingroup log
  */
 class LogListBuilder extends EntityListBuilder {
-
   use LinkGeneratorTrait;
-
   /**
    * {@inheritdoc}
    */
   public function buildHeader() {
     $header['id'] = $this->t('Log ID');
     $header['name'] = $this->t('Name');
+    $header['type'] = $this->t('Type');
     return $header + parent::buildHeader();
   }
 
@@ -33,12 +37,11 @@ class LogListBuilder extends EntityListBuilder {
     $row['id'] = $entity->id();
     $row['name'] = $this->l(
       $entity->label(),
-      new Url(
-        'entity.log.edit_form', array(
-          'log' => $entity->id(),
-        )
-      )
+      $entity->toUrl('canonical')
     );
+
+    // @todo Show type name.
+    $row['type'] = $entity->bundle();
     return $row + parent::buildRow($entity);
   }
 

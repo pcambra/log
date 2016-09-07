@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\log\Form\LogTypeDeleteForm.
+ */
+
 namespace Drupal\log\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
@@ -10,7 +15,6 @@ use Drupal\Core\Url;
  * Builds the form to delete Log type entities.
  */
 class LogTypeDeleteForm extends EntityConfirmFormBase {
-
   /**
    * {@inheritdoc}
    */
@@ -42,7 +46,7 @@ class LogTypeDeleteForm extends EntityConfirmFormBase {
       $this->t('content @type: deleted @label.',
         [
           '@type' => $this->entity->bundle(),
-          '@label' => $this->entity->label(),
+          '@label' => $this->entity->label()
         ]
         )
     );

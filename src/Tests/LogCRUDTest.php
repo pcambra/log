@@ -93,7 +93,6 @@ class LogCRUDTest extends LogTestBase {
     $log = $this->createLogEntity();
     $log->save();
 
-    $type = $log->getTypeName();
     $label = $log->getName();
     $log_id = $log->id();
 

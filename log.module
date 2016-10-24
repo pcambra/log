@@ -23,6 +23,10 @@ function log_permission() {
       'title' => t('Administer log types'),
       'restrict access' => TRUE,
     ),
+    'view all logs' => array(
+      'title' => t('View all log entities'),
+      'description' => t('Allows users to view the full list of log entities.'),
+    ),
   );
 
   // Add permissions for each log type.
@@ -740,15 +744,19 @@ function _log_action_date_form_action(Log $log, array $context) {
 function log_access($op, $log = NULL, $account = NULL) {
   $rights = &drupal_static(__FUNCTION__, array());
 
-  if (!$log || !in_array($op, array('create', 'view', 'update', 'delete'), TRUE)) {
-    // If there was no log to check against, or the $op was not one of the
-    // supported ones, we return access denied.
+  // If $op is not one of the supported ones, deny access.
+  if (!in_array($op, array('create', 'view', 'update', 'delete'), TRUE)) {
     return FALSE;
   }
   // If no user object is supplied, the access check is for the current user.
   if (empty($account)) {
     global $user;
     $account = $user;
+  }
+
+  // If no log is provided, check for access to all logs.
+  if (empty($log)) {
+    return user_access('view all logs', $account);
   }
 
   // $log may be either an object or a log type. Since log types cannot be

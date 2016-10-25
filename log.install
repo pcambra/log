@@ -64,7 +64,7 @@ function log_schema() {
     'primary key' => array('id'),
     'indexes' => array(
       'name' => array('name'),
-      'type' => array('type'),
+      'type_index' => array('type'),
       'uid' => array('uid'),
       'timestamp' => array('timestamp'),
       'created' => array('created'),
@@ -205,4 +205,12 @@ function log_update_7002(array &$sandbox) {
 
   // Mark all existing log items with timestamps before now as "done".
   db_query('UPDATE {log} SET done = 1 WHERE timestamp <= :now', array(':now' => REQUEST_TIME));
+}
+
+/**
+ * Change the name of the {log} index to fix SQLite installs.
+ */
+function log_update_7003(&$sandbox) {
+  db_drop_index('log', 'type');
+  db_add_index('log', 'type_index', array('type'));
 }

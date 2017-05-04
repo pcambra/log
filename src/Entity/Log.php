@@ -42,9 +42,7 @@ use Drupal\user\UserInterface;
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *   },
  *   base_table = "log",
- *   data_table = "log_field_data",
  *   revision_table = "log_revision",
- *   revision_data_table = "log_field_revision",
  *   admin_permission = "administer log",
  *   entity_keys = {
  *     "id" = "id",

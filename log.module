@@ -331,13 +331,6 @@ function log_field_extra_fields() {
       'description' => t('The timestamp of the log entry.'),
       'weight' => -5,
     );
-
-    // Display the done field.
-    $extra_fields['log'][$type->type]['form']['done'] = array(
-      'label' => t('Done'),
-      'description' => t('Whether or not the log is done.'),
-      'weight' => 100,
-    );
   }
   return $extra_fields;
 }

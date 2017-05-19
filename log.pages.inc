@@ -132,6 +132,12 @@ function log_form(array $form, array &$form_state, Log $log) {
     '#required' => TRUE,
   );
 
+  // Additional settings (vertical tabs at the bottom of the form).
+  $form['additional_settings'] = array(
+    '#type' => 'vertical_tabs',
+    '#weight' => 99,
+  );
+
   // If the log is new, and the log type marks new logs as "done" by default,
   // mark the log as done and add some Javascript to auto-check/uncheck based
   // on the timestamp.
@@ -139,10 +145,16 @@ function log_form(array $form, array &$form_state, Log $log) {
     $log->done = TRUE;
     drupal_add_js(drupal_get_path('module', 'log') . '/log.done.js');
   }
-  $form['done'] = array(
+  $form['log_status'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Log status'),
+    '#description' => t('Mark this log as done.'),
+    '#collapsible' => TRUE,
+    '#group' => 'additional_settings'
+  );
+  $form['log_status']['done'] = array(
     '#type' => 'checkbox',
     '#title' => t('Done'),
-    '#description' => t('Mark this log as done.'),
     '#default_value' => $log->done,
   );
 

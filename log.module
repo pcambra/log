@@ -336,6 +336,22 @@ function log_field_extra_fields() {
 }
 
 /**
+ * Implements hook_entity_presave().
+ */
+function log_entity_presave($entity, $type) {
+
+  // Only operate on log entities.
+  if ($type != 'log') {
+    return;
+  }
+
+  // Update "changed" value if there was a value mapped to that.
+  if (isset($entity->feeds_item->log_changed)) {
+    $entity->changed = $entity->feeds_item->log_changed;
+  }
+}
+
+/**
  * Implements hook_log_insert().
  */
 function log_log_insert($log) {
@@ -1055,4 +1071,38 @@ function log_type_get_names() {
     $names[$type->type] = $type->label;
   }
   return $names;
+}
+
+/****************************************************************
+ * Contrib hooks
+ * **************************************************************/
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function log_ctools_plugin_api($owner, $api) {
+  $return = array();
+  if ($owner == 'feeds' && $api == 'plugins') {
+    $return['version'] = 1;
+  }
+  return $return;
+}
+
+/**
+ * Implements hook_feed_plugins().
+ */
+function log_feeds_plugins() {
+  $info = array();
+  $info['LogProcessor'] = array(
+    'name' => 'Log processor',
+    'description' => 'Create and update logs.',
+    'help' => 'Create and update logs from parsed content.',
+    'handler' => array(
+      'parent' => 'FeedsProcessor',
+      'class' => 'LogProcessor',
+      'file' => 'LogProcessor.inc',
+      'path' => drupal_get_path('module', 'log') . '/plugins/feeds',
+    ),
+  );
+  return $info;
 }

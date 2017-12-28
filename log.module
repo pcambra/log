@@ -1078,6 +1078,16 @@ function log_type_get_names() {
  * **************************************************************/
 
 /**
+ * Implements hook_views_api().
+ */
+function log_views_api($module = NULL, $api = NULL) {
+  return array(
+    'api' => '3.0',
+    'path' => drupal_get_path('module', 'log') . '/includes/views',
+  );
+}
+
+/**
  * Implements hook_ctools_plugin_api().
  */
 function log_ctools_plugin_api($owner, $api) {

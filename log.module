@@ -1111,7 +1111,7 @@ function log_feeds_plugins() {
       'parent' => 'FeedsProcessor',
       'class' => 'LogProcessor',
       'file' => 'LogProcessor.inc',
-      'path' => drupal_get_path('module', 'log') . '/plugins/feeds',
+      'path' => drupal_get_path('module', 'log') . '/includes/feeds/plugins',
     ),
   );
   return $info;

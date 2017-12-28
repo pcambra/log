@@ -6,6 +6,6 @@ dependencies[] = date_api
 dependencies[] = entity
 configure = admin/config/log
 files[] = log.class.inc
-files[] = plugins/feeds/LogProcessor.inc
+files[] = includes/feeds/plugins/LogProcessor.inc
 files[] = includes/views/handlers/log_handler_field_timestamp.inc
 files[] = includes/views/handlers/log_handler_sort_timestamp.inc

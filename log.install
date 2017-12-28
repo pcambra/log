@@ -31,7 +31,7 @@ function log_schema() {
         'not null' => FALSE,
       ),
       'uid' => array(
-        'description' => 'The log owner',
+        'description' => 'The log author',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,

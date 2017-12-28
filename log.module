@@ -261,9 +261,9 @@ function log_entity_property_info_alter(&$info) {
     'schema field' => 'type',
   );
   $properties['uid'] = array(
-    'label' => t('Owner'),
+    'label' => t('Author'),
     'type' => 'user',
-    'description' => t('The owner of the log.'),
+    'description' => t('The author of the log.'),
     'setter callback' => 'entity_property_verbatim_set',
     'setter permission' => 'administer log module',
     'required' => TRUE,

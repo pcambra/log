@@ -993,6 +993,9 @@ function log_name_generate(Log $log) {
     ->condition('id', $log->id)
     ->execute();
 
+  // Add it to the log entity (for downstream code).
+  $log->name = $name;
+
   // Return it.
   return $name;
 }

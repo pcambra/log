@@ -248,7 +248,7 @@ function log_form_submit(array $form, array &$form_state) {
   $form_state['redirect'] = $log_uri['path'];
 
   // Print a message.
-  drupal_set_message(t('Log saved: <a href="@uri">%title</a>', array('@uri' => base_path() . $log_uri['path'], '%title' => entity_label('log', $log))));
+  drupal_set_message(t('Log saved: <a href="@uri">%title</a>', array('@uri' => url($log_uri['path']), '%title' => entity_label('log', $log))));
 }
 
 /**

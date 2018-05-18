@@ -255,7 +255,7 @@ function log_entity_property_info_alter(&$info) {
     'type' => 'token',
     'description' => t('The type of the log.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'options list' => 'log_type_get_names',
     'required' => TRUE,
     'schema field' => 'type',
@@ -265,7 +265,7 @@ function log_entity_property_info_alter(&$info) {
     'type' => 'user',
     'description' => t('The author of the log.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'required' => TRUE,
     'schema field' => 'uid',
   );
@@ -274,7 +274,7 @@ function log_entity_property_info_alter(&$info) {
     'type' => 'date',
     'description' => t('The timestamp of the event being logged.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'required' => TRUE,
     'schema field' => 'timestamp',
   );
@@ -283,7 +283,7 @@ function log_entity_property_info_alter(&$info) {
     'type' => 'date',
     'description' => t('The timestamp when the log entity was created.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'required' => TRUE,
     'schema field' => 'created',
   );
@@ -292,7 +292,7 @@ function log_entity_property_info_alter(&$info) {
     'type' => 'date',
     'description' => t('The timestamp when the log entity was last modified.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'required' => TRUE,
     'schema field' => 'changed',
   );
@@ -300,7 +300,7 @@ function log_entity_property_info_alter(&$info) {
     'label' => t('Done'),
     'description' => t('Whether the log is done.'),
     'setter callback' => 'entity_property_verbatim_set',
-    'setter permission' => 'administer log module',
+    'access callback' => 'log_properties_access',
     'schema field' => 'done',
     'type' => 'boolean',
   );
@@ -865,6 +865,23 @@ function log_add_access($account = NULL) {
  */
 function log_type_access($op, $log = NULL) {
   return user_access('administer log types');
+}
+
+/**
+ * Access callback for log properties.
+ */
+function log_properties_access($op, $property, $entity = NULL, $account = NULL) {
+
+  // Delegate to the general log access callback, based on the $op.
+  switch ($op) {
+    case 'view':
+      return log_access('view', $entity, $account);
+    case 'edit':
+      return log_access('update', $entity, $account);
+  }
+
+  // Otherwise, deny access.
+  return FALSE;
 }
 
 /***************************************************************

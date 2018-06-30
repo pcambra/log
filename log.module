@@ -156,7 +156,7 @@ function log_admin_paths() {
   $paths = array();
   if (variable_get('log_admin_theme', TRUE)) {
     $paths = array(
-      'log*' => TRUE,
+      'log/*' => TRUE,
     );
   }
   return $paths;

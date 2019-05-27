@@ -144,6 +144,16 @@ function log_menu() {
     'file' => 'log.admin.inc',
   );
 
+  // Log name autocomplete callback.
+  $items['log/autocomplete/%'] = array(
+    'title' => 'Autocomplete for log names',
+    'page callback' => 'log_name_autocomplete',
+    'page arguments' => array(2, 3),
+    'access callback' => 'log_name_autocomplete_access',
+    'access arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -882,6 +892,75 @@ function log_properties_access($op, $property, $entity = NULL, $account = NULL) 
 
   // Otherwise, deny access.
   return FALSE;
+}
+
+/**
+ * Access callback for the log name autocomplete callback.
+ *
+ * @param string $log_type
+ *   The log type to filter to, or "all" for no filtering.
+ *
+ * @return bool
+ *   Returns TRUE or FALSE to grant or deny access to the path.
+ */
+function log_name_autocomplete_access($log_type) {
+  if ($log_type == 'all' || strpos($log_type, '+') !== FALSE) {
+    return user_access('view all logs');
+  }
+  return user_access('view any ' . $log_type . ' log entities');
+}
+
+/***************************************************************
+ * Log page callbacks.
+ * *************************************************************/
+
+/**
+ * Page callback for the log name autocomplete callback.
+ *
+ * @param string $log_type
+ *   The log type to filter to. If this is set to 'all' then no filtering
+ *   will be performed. Multiple log types can be specified as a single
+ *   string, separated by plus characters (+). ie: "mytype1+mytype2"
+ * @param string $string
+ *   The string to search for.
+ */
+function log_name_autocomplete($log_type, $string) {
+
+  // Search the database for logs with matching names.
+  $query = db_select('log', 'l');
+  $query->fields('l', array('name'));
+  $query->addExpression('count(name)', 'name_count');
+  $query->condition('name', '%' . db_like($string) . '%', 'LIKE');
+  $query->groupBy('name');
+  $query->orderBy('name_count', 'DESC');
+  $query->range(0, 10);
+
+  // If the log type is not "all", filter by log type.
+  if ($log_type != 'all') {
+    $log_types = array();
+    if (strpos($log_type, '+') !== FALSE) {
+      $log_types = explode('+', $log_type);
+    }
+    else {
+      $log_types[] = $log_type;
+    }
+    $query->condition('type', $log_types, 'IN');
+  }
+
+  // Execute the query.
+  $result = $query->execute();
+
+  // Save matches to an array.
+  $matches = array();
+  foreach ($result as $row) {
+    $matches[] = t('@log_name', array('@log_name' => $row->name));
+  }
+
+  // Map to an associative array.
+  $matches = drupal_map_assoc($matches);
+
+  // Return the matches as JSON.
+  drupal_json_output($matches);
 }
 
 /***************************************************************

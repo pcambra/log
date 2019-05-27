@@ -115,8 +115,9 @@ function log_form(array $form, array &$form_state, Log $log) {
     $form['name'] = array(
       '#type' => 'textfield',
       '#title' => t('Name'),
-      '#description' => t('Leave this blank to automatically generate a name.'),
+      '#description' => t('Leave this blank to automatically generate a name. As you type, frequently used log names will be suggested.'),
       '#default_value' => $log->name,
+      '#autocomplete_path' => 'log/autocomplete/' . $log->type,
     );
   }
 

@@ -89,31 +89,31 @@ function template_preprocess_log_add_list(array &$variables) {
 /**
  * Implements hook_log_access().
  */
-function log_log_access(LogInterface $log, $op, $account) {
+function log_log_access(LogInterface $log, $op, AccountInterface $account) {
   $type = $log->bundle();
   switch ($op) {
     case 'view':
-      if ($account->hasPermission('view any ' . $type . ' log entities', $account)) {
+      if ($account->hasPermission('view any ' . $type . ' log entities')) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('view own ' . $type . ' log entities', $account) && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('view own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
       }
 
     case 'update':
-      if ($account->hasPermission('edit any ' . $type . ' log entities', $account)) {
+      if ($account->hasPermission('edit any ' . $type . ' log entities')) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' log entities', $account) && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
       }
 
     case 'delete':
-      if ($account->hasPermission('delete any ' . $type . ' log entities', $account)) {
+      if ($account->hasPermission('delete any ' . $type . ' log entities')) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' log entities', $account) && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
       }
 
     default:

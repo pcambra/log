@@ -25,7 +25,7 @@ use Drupal\user\UserInterface;
  *     "storage_schema" = "Drupal\log\LogStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "access" = "Drupal\log\LogAccessControlHandler",
- *     "views_data" = "Drupal\log\LogViewsData",
+ *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
  *       "default" = "Drupal\log\Form\LogForm",
  *       "edit" = "Drupal\log\Form\LogForm",

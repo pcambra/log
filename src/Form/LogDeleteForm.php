@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Entity\Form\LogDeleteForm.
- */
-
 namespace Drupal\log\Form;
 
 use Drupal\Core\Entity\ContentEntityDeleteForm;

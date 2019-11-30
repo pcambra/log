@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogStorageSchema.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema;

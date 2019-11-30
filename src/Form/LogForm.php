@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Entity\Form\LogForm.
- */
-
 namespace Drupal\log\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
@@ -17,6 +12,7 @@ use Drupal\Core\Language\Language;
  * @ingroup log
  */
 class LogForm extends ContentEntityForm {
+
   /**
    * {@inheritdoc}
    */
@@ -24,43 +20,43 @@ class LogForm extends ContentEntityForm {
     /* @var $entity \Drupal\log\Entity\Log */
     $entity = $this->entity;
 
-    $form['advanced'] = array(
+    $form['advanced'] = [
       '#type' => 'vertical_tabs',
-      '#attributes' => array('class' => array('entity-meta')),
+      '#attributes' => ['class' => ['entity-meta']],
       '#weight' => 99,
-    );
+    ];
 
-    $form['revision_information'] = array(
+    $form['revision_information'] = [
       '#type' => 'details',
       '#group' => 'advanced',
       '#title' => t('Revision information'),
       '#weight' => 20,
       '#optional' => TRUE,
-    );
+    ];
 
-    $form['revision'] = array(
+    $form['revision'] = [
       '#title' => $this->t('Revision'),
       '#type' => 'checkbox',
       '#default_value' => $entity->type->entity->isNewRevision(),
       '#weight' => 99,
       '#group' => 'revision_information',
-    );
+    ];
 
-    $form['author'] = array(
+    $form['author'] = [
       '#type' => 'details',
       '#title' => t('Authoring information'),
       '#group' => 'advanced',
       '#weight' => 90,
       '#optional' => TRUE,
-    );
+    ];
 
-    $form['langcode'] = array(
+    $form['langcode'] = [
       '#title' => $this->t('Language'),
       '#type' => 'language_select',
       '#default_value' => $entity->langcode->value,
       '#languages' => Language::STATE_ALL,
       '#group' => 'author',
-    );
+    ];
 
     $form = parent::form($form, $form_state);
 
@@ -75,7 +71,6 @@ class LogForm extends ContentEntityForm {
     if (isset($form['name'])) {
       $form['name']['#access'] = $entity->type->entity->isNameEditable();
     }
-
 
     return $form;
   }

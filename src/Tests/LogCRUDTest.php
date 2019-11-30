@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\log\Tests;
+
 use Drupal\log\Entity\Log;
 
 /**
@@ -97,10 +98,10 @@ class LogCRUDTest extends LogTestBase {
     $log_id = $log->id();
 
     $this->drupalPostForm($log->toUrl('delete-form'), [], t('Delete'));
-    $this->assertRaw(t('The @entity-type %label has been deleted.', array(
+    $this->assertRaw(t('The @entity-type %label has been deleted.', [
       '@entity-type' => $log->getEntityType()->getLowercaseLabel(),
       '%label' => $label,
-    )));
+    ]));
     $this->assertNull(Log::load($log_id));
   }
 

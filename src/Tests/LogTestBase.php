@@ -12,17 +12,19 @@ abstract class LogTestBase extends WebTestBase {
   /**
    * Modules to enable.
    *
+   * @var array
+   *
    * Note that when a child class declares its own $modules list, that list
    * doesn't override this one, it just extends it.
    *
    * @see \Drupal\simpletest\WebTestBase::installModulesFromClassProperty()
-   *
-   * @var array
    */
   public static $modules = [
-    'user', 'log',
+    'user',
+    'log',
     'log_test',
-    'field', 'text',
+    'field',
+    'text',
   ];
 
   /**
@@ -64,11 +66,15 @@ abstract class LogTestBase extends WebTestBase {
   }
 
   /**
+   * Creates a log entity.
+   *
    * @param array $values
+   *   Array of values to feed the entity.
    *
    * @return \Drupal\log\LogInterface
+   *   The log entity.
    */
-  protected function createLogEntity($values = []) {
+  protected function createLogEntity(array $values = []) {
     $storage = \Drupal::service('entity_type.manager')->getStorage('log');
     $entity = $storage->create($values + [
       'name' => $this->randomMachineName(),
@@ -79,4 +85,5 @@ abstract class LogTestBase extends WebTestBase {
     ]);
     return $entity;
   }
+
 }

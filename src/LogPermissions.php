@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogPermissions.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Routing\UrlGeneratorTrait;
@@ -24,10 +19,11 @@ class LogPermissions {
    *
    * @return array
    *   The log type permissions.
-   *   @see \Drupal\user\PermissionHandlerInterface::getPermissions()
+   *
+   * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    */
   public function logTypePermissions() {
-    $perms = array();
+    $perms = [];
     // Generate log permissions for all log types.
     foreach (LogType::loadMultiple() as $type) {
       $perms += $this->buildPermissions($type);
@@ -47,9 +43,9 @@ class LogPermissions {
    */
   protected function buildPermissions(LogType $type) {
     $type_id = $type->id();
-    $type_params = array('%type_name' => $type->label());
-    $ops = array('view', 'edit', 'delete');
-    $scopes = array('any', 'own');
+    $type_params = ['%type_name' => $type->label()];
+    $ops = ['view', 'edit', 'delete'];
+    $scopes = ['any', 'own'];
 
     $permissions = [];
     $permissions["create $type_id log entities"] = [

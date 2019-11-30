@@ -9,4 +9,3 @@ entity.log_type.add_form:
   title: 'Add Log type'
   appears_on:
     - entity.log_type.collection
-

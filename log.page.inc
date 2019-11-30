@@ -32,31 +32,31 @@ function template_preprocess_log(array &$variables) {
 }
 
 /**
-* Prepares variables for a custom entity type creation list templates.
-*
-* Default template: log-content-add-list.html.twig.
-*
-* @param array $variables
-*   An associative array containing:
-*   - content: An array of log-types.
-*
-* @see block_content_add_page()
-*/
-function template_preprocess_log_content_add_list(&$variables) {
-  $variables['types'] = array();
+ * Prepares variables for a custom entity type creation list templates.
+ *
+ * Default template: log-content-add-list.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - content: An array of log-types.
+ *
+ * @see block_content_add_page()
+ */
+function template_preprocess_log_content_add_list(array &$variables) {
+  $variables['types'] = [];
   $query = \Drupal::request()->query->all();
   foreach ($variables['content'] as $type) {
-    $variables['types'][$type->id()] = array(
-      'link' => Link::fromTextAndUrl($type->label(), new Url('entity.log.add_form', array(
-        'log_type' => $type->id()
-      ), array('query' => $query))),
-      'description' => array(
-      '#markup' => $type->label(),
-      ),
+    $variables['types'][$type->id()] = [
+      'link' => Link::fromTextAndUrl($type->label(), new Url('entity.log.add_form', [
+        'log_type' => $type->id(),
+      ], ['query' => $query])),
+      'description' => [
+        '#markup' => $type->label(),
+      ],
       'title' => $type->label(),
-      'localized_options' => array(
-      'query' => $query,
-      ),
-    );
+      'localized_options' => [
+        'query' => $query,
+      ],
+    ];
   }
 }

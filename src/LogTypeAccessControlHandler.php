@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogTypeAccessControlHandler.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Access\AccessResult;
@@ -26,15 +21,17 @@ class LogTypeAccessControlHandler extends EntityAccessControlHandler {
     switch ($operation) {
       case 'view':
         return AccessResult::allowedIfHasPermission($account, 'view log');
-        break;
+
+      break;
 
       case 'delete':
         return parent::checkAccess($entity, $operation, $account)->cacheUntilEntityChanges($entity);
-        break;
+
+      break;
 
       default:
         return parent::checkAccess($entity, $operation, $account);
-        break;
+      break;
     }
   }
 

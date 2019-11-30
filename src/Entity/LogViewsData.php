@@ -16,11 +16,11 @@ class LogViewsData extends EntityViewsData implements EntityViewsDataInterface {
   public function getViewsData() {
     $data = parent::getViewsData();
 
-    $data['log']['table']['base'] = array(
+    $data['log']['table']['base'] = [
       'field' => 'id',
       'title' => $this->t('Log'),
       'help' => $this->t('The Log ID.'),
-    );
+    ];
 
     return $data;
   }

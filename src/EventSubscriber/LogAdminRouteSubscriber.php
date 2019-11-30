@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\EventSubscriber\LogAdminRouteSubscriber.
- */
-
 namespace Drupal\log\EventSubscriber;
 
 use Drupal\Core\Config\ConfigFactoryInterface;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Plugin\Action\MarkAsDone.
- */
-
 namespace Drupal\log\Plugin\Action;
 
 use Drupal\Core\Action\ActionBase;

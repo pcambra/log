@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Entity\LogType.
- */
-
 namespace Drupal\log\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
@@ -153,10 +148,10 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
         drupal_set_message(\Drupal::translation()->formatPlural($update_count,
           'Changed the log type of 1 post from %old-type to %type.',
           'Changed the log type of @count posts from %old-type to %type.',
-          array(
+          [
             '%old-type' => $this->getOriginalId(),
             '%type' => $this->id(),
-          )));
+          ]));
       }
     }
     if ($update) {
@@ -175,4 +170,5 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
     // Clear the log type cache to reflect the removal.
     $storage->resetCache(array_keys($entities));
   }
+
 }

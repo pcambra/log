@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogInterface.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -49,4 +44,5 @@ interface LogInterface extends ContentEntityInterface, EntityChangedInterface, E
    *   Creation timestamp of the log.
    */
   public function getCreatedTime();
+
 }

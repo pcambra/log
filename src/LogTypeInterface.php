@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogTypeInterface.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;

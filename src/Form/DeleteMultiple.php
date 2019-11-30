@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Form\DeleteMultiple.
- */
-
 namespace Drupal\log\Form;
 
 use Drupal\Core\Access\AccessResult;
@@ -29,7 +24,7 @@ class DeleteMultiple extends ConfirmFormBase {
    *
    * @var string[][]
    */
-  protected $logInfo = array();
+  protected $logInfo = [];
 
   /**
    * The tempstore factory.
@@ -68,7 +63,7 @@ class DeleteMultiple extends ConfirmFormBase {
    *   The access result.
    */
   public function access(AccountInterface $account) {
-    /** @var LogTypeInterface $type */
+    /** @var \Drupal\log\LogTypeInterface $type */
     foreach (LogType::loadMultiple() as $type) {
       // If the user has either access to deleting own log entities, or access
       // to deleting all entities in at least one type, they should be able to
@@ -170,10 +165,10 @@ class DeleteMultiple extends ConfirmFormBase {
       }
     }
 
-    $form['logs'] = array(
+    $form['logs'] = [
       '#theme' => 'item_list',
       '#items' => $items,
-    );
+    ];
     $form = parent::buildForm($form, $form_state);
 
     return $form;
@@ -207,7 +202,7 @@ class DeleteMultiple extends ConfirmFormBase {
 
       if ($delete_logs) {
         $this->storage->delete($delete_logs);
-        $this->logger('log')->notice('Deleted @count posts.', array('@count' => count($delete_logs)));
+        $this->logger('log')->notice('Deleted @count posts.', ['@count' => count($delete_logs)]);
       }
 
       if ($delete_translations) {
@@ -222,7 +217,7 @@ class DeleteMultiple extends ConfirmFormBase {
         }
         if ($count) {
           $total_count += $count;
-          $this->logger('log')->notice('Deleted @count content translations.', array('@count' => $count));
+          $this->logger('log')->notice('Deleted @count content translations.', ['@count' => $count]);
         }
       }
 

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogListBuilder.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +13,7 @@ use Drupal\Core\Routing\LinkGeneratorTrait;
  */
 class LogListBuilder extends EntityListBuilder {
   use LinkGeneratorTrait;
+
   /**
    * {@inheritdoc}
    */

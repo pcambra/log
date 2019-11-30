@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Entity\Log.
- */
-
 namespace Drupal\log\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -69,6 +64,9 @@ class Log extends ContentEntityBase implements LogInterface {
 
   protected $tokenService;
 
+  /**
+   * Constructs a Log object.
+   */
   public function __construct(array $values, $entity_type, $bundle, array $translations = []) {
     parent::__construct($values, $entity_type, $bundle, $translations);
     $this->tokenService = \Drupal::token();
@@ -218,17 +216,17 @@ class Log extends ContentEntityBase implements LogInterface {
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public static function getCurrentUserId() {
-    return array(\Drupal::currentUser()->id());
+    return [\Drupal::currentUser()->id()];
   }
 
   /**
-   * @return array
+   * {@inheritdoc}
    */
   public static function getCurrentTimestamp() {
-    return array(REQUEST_TIME);
+    return [REQUEST_TIME];
   }
 
   /**
@@ -249,35 +247,35 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setSetting('handler', 'default')
       ->setDefaultValueCallback('Drupal\log\Entity\Log::getCurrentUserId')
       ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
         'weight' => 99,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'weight' => 99,
-        'settings' => array(
+        'settings' => [
           'match_operator' => 'CONTAINS',
           'size' => '60',
           'autocomplete_type' => 'tags',
           'placeholder' => '',
-        ),
-      ))
+        ],
+      ])
       ->setDisplayConfigurable('view', TRUE);
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
       ->setDescription(t('The time that the log was created.'))
       ->setRevisionable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'timestamp',
         'weight' => 0,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'datetime_timestamp',
         'weight' => 99,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['vid'] = BaseFieldDefinition::create('integer')
@@ -297,43 +295,43 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDescription(t('The log language code.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'type' => 'hidden',
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'language_select',
         'weight' => 2,
-      ));
+      ]);
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setRevisionable(TRUE)
       ->setDefaultValue('')
       ->setSetting('max_length', 255)
       ->setSetting('text_processing', 0)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'string',
         'weight' => -5,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => -5,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE);
     $fields['timestamp'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Date'))
       ->setDescription(t('Timestamp of the event being logged.'))
       ->setDefaultValueCallback('Drupal\log\Entity\Log::getCurrentTimestamp')
       ->setRevisionable(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'timestamp',
         'weight' => 10,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'datetime_timestamp',
         'weight' => 80,
-      ))
+      ])
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
     $fields['done'] = BaseFieldDefinition::create('boolean')
@@ -341,15 +339,15 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDescription(t('Boolean indicating whether the log is done (the event happened).'))
       ->setRevisionable(TRUE)
       ->setDefaultValue(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'boolean',
         'weight' => 10,
-      ))
-      ->setDisplayOptions('form', array(
-        'settings' => array('display_label' => TRUE),
+      ])
+      ->setDisplayOptions('form', [
+        'settings' => ['display_label' => TRUE],
         'weight' => 90,
-      ))
+      ])
       ->setDisplayConfigurable('view', TRUE)
       ->setDisplayConfigurable('form', TRUE);
 

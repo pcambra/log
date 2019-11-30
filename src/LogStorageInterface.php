@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogStorageInterface.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Entity\ContentEntityStorageInterface;
@@ -19,7 +14,7 @@ interface LogStorageInterface extends ContentEntityStorageInterface {
   /**
    * Gets a list of log revision IDs for a specific log.
    *
-   * @param \Drupal\log\LogInterface
+   * @param \Drupal\log\LogInterface $log
    *   The log entity.
    *
    * @return int[]
@@ -41,7 +36,7 @@ interface LogStorageInterface extends ContentEntityStorageInterface {
   /**
    * Counts the number of revisions in the default language.
    *
-   * @param \Drupal\log\LogInterface
+   * @param \Drupal\log\LogInterface $log
    *   The log entity.
    *
    * @return int
@@ -66,7 +61,8 @@ interface LogStorageInterface extends ContentEntityStorageInterface {
    * Unsets the language for all logs with the given language.
    *
    * @param \Drupal\Core\Language\LanguageInterface $language
-   *  The language object.
+   *   The language object.
    */
   public function clearRevisionsLanguage(LanguageInterface $language);
+
 }

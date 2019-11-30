@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Controller\LogViewController.
- */
-
 namespace Drupal\log\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
@@ -23,23 +18,23 @@ class LogViewController extends EntityViewController {
 
     foreach ($log->uriRelationships() as $rel) {
       // Set the log path as the canonical URL to prevent duplicate content.
-      $build['#attached']['html_head_link'][] = array(
-        array(
+      $build['#attached']['html_head_link'][] = [
+        [
           'rel' => $rel,
           'href' => $log->toUrl($rel),
-        ),
+        ],
         TRUE,
-      );
+      ];
 
       if ($rel == 'canonical') {
         // Set the non-aliased canonical path as a default shortlink.
-        $build['#attached']['html_head_link'][] = array(
-          array(
+        $build['#attached']['html_head_link'][] = [
+          [
             'rel' => 'shortlink',
-            'href' => $log->toUrl($rel, array('alias' => TRUE)),
-          ),
+            'href' => $log->toUrl($rel, ['alias' => TRUE]),
+          ],
           TRUE,
-        );
+        ];
       }
     }
 

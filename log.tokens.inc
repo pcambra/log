@@ -14,59 +14,59 @@ use Drupal\user\Entity\User;
  * Implements hook_token_info().
  */
 function log_token_info() {
-  $type = array(
+  $type = [
     'name' => t('Logs'),
     'description' => t('Tokens related to individual log items.'),
     'needs-data' => 'log',
-  );
+  ];
 
   // Core tokens for logs.
-  $log['id'] = array(
+  $log['id'] = [
     'name' => t("Log ID"),
     'description' => t('The unique ID of the log item.'),
-  );
-  $log['vid'] = array(
+  ];
+  $log['vid'] = [
     'name' => t("Revision ID"),
     'description' => t("The unique ID of the log's latest revision."),
-  );
-  $log['type'] = array(
+  ];
+  $log['type'] = [
     'name' => t("Log type"),
-  );
-  $log['type-name'] = array(
+  ];
+  $log['type-name'] = [
     'name' => t("Log type name"),
     'description' => t("The human-readable name of the log type."),
-  );
-  $log['name'] = array(
+  ];
+  $log['name'] = [
     'name' => t("Name"),
-  );
-  $log['url'] = array(
+  ];
+  $log['url'] = [
     'name' => t("URL"),
     'description' => t("The URL of the log."),
-  );
-  $log['edit-url'] = array(
+  ];
+  $log['edit-url'] = [
     'name' => t("Edit URL"),
     'description' => t("The URL of the log's edit page."),
-  );
+  ];
 
   // Chained tokens for logs.
-  $log['created'] = array(
+  $log['created'] = [
     'name' => t("Date created"),
     'type' => 'date',
-  );
-  $log['changed'] = array(
+  ];
+  $log['changed'] = [
     'name' => t("Date changed"),
     'description' => t("The date the log was most recently updated."),
     'type' => 'date',
-  );
-  $log['author'] = array(
+  ];
+  $log['author'] = [
     'name' => t("Author"),
     'type' => 'user',
-  );
+  ];
 
-  return array(
-    'types' => array('log' => $type),
-    'tokens' => array('log' => $log),
-  );
+  return [
+    'types' => ['log' => $type],
+    'tokens' => ['log' => $log],
+  ];
 }
 
 /**
@@ -75,7 +75,7 @@ function log_token_info() {
 function log_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $token_service = \Drupal::token();
 
-  $url_options = array('absolute' => TRUE);
+  $url_options = ['absolute' => TRUE];
   if (isset($options['langcode'])) {
     $url_options['language'] = \Drupal::languageManager()->getLanguage($options['langcode']);
     $langcode = $options['langcode'];
@@ -83,7 +83,7 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
   else {
     $langcode = LanguageInterface::LANGCODE_DEFAULT;
   }
-  $replacements = array();
+  $replacements = [];
 
   if ($type == 'log' && !empty($data['log'])) {
     /** @var \Drupal\log\LogInterface $log */
@@ -146,15 +146,15 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
     }
 
     if ($author_tokens = $token_service->findWithPrefix($tokens, 'author')) {
-      $replacements += $token_service->generate('user', $author_tokens, array('user' => $log->getOwner()), $options, $bubbleable_metadata);
+      $replacements += $token_service->generate('user', $author_tokens, ['user' => $log->getOwner()], $options, $bubbleable_metadata);
     }
 
     if ($created_tokens = $token_service->findWithPrefix($tokens, 'created')) {
-      $replacements += $token_service->generate('date', $created_tokens, array('date' => $log->getCreatedTime()), $options, $bubbleable_metadata);
+      $replacements += $token_service->generate('date', $created_tokens, ['date' => $log->getCreatedTime()], $options, $bubbleable_metadata);
     }
 
     if ($changed_tokens = $token_service->findWithPrefix($tokens, 'changed')) {
-      $replacements += $token_service->generate('date', $changed_tokens, array('date' => $log->getChangedTime()), $options, $bubbleable_metadata);
+      $replacements += $token_service->generate('date', $changed_tokens, ['date' => $log->getChangedTime()], $options, $bubbleable_metadata);
     }
   }
 

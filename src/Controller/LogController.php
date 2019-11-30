@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Controller\LogController.
- */
-
 namespace Drupal\log\Controller;
 
 use Drupal\Component\Utility\Xss;
@@ -79,7 +74,7 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
       ],
     ];
 
-    $content = array();
+    $content = [];
 
     // Only use log types the user has access to.
     foreach ($this->entityManager()->getStorage('log_type')->loadMultiple() as $type) {
@@ -93,7 +88,7 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
     // Bypass the log/add listing if only one content type is available.
     if (count($content) == 1) {
       $type = array_shift($content);
-      return $this->redirect('log.add', array('log_type' => $type->id()));
+      return $this->redirect('log.add', ['log_type' => $type->id()]);
     }
 
     $build['#content'] = $content;
@@ -111,9 +106,9 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *   A log submission form.
    */
   public function add(LogTypeInterface $log_type) {
-    $log = $this->entityManager()->getStorage('log')->create(array(
+    $log = $this->entityManager()->getStorage('log')->create([
       'type' => $log_type->id(),
-    ));
+    ]);
 
     $form = $this->entityFormBuilder()->getForm($log);
 
@@ -148,7 +143,7 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    */
   public function revisionPageTitle($log_revision) {
     $log = $this->entityManager()->getStorage('log')->loadRevision($log_revision);
-    return $this->t('Revision of %title from %date', array('%title' => $log->label(), '%date' => format_date($log->getRevisionCreationTime())));
+    return $this->t('Revision of %title from %date', ['%title' => $log->label(), '%date' => format_date($log->getRevisionCreationTime())]);
   }
 
   /**
@@ -170,12 +165,12 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
     $type = $log->getType();
 
     $build['#title'] = $has_translations ? $this->t('@langname revisions for %title', ['@langname' => $langname, '%title' => $log->label()]) : $this->t('Revisions for %title', ['%title' => $log->label()]);
-    $header = array($this->t('Revision'), $this->t('Operations'));
+    $header = [$this->t('Revision'), $this->t('Operations')];
 
     $revert_permission = (($account->hasPermission("revert $type revisions") || $account->hasPermission('revert all revisions') || $account->hasPermission('administer logs')) && $log->access('update'));
-    $delete_permission =  (($account->hasPermission("delete $type revisions") || $account->hasPermission('delete all revisions') || $account->hasPermission('administer logs')) && $log->access('delete'));
+    $delete_permission = (($account->hasPermission("delete $type revisions") || $account->hasPermission('delete all revisions') || $account->hasPermission('administer logs')) && $log->access('delete'));
 
-    $rows = array();
+    $rows = [];
 
     $vids = $log_storage->revisionIds($log);
 
@@ -234,8 +229,14 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
             $links['revert'] = [
               'title' => $this->t('Revert'),
               'url' => $has_translations ?
-                Url::fromRoute('log.revision_revert_translation_confirm', ['log' => $log->id(), 'log_revision' => $vid, 'langcode' => $langcode]) :
-                Url::fromRoute('log.revision_revert_confirm', ['log' => $log->id(), 'log_revision' => $vid]),
+              Url::fromRoute('log.revision_revert_translation_confirm',
+                [
+                  'log' => $log->id(),
+                  'log_revision' => $vid,
+                  'langcode' => $langcode,
+                ]
+              ) :
+              Url::fromRoute('log.revision_revert_confirm', ['log' => $log->id(), 'log_revision' => $vid]),
             ];
           }
 
@@ -258,14 +259,14 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
       }
     }
 
-    $build['log_revisions_table'] = array(
+    $build['log_revisions_table'] = [
       '#theme' => 'table',
       '#rows' => $rows,
       '#header' => $header,
-      '#attached' => array(
-        'library' => array('log/drupal.log.admin'),
-      ),
-    );
+      '#attached' => [
+        'library' => ['log/drupal.log.admin'],
+      ],
+    ];
 
     return $build;
   }
@@ -280,7 +281,7 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *   The page title.
    */
   public function addPageTitle(LogTypeInterface $log_type) {
-    return $this->t('Create @name', array('@name' => $log_type->label()));
+    return $this->t('Create @name', ['@name' => $log_type->label()]);
   }
 
 }

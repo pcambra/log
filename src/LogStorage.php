@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\LogStorage.
- */
-
 namespace Drupal\log;
 
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
@@ -25,7 +20,7 @@ class LogStorage extends SqlContentEntityStorage implements LogStorageInterface 
   public function revisionIds(LogInterface $log) {
     return $this->database->query(
       'SELECT vid FROM {log_revision} WHERE id=:id ORDER BY vid',
-      array(':id' => $log->id())
+      [':id' => $log->id()]
     )->fetchCol();
   }
 
@@ -35,7 +30,7 @@ class LogStorage extends SqlContentEntityStorage implements LogStorageInterface 
   public function userRevisionIds(AccountInterface $account) {
     return $this->database->query(
       'SELECT vid FROM {log_field_revision} WHERE uid = :uid ORDER BY vid',
-      array(':uid' => $account->id())
+      [':uid' => $account->id()]
     )->fetchCol();
   }
 
@@ -43,7 +38,7 @@ class LogStorage extends SqlContentEntityStorage implements LogStorageInterface 
    * {@inheritdoc}
    */
   public function countDefaultLanguageRevisions(LogInterface $log) {
-    return $this->database->query('SELECT COUNT(*) FROM {log_field_revision} WHERE id = :id AND default_langcode = 1', array(':id' => $log->id()))->fetchField();
+    return $this->database->query('SELECT COUNT(*) FROM {log_field_revision} WHERE id = :id AND default_langcode = 1', [':id' => $log->id()])->fetchField();
   }
 
   /**
@@ -51,7 +46,7 @@ class LogStorage extends SqlContentEntityStorage implements LogStorageInterface 
    */
   public function updateType($old_type, $new_type) {
     return $this->database->update('log')
-      ->fields(array('type' => $new_type))
+      ->fields(['type' => $new_type])
       ->condition('type', $old_type)
       ->execute();
   }
@@ -61,7 +56,7 @@ class LogStorage extends SqlContentEntityStorage implements LogStorageInterface 
    */
   public function clearRevisionsLanguage(LanguageInterface $language) {
     return $this->database->update('log_revision')
-      ->fields(array('langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED))
+      ->fields(['langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED])
       ->condition('langcode', $language->getId())
       ->execute();
   }

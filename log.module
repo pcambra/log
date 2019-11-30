@@ -34,12 +34,12 @@ function log_help($route_name, RouteMatchInterface $route_match) {
  */
 function log_theme() {
   $theme = [
-    'log' => array(
+    'log' => [
       'render element' => 'elements',
-    ),
-    'log_add_list' => array(
-      'variables' => array('content' => NULL),
-    ),
+    ],
+    'log_add_list' => [
+      'variables' => ['content' => NULL],
+    ],
   ];
 
   return $theme;
@@ -75,13 +75,13 @@ function template_preprocess_log(array &$variables) {
  * @see log_add_page()
  */
 function template_preprocess_log_add_list(array &$variables) {
-  $variables['types'] = array();
+  $variables['types'] = [];
   if (!empty($variables['content'])) {
     foreach ($variables['content'] as $type) {
-      $variables['types'][$type->id()] = array(
+      $variables['types'][$type->id()] = [
         'type' => $type->id(),
-        'add_link' => \Drupal::l($type->label(), new Url('log.add', array('log_type' => $type->id()))),
-      );
+        'add_link' => \Drupal::l($type->label(), new Url('log.add', ['log_type' => $type->id()])),
+      ];
     }
   }
 }
@@ -137,11 +137,11 @@ function log_log_create_access(AccountInterface $account, array $context, $entit
  * @see log_form_system_themes_admin_form_submit()
  */
 function log_form_system_themes_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['admin_theme']['log_use_admin_theme'] = array(
+  $form['admin_theme']['log_use_admin_theme'] = [
     '#type' => 'checkbox',
     '#title' => t('Use the administration theme when editing or creating log entity'),
     '#default_value' => \Drupal::configFactory()->getEditable('log.settings')->get('log_use_admin_theme'),
-  );
+  ];
   $form['#submit'][] = 'log_form_system_themes_admin_form_submit';
 }
 

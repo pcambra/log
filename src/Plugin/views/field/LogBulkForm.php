@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\log\Plugin\views\field\LogBulkForm.
- */
-
 namespace Drupal\log\Plugin\views\field;
 
 use Drupal\system\Plugin\views\field\BulkForm;

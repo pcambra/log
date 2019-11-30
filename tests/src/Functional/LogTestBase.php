@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\log\Tests;
+namespace Drupal\Tests\log\Functional;
 
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests the Log CRUD.
  */
-abstract class LogTestBase extends WebTestBase {
+abstract class LogTestBase extends BrowserTestBase {
 
   /**
    * Modules to enable.

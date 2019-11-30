@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\log\Tests;
+namespace Drupal\Tests\log\Functional;
 
 use Drupal\log\Entity\Log;
 
@@ -17,15 +17,15 @@ class LogCRUDTest extends LogTestBase {
   public function testFieldsVisibility() {
     $this->drupalGet('log/add/default');
     $this->assertResponse('200');
-    $this->assertFieldByName('name[0][value]', NULL, 'Name field is present');
-    $this->assertFieldByName('timestamp[0][value][date]', NULL, 'Timestamp date field is present');
-    $this->assertFieldByName('timestamp[0][value][time]', NULL, 'Timestamp time field is present');
-    $this->assertFieldByName('done[value]', NULL, 'Done field is present');
-    $this->assertFieldByName('revision', NULL, 'Revision field is present');
-    $this->assertFieldByName('user_id[0][target_id]', NULL, 'User ID field is present');
-    $this->assertFieldByName('created[0][value][time]', NULL, 'Created date field is present');
-    $this->assertFieldByName('created[0][value][time]', NULL, 'Created time field is present');
-    $this->assertFieldsByValue(t('Save'), NULL, 'Create button is present');
+    $assert_session = $this->assertSession();
+    $assert_session->fieldExists('name[0][value]');
+    $assert_session->fieldExists('timestamp[0][value][date]');
+    $assert_session->fieldExists('timestamp[0][value][time]');
+    $assert_session->fieldExists('done[value]');
+    $assert_session->fieldExists('revision');
+    $assert_session->fieldExists('user_id[0][target_id]');
+    $assert_session->fieldExists('created[0][value][date]');
+    $assert_session->fieldExists('created[0][value][time]');
   }
 
   /**

@@ -79,7 +79,7 @@ class Log extends ContentEntityBase implements LogInterface {
     parent::preCreate($storage_controller, $values);
     // Set default value for name and done properties.
     if (!empty($values['type'])) {
-      $type = \Drupal::entityManager()
+      $type = \Drupal::entityTypeManager()
         ->getStorage('log_type')
         ->load($values['type']);
       $values += [
@@ -94,7 +94,7 @@ class Log extends ContentEntityBase implements LogInterface {
    */
   public function preSave(EntityStorageInterface $storage) {
     parent::preSave($storage);
-    $type = \Drupal::entityManager()
+    $type = \Drupal::entityTypeManager()
       ->getStorage('log_type')
       ->load($this->getType());
     if (!$type->isNameEditable() && $this->isNew()) {
@@ -226,7 +226,7 @@ class Log extends ContentEntityBase implements LogInterface {
    * {@inheritdoc}
    */
   public static function getCurrentTimestamp() {
-    return [REQUEST_TIME];
+    return [\Drupal::time()->getRequestTime()];
   }
 
   /**
@@ -358,13 +358,13 @@ class Log extends ContentEntityBase implements LogInterface {
     $fields['revision_timestamp'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Revision timestamp'))
       ->setDescription(t('The time that the current revision was created.'))
-      ->setQueryable(FALSE)
+      ->setCustomStorage(TRUE)
       ->setRevisionable(TRUE);
     $fields['revision_uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Revision user ID'))
       ->setDescription(t('The user ID of the author of the current revision.'))
       ->setSetting('target_type', 'user')
-      ->setQueryable(FALSE)
+      ->setCustomStorage(TRUE)
       ->setRevisionable(TRUE);
     $fields['uuid'] = BaseFieldDefinition::create('uuid')
       ->setLabel(t('UUID'))

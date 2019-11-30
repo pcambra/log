@@ -4,7 +4,6 @@ namespace Drupal\log;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
-use Drupal\Core\Routing\LinkGeneratorTrait;
 
 /**
  * Defines a class to build a listing of Log entities.
@@ -12,7 +11,6 @@ use Drupal\Core\Routing\LinkGeneratorTrait;
  * @ingroup log
  */
 class LogListBuilder extends EntityListBuilder {
-  use LinkGeneratorTrait;
 
   /**
    * {@inheritdoc}
@@ -30,11 +28,7 @@ class LogListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /* @var $entity \Drupal\log\Entity\Log */
     $row['id'] = $entity->id();
-    $row['name'] = $this->l(
-      $entity->label(),
-      $entity->toUrl('canonical')
-    );
-
+    $row['name'] = $entity->toLink($entity->label(), 'canonical');
     // @todo Show type name.
     $row['type'] = $entity->bundle();
     return $row + parent::buildRow($entity);

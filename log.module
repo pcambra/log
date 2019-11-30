@@ -5,6 +5,7 @@
  * Contains log.module..
  */
 
+use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\log\LogInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -80,7 +81,7 @@ function template_preprocess_log_add_list(array &$variables) {
     foreach ($variables['content'] as $type) {
       $variables['types'][$type->id()] = [
         'type' => $type->id(),
-        'add_link' => \Drupal::l($type->label(), new Url('log.add', ['log_type' => $type->id()])),
+        'add_link' => Link::fromTextAndUrl($type->label(), new Url('log.add', ['log_type' => $type->id()])),
       ];
     }
   }
@@ -97,7 +98,7 @@ function log_log_access(LogInterface $log, $op, AccountInterface $account) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('view own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('view own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($log);
       }
 
     case 'update':
@@ -105,7 +106,7 @@ function log_log_access(LogInterface $log, $op, AccountInterface $account) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($log);
       }
 
     case 'delete':
@@ -113,7 +114,7 @@ function log_log_access(LogInterface $log, $op, AccountInterface $account) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->cacheUntilEntityChanges($log);
+        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' log entities') && ($account->id() == $log->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($log);
       }
 
     default:

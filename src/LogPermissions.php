@@ -2,7 +2,6 @@
 
 namespace Drupal\log;
 
-use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\log\Entity\LogType;
 
@@ -12,7 +11,6 @@ use Drupal\log\Entity\LogType;
 class LogPermissions {
 
   use StringTranslationTrait;
-  use UrlGeneratorTrait;
 
   /**
    * Returns an array of log type permissions.

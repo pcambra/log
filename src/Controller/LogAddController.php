@@ -31,8 +31,8 @@ class LogAddController extends ControllerBase {
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
-    $entity_type_manager->getStorage('log'),
-    $entity_type_manager->getStorage('log_type')
+      $entity_type_manager->getStorage('log'),
+      $entity_type_manager->getStorage('log_type')
     );
   }
 
@@ -57,7 +57,7 @@ class LogAddController extends ControllerBase {
       return [
         '#markup' => $this->t('You have not created any %bundle types yet. @link to add a new type.', [
           '%bundle' => 'Log',
-          '@link' => $this->l($this->t('Go to the type creation page'), Url::fromRoute('entity.log_type.add_form')),
+          '@link' => $this->getLinkGenerator()->generate($this->t('Go to the type creation page'), Url::fromRoute('entity.log_type.add_form')),
         ]),
       ];
     }
@@ -77,7 +77,7 @@ class LogAddController extends ControllerBase {
    */
   public function addForm(EntityInterface $log_type, Request $request) {
     $entity = $this->storage->create([
-    'type' => $log_type->id()
+      'type' => $log_type->id(),
     ]);
     return $this->entityFormBuilder()->getForm($entity);
   }

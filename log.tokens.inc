@@ -134,13 +134,13 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
         case 'created':
           $date_format = DateFormat::load('medium');
           $bubbleable_metadata->addCacheableDependency($date_format);
-          $replacements[$original] = format_date($log->getCreatedTime(), 'medium', '', NULL, $langcode);
+          $replacements[$original] = \Drupal::service('date.formatter')->format($log->getCreatedTime(), 'medium', '', NULL, $langcode);
           break;
 
         case 'changed':
           $date_format = DateFormat::load('medium');
           $bubbleable_metadata->addCacheableDependency($date_format);
-          $replacements[$original] = format_date($log->getChangedTime(), 'medium', '', NULL, $langcode);
+          $replacements[$original] = Drupal::service('date.formatter')->format($log->getChangedTime(), 'medium', '', NULL, $langcode);
           break;
       }
     }

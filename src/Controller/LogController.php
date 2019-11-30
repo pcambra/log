@@ -65,20 +65,23 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *   if there is only one log type defined for the site, the function
    *   will return a RedirectResponse to the log add page for that one log
    *   type.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function addPage() {
     $build = [
       '#theme' => 'log_add_list',
       '#cache' => [
-        'tags' => $this->entityManager()->getDefinition('log_type')->getListCacheTags(),
+        'tags' => $this->entityTypeManager()->getDefinition('log_type')->getListCacheTags(),
       ],
     ];
 
     $content = [];
 
     // Only use log types the user has access to.
-    foreach ($this->entityManager()->getStorage('log_type')->loadMultiple() as $type) {
-      $access = $this->entityManager()->getAccessControlHandler('log')->createAccess($type->id(), NULL, [], TRUE);
+    foreach ($this->entityTypeManager()->getStorage('log_type')->loadMultiple() as $type) {
+      $access = $this->entityTypeManager()->getAccessControlHandler('log')->createAccess($type->id(), NULL, [], TRUE);
       if ($access->isAllowed()) {
         $content[$type->id()] = $type;
       }
@@ -104,9 +107,12 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *
    * @return array
    *   A log submission form.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function add(LogTypeInterface $log_type) {
-    $log = $this->entityManager()->getStorage('log')->create([
+    $log = $this->entityTypeManager()->getStorage('log')->create([
       'type' => $log_type->id(),
     ]);
 
@@ -123,9 +129,12 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *
    * @return array
    *   An array suitable for drupal_render().
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function revisionShow($log_revision) {
-    $log = $this->entityManager()->getStorage('log')->loadRevision($log_revision);
+    $log = $this->entityTypeManager()->getStorage('log')->loadRevision($log_revision);
     $log_view_controller = new LogViewController($this->entityManager, $this->renderer);
     $page = $log_view_controller->view($log);
     unset($page['logs'][$log->id()]['#cache']);
@@ -140,10 +149,13 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *
    * @return string
    *   The page title.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function revisionPageTitle($log_revision) {
-    $log = $this->entityManager()->getStorage('log')->loadRevision($log_revision);
-    return $this->t('Revision of %title from %date', ['%title' => $log->label(), '%date' => format_date($log->getRevisionCreationTime())]);
+    $log = $this->entityTypeManager()->getStorage('log')->loadRevision($log_revision);
+    return $this->t('Revision of %title from %date', ['%title' => $log->label(), '%date' => $this->dateFormatter->format($log->getRevisionCreationTime())]);
   }
 
   /**
@@ -154,6 +166,10 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
    *
    * @return array
    *   An array as expected by drupal_render().
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function revisionOverview(LogInterface $log) {
     $account = $this->currentUser();
@@ -161,7 +177,7 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
     $langname = $this->languageManager()->getLanguageName($langcode);
     $languages = $log->getTranslationLanguages();
     $has_translations = (count($languages) > 1);
-    $log_storage = $this->entityManager()->getStorage('log');
+    $log_storage = $this->entityTypeManager()->getStorage('log');
     $type = $log->getType();
 
     $build['#title'] = $has_translations ? $this->t('@langname revisions for %title', ['@langname' => $langname, '%title' => $log->label()]) : $this->t('Revisions for %title', ['%title' => $log->label()]);
@@ -188,10 +204,10 @@ class LogController extends ControllerBase implements ContainerInjectionInterfac
         // Use revision link to link to revisions that are not active.
         $date = $this->dateFormatter->format($revision->revision_timestamp->value, 'short');
         if ($vid != $log->getRevisionId()) {
-          $link = $this->l($date, new Url('entity.log.revision', ['log' => $log->id(), 'log_revision' => $vid]));
+          $link = $this->getLinkGenerator()->generate($date, new Url('entity.log.revision', ['log' => $log->id(), 'log_revision' => $vid]));
         }
         else {
-          $link = $log->link($date);
+          $link = $log->toLink($date)->toString();
         }
 
         $row = [];

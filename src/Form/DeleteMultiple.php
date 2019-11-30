@@ -4,13 +4,14 @@ namespace Drupal\log\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\log\LogTypeInterface;
+use Drupal\feeds\FeedStorageInterface;
 use Drupal\log\Entity\LogType;
-use Drupal\user\PrivateTempStoreFactory;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -29,28 +30,38 @@ class DeleteMultiple extends ConfirmFormBase {
   /**
    * The tempstore factory.
    *
-   * @var \Drupal\user\PrivateTempStoreFactory
+   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
   protected $tempStoreFactory;
 
   /**
-   * The log storage.
+   * The entity storage class.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $manager;
+  protected $storage;
 
   /**
    * Constructs a DeleteMultiple form object.
    *
-   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
+   *   The entity storage class.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityManagerInterface $manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityStorageInterface $storage) {
     $this->tempStoreFactory = $temp_store_factory;
-    $this->storage = $manager->getStorage('log');
+    $this->storage = $storage;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('tempstore.private'),
+      $container->get('entity_type.manager')->getStorage('log')
+    );
   }
 
   /**
@@ -80,16 +91,6 @@ class DeleteMultiple extends ConfirmFormBase {
     }
     // If none of the above, the user is not allowed access.
     return AccessResult::forbidden();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('user.private_tempstore'),
-      $container->get('entity.manager')
-    );
   }
 
   /**
@@ -222,7 +223,7 @@ class DeleteMultiple extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 post.', 'Deleted @count posts.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 post.', 'Deleted @count posts.'));
       }
 
       $this->tempStoreFactory->get('log_multiple_delete_confirm')->delete(\Drupal::currentUser()->id());

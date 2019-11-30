@@ -57,7 +57,7 @@ class LogCRUDTest extends LogTestBase {
   public function testViewLog() {
     $edit = [
       'name' => $this->randomMachineName(),
-      'created' => REQUEST_TIME,
+      'created' => \Drupal::time()->getRequestTime(),
       'done' => TRUE,
     ];
     $log = $this->createLogEntity($edit);
@@ -67,7 +67,7 @@ class LogCRUDTest extends LogTestBase {
     $this->assertResponse(200);
 
     $this->assertText($edit['name']);
-    $this->assertRaw(format_date(REQUEST_TIME));
+    $this->assertRaw(\Drupal::service('date.formatter')->format(\Drupal::time()->getRequestTime()));
     $this->assertText($this->loggedInUser->getDisplayName());
   }
 

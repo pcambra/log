@@ -143,9 +143,9 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
 
     // If the log type id changed, update all existing logs of that type.
     if ($update && $this->getOriginalId() != $this->id()) {
-      $update_count = \Drupal::entityManager()->getStorage('log')->updateType($this->getOriginalId(), $this->id());
+      $update_count = \Drupal::entityTypeManager()->getStorage('log')->updateType($this->getOriginalId(), $this->id());
       if ($update_count) {
-        drupal_set_message(\Drupal::translation()->formatPlural($update_count,
+        \Drupal::messenger()->addMessage(\Drupal::translation()->formatPlural($update_count,
           'Changed the log type of 1 post from %old-type to %type.',
           'Changed the log type of @count posts from %old-type to %type.',
           [
@@ -157,7 +157,8 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
     if ($update) {
       // Clear the cached field definitions as some settings affect the field
       // definitions.
-      $this->entityManager()->clearCachedFieldDefinitions();
+      \Drupal::entityTypeManager()->clearCachedDefinitions();
+      \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
     }
   }
 

@@ -101,11 +101,7 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           break;
 
         case 'type':
-          $replacements[$original] = $log->getType();
-          break;
-
-        case 'type-name':
-          $replacements[$original] = $log->getTypeName();
+          $replacements[$original] = $log->bundle();
           break;
 
         case 'title':

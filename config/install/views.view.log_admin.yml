@@ -9,8 +9,8 @@ label: 'Log admin'
 module: views
 description: 'Find and manage log entities.'
 tag: default
-base_table: log
-base_field: id
+base_table: log_field_data
+base_field: ''
 core: 8.x
 display:
   default:
@@ -753,9 +753,7 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -769,7 +767,7 @@ display:
       path: admin/content/log
       menu:
         type: tab
-        title: Log
+        title: Logs
         description: ''
         expanded: false
         parent: ''
@@ -784,9 +782,7 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }

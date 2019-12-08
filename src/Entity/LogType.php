@@ -20,7 +20,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *       "delete" = "Drupal\log\Form\LogTypeDeleteForm"
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
+ *       "default" = "Drupal\entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *   },

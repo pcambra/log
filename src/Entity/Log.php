@@ -32,7 +32,7 @@ use Drupal\user\UserInterface;
  *       "delete" = "Drupal\log\Form\LogDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
+ *       "default" = "Drupal\entity\Routing\AdminHtmlRouteProvider",
  *     },
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *   },

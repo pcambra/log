@@ -32,6 +32,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/log_type/{log_type}",
+ *     "add-form" = "/admin/structure/log_type/add",
  *     "edit-form" = "/admin/structure/log_type/{log_type}/edit",
  *     "delete-form" = "/admin/structure/log_type/{log_type}/delete",
  *     "collection" = "/admin/structure/log_type"

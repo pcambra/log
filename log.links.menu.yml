@@ -1,4 +1,9 @@
-# Log type menu items definition
+entity.log.collection:
+  title: 'Logs'
+  route_name: 'entity.log.collection'
+  parent: system.admin_structure
+  description: 'Manage your logs.'
+
 entity.log_type.collection:
   title: 'Log types'
   route_name: entity.log_type.collection

@@ -23,6 +23,7 @@ use Drupal\user\UserInterface;
  *   handlers = {
  *     "storage" = "Drupal\log\LogStorage",
  *     "access" = "\Drupal\entity\EntityAccessControlHandler",
+ *     "list_builder" = "Drupal\log\LogListBuilder",
  *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
  *     "storage_schema" = "Drupal\log\LogStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
@@ -36,7 +37,6 @@ use Drupal\user\UserInterface;
  *     "route_provider" = {
  *       "default" = "Drupal\entity\Routing\AdminHtmlRouteProvider",
  *     },
- *     "list_builder" = "Drupal\log\LogListBuilder",
  *   },
  *   base_table = "log",
  *   revision_table = "log_revision",
@@ -54,9 +54,12 @@ use Drupal\user\UserInterface;
  *   common_reference_target = TRUE,
  *   permission_granularity = "bundle",
  *   links = {
+ *     "add-page" = "/log/add",
  *     "canonical" = "/log/{log}",
+ *     "collection" = "/admin/content/media",
+ *     "delete-form" = "/log/{log}/delete",
+ *     "delete-multiple-form" = "/log/delete",
  *     "edit-form" = "/log/{log}/edit",
- *     "delete-form" = "/log/{log}/delete"
  *   }
  * )
  */

@@ -1,9 +1,10 @@
 <?php
 
-namespace Drupal\log;
+namespace Drupal\log\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**
@@ -11,7 +12,7 @@ use Drupal\user\EntityOwnerInterface;
  *
  * @ingroup log
  */
-interface LogInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
+interface LogInterface extends ContentEntityInterface, EntityChangedInterface, RevisionLogInterface, EntityOwnerInterface {
 
   /**
    * Gets the log name.
@@ -20,22 +21,6 @@ interface LogInterface extends ContentEntityInterface, EntityChangedInterface, E
    *   The log name.
    */
   public function getName();
-
-  /**
-   * Gets the log type.
-   *
-   * @return string
-   *   The log type.
-   */
-  public function getType();
-
-  /**
-   * Gets the log type name.
-   *
-   * @return string
-   *   The log type name.
-   */
-  public function getTypeName();
 
   /**
    * Gets the log creation timestamp.

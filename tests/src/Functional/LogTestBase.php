@@ -70,7 +70,7 @@ abstract class LogTestBase extends BrowserTestBase {
    * @param array $values
    *   Array of values to feed the entity.
    *
-   * @return \Drupal\log\LogInterface
+   * @return \Drupal\log\Entity\LogInterface
    *   The log entity.
    */
   protected function createLogEntity(array $values = []) {

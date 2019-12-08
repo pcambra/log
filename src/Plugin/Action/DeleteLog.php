@@ -73,7 +73,7 @@ class DeleteLog extends ActionBase implements ContainerFactoryPluginInterface {
    */
   public function executeMultiple(array $entities) {
     $info = [];
-    /** @var \Drupal\log\LogInterface $log */
+    /** @var \Drupal\log\Entity\LogInterface $log */
     foreach ($entities as $log) {
       $langcode = $log->language()->getId();
       $info[$log->id()][$langcode] = $langcode;
@@ -92,7 +92,7 @@ class DeleteLog extends ActionBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    /** @var \Drupal\log\LogInterface $object */
+    /** @var \Drupal\log\Entity\LogInterface $object */
     return $object->access('delete', $account, $return_as_object);
   }
 

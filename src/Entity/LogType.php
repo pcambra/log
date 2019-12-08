@@ -3,7 +3,6 @@
 namespace Drupal\log\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use Drupal\log\LogTypeInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
@@ -13,6 +12,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   id = "log_type",
  *   label = @Translation("Log type"),
  *   handlers = {
+ *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *     "form" = {
  *       "add" = "Drupal\log\Form\LogTypeForm",
  *       "edit" = "Drupal\log\Form\LogTypeForm",
@@ -21,7 +21,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "route_provider" = {
  *       "default" = "Drupal\entity\Routing\DefaultHtmlRouteProvider",
  *     },
- *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *   },
  *   admin_permission = "administer log types",
  *   config_prefix = "type",

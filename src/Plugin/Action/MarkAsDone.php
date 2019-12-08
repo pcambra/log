@@ -28,7 +28,7 @@ class MarkAsDone extends ActionBase {
    * {@inheritdoc}
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    /** @var \Drupal\log\LogInterface $object */
+    /** @var \Drupal\log\Entity\LogInterface $object */
     $result = $object->access('update', $account, TRUE)
       ->andIf($object->get('done')->access('edit', $account, TRUE));
 

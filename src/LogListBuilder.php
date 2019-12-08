@@ -26,7 +26,7 @@ class LogListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\log\Entity\Log */
+    /* @var $entity \Drupal\log\Entity\LogInterface */
     $row['id'] = $entity->id();
     $row['name'] = $entity->toLink($entity->label(), 'canonical');
     // @todo Show type name.

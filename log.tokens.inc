@@ -86,7 +86,7 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
   $replacements = [];
 
   if ($type == 'log' && !empty($data['log'])) {
-    /** @var \Drupal\log\LogInterface $log */
+    /** @var \Drupal\log\Entity\LogInterface $log */
     $log = $data['log'];
 
     foreach ($tokens as $name => $original) {

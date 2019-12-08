@@ -17,7 +17,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "form" = {
  *       "add" = "Drupal\log\Form\LogTypeForm",
  *       "edit" = "Drupal\log\Form\LogTypeForm",
- *       "delete" = "Drupal\log\Form\LogTypeDeleteForm"
+ *       "delete" = "\Drupal\Core\Entity\EntityDeleteForm",
  *     },
  *     "route_provider" = {
  *       "default" = "Drupal\entity\Routing\DefaultHtmlRouteProvider",

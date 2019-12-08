@@ -28,9 +28,10 @@ use Drupal\user\UserInterface;
  *     "access" = "Drupal\log\LogAccessControlHandler",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
- *       "default" = "Drupal\log\Form\LogForm",
- *       "edit" = "Drupal\log\Form\LogForm",
- *       "delete" = "Drupal\log\Form\LogDeleteForm",
+ *       "default" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "add" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "edit" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
  *     "route_provider" = {
  *       "default" = "Drupal\entity\Routing\AdminHtmlRouteProvider",

@@ -24,7 +24,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     },
  *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *   },
- *   admin_permission = "administer site configuration",
+ *   admin_permission = "administer log types",
  *   config_prefix = "type",
  *   bundle_of = "log",
  *   entity_keys = {

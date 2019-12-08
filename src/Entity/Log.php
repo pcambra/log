@@ -22,6 +22,7 @@ use Drupal\user\UserInterface;
  *   bundle_label = @Translation("Log type"),
  *   handlers = {
  *     "storage" = "Drupal\log\LogStorage",
+ *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
  *     "storage_schema" = "Drupal\log\LogStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "access" = "Drupal\log\LogAccessControlHandler",

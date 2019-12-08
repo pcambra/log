@@ -11,6 +11,13 @@ use Drupal\Core\Entity\EntityStorageInterface;
  * @ConfigEntityType(
  *   id = "log_type",
  *   label = @Translation("Log type"),
+ *   label_collection = @Translation("Log types"),
+ *   label_singular = @Translation("log type"),
+ *   label_plural = @Translation("log types"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count log type",
+ *     plural = "@count log types",
+ *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\log\LogTypeListBuilder",
  *     "form" = {

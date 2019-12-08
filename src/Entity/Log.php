@@ -20,6 +20,13 @@ use Drupal\user\UserInterface;
  *   id = "log",
  *   label = @Translation("Log"),
  *   bundle_label = @Translation("Log type"),
+ *   label_collection = @Translation("Logs"),
+ *   label_singular = @Translation("log"),
+ *   label_plural = @Translation("logs"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count log",
+ *     plural = "@count logs",
+ *   ),
  *   handlers = {
  *     "storage" = "Drupal\log\LogStorage",
  *     "access" = "\Drupal\entity\EntityAccessControlHandler",

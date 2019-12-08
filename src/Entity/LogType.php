@@ -13,7 +13,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   id = "log_type",
  *   label = @Translation("Log type"),
  *   handlers = {
- *     "access" = "Drupal\log\LogTypeAccessControlHandler",
  *     "form" = {
  *       "add" = "Drupal\log\Form\LogTypeForm",
  *       "edit" = "Drupal\log\Form\LogTypeForm",

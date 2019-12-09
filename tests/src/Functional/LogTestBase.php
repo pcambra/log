@@ -20,6 +20,7 @@ abstract class LogTestBase extends BrowserTestBase {
    * @see \Drupal\simpletest\WebTestBase::installModulesFromClassProperty()
    */
   public static $modules = [
+    'entity',
     'user',
     'log',
     'log_test',
@@ -53,14 +54,15 @@ abstract class LogTestBase extends BrowserTestBase {
   protected function getAdministratorPermissions() {
     return [
       'access administration pages',
-      'administer logs',
-      'create default log entities',
-      'view any default log entities',
-      'edit any default log entities',
-      'delete any default log entities',
-      'view default revisions',
-      'revert default revisions',
-      'delete default revisions',
+      'administer log',
+      'view log',
+      'view own unpublished log',
+      'create default log',
+      'view default log',
+      'update own default log',
+      'update any default log',
+      'delete own default log',
+      'delete any default log',
     ];
   }
 

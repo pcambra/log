@@ -4,13 +4,15 @@ dependencies:
   module:
     - log
     - user
+_core:
+  default_config_hash: 6g9Kds2LPD1WsL0QgAT60zy8FnpEOywcWYHEGUoRuEA
 id: log_admin
 label: 'Log admin'
 module: views
 description: 'Find and manage log entities.'
 tag: default
 base_table: log_field_data
-base_field: ''
+base_field: id
 core: 8.x
 display:
   default:
@@ -198,9 +200,9 @@ display:
           selected_actions: {  }
           entity_type: log
           plugin_id: log_bulk_form
-        done:
-          id: done
-          table: log
+        done_1:
+          id: done_1
+          table: log_field_data
           field: done
           relationship: none
           group_type: group
@@ -249,8 +251,8 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: custom
-            format_custom_true: ✔
+            format: yes-no
+            format_custom_true: ''
             format_custom_false: ''
           group_column: value
           group_columns: {  }
@@ -265,9 +267,9 @@ display:
           entity_type: log
           entity_field: done
           plugin_id: field
-        timestamp:
-          id: timestamp
-          table: log
+        timestamp_1:
+          id: timestamp_1
+          table: log_field_data
           field: timestamp
           relationship: none
           group_type: group
@@ -332,9 +334,9 @@ display:
           entity_type: log
           entity_field: timestamp
           plugin_id: field
-        id:
-          id: id
-          table: log
+        id_1:
+          id: id_1
+          table: log_field_data
           field: id
           relationship: none
           group_type: group
@@ -398,9 +400,9 @@ display:
           entity_type: log
           entity_field: id
           plugin_id: field
-        name:
-          id: name
-          table: log
+        name_1:
+          id: name_1
+          table: log_field_data
           field: name
           relationship: none
           group_type: group
@@ -449,7 +451,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -463,14 +465,14 @@ display:
           entity_type: log
           entity_field: name
           plugin_id: field
-        type:
-          id: type
-          table: log
+        type_1:
+          id: type_1
+          table: log_field_data
           field: type
           relationship: none
           group_type: group
           admin_label: ''
-          label: Type
+          label: 'Log type'
           exclude: false
           alter:
             alter_text: false
@@ -514,7 +516,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: false
+            link: true
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -528,10 +530,10 @@ display:
           entity_type: log
           entity_field: type
           plugin_id: field
-        user_id:
-          id: user_id
-          table: log
-          field: user_id
+        uid:
+          id: uid
+          table: log_field_data
+          field: uid
           relationship: none
           group_type: group
           admin_label: ''
@@ -591,7 +593,7 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: log
-          entity_field: user_id
+          entity_field: uid
           plugin_id: field
         operations:
           table: log
@@ -648,12 +650,12 @@ display:
       filters:
         name:
           id: name
-          table: log
+          table: log_field_data
           field: name
           relationship: none
           group_type: group
           admin_label: ''
-          operator: allwords
+          operator: contains
           value: ''
           group: 1
           exposed: true
@@ -671,6 +673,7 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -688,7 +691,7 @@ display:
           plugin_id: string
         type:
           id: type
-          table: log
+          table: log_field_data
           field: type
           relationship: none
           group_type: group
@@ -699,7 +702,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: Type
+            label: 'Log type'
             description: ''
             use_operator: false
             operator: type_op
@@ -753,7 +756,9 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -782,7 +787,9 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }

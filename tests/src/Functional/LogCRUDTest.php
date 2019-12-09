@@ -22,8 +22,8 @@ class LogCRUDTest extends LogTestBase {
     $assert_session->fieldExists('timestamp[0][value][date]');
     $assert_session->fieldExists('timestamp[0][value][time]');
     $assert_session->fieldExists('done[value]');
-    $assert_session->fieldExists('revision');
-    $assert_session->fieldExists('user_id[0][target_id]');
+    $assert_session->fieldExists('revision_log_message[0][value]');
+    $assert_session->fieldExists('uid[0][target_id]');
     $assert_session->fieldExists('created[0][value][date]');
     $assert_session->fieldExists('created[0][value][time]');
   }
@@ -32,23 +32,24 @@ class LogCRUDTest extends LogTestBase {
    * Create Log entity.
    */
   public function testCreateLog() {
+    $name = $this->randomMachineName();
     $edit = [
-      'name[0][value]' => $this->randomMachineName(),
+      'name[0][value]' => $name,
     ];
 
     $this->drupalPostForm('log/add/default', $edit, t('Save'));
 
-    $result = \Drupal::entityQuery('log')
-      ->condition('name', $edit['name[0][value]'])
+    $result = \Drupal::entityTypeManager()
+      ->getStorage('log')
+      ->getQuery()
       ->range(0, 1)
       ->execute();
     $log_id = reset($result);
     $log = Log::load($log_id);
-    $this->assertNotNull($log, 'Log has been created.');
+    $this->assertEquals($log->get('name')->value, $name, 'Log has been saved.');
 
-    $this->assertRaw(t('Created the %label Log.', ['%label' => $edit['name[0][value]']]));
-    $this->assertText($edit['name[0][value]']);
-    $this->assertText($this->loggedInUser->getDisplayName());
+    $this->assertRaw('Log entity has been saved');
+    $this->assertText($name);
   }
 
   /**
@@ -68,7 +69,6 @@ class LogCRUDTest extends LogTestBase {
 
     $this->assertText($edit['name']);
     $this->assertRaw(\Drupal::service('date.formatter')->format(\Drupal::time()->getRequestTime()));
-    $this->assertText($this->loggedInUser->getDisplayName());
   }
 
   /**
@@ -83,7 +83,6 @@ class LogCRUDTest extends LogTestBase {
     ];
     $this->drupalPostForm($log->toUrl('edit-form'), $edit, t('Save'));
 
-    $this->assertRaw(t('Saved the %label Log.', ['%label' => $edit['name[0][value]']]));
     $this->assertText($edit['name[0][value]']);
   }
 

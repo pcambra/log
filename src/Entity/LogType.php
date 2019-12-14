@@ -50,7 +50,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "description",
  *     "name_pattern",
  *     "name_edit",
- *     "new_revision",
  *   }
  * )
  */
@@ -92,13 +91,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   protected $name_edit = FALSE;
 
   /**
-   * Default value of the 'Create new revision' checkbox of this log type.
-   *
-   * @var bool
-   */
-  protected $new_revision = TRUE;
-
-  /**
    * {@inheritdoc}
    */
   public function getDescription() {
@@ -117,13 +109,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
    */
   public function isNameEditable() {
     return $this->name_edit;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isNewRevision() {
-    return $this->new_revision;
   }
 
   /**

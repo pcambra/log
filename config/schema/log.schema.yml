@@ -18,9 +18,6 @@ log.type.*:
     name_edit:
       type: boolean
       label: 'Boolean: log name is user editable.'
-    new_revision:
-      type: boolean
-      label: 'Whether a new revision should be created by default'
 
 condition.plugin.log_type:
   type: condition.plugin

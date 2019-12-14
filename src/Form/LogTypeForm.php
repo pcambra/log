@@ -61,12 +61,6 @@ class LogTypeForm extends EntityForm {
       '#description' => t('Check this to allow users to edit log names. Otherwise, log names will always be auto-generated.'),
     ];
 
-    $form['new_revision'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Create new revision'),
-      '#default_value' => $log_type->isNewRevision(),
-    ];
-
     return $form;
   }
 

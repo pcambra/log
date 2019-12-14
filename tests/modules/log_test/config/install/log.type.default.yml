@@ -3,6 +3,5 @@ label: default
 description: 'Test log type'
 name_pattern: '[log:id]'
 name_edit: true
-new_revision: true
 status: true
 langcode: en

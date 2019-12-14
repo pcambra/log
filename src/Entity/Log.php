@@ -30,7 +30,7 @@ use Drupal\user\EntityOwnerTrait;
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "views_data" = "Drupal\log\LogViewsData",
  *     "form" = {
  *       "default" = "Drupal\Core\Entity\ContentEntityForm",
  *       "add" = "Drupal\log\Form\LogAddForm",

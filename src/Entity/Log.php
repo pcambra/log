@@ -29,7 +29,6 @@ use Drupal\user\EntityOwnerTrait;
  *     "access" = "\Drupal\entity\EntityAccessControlHandler",
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
- *     "storage_schema" = "Drupal\log\LogStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {

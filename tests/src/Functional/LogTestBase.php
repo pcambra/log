@@ -10,14 +10,9 @@ use Drupal\Tests\BrowserTestBase;
 abstract class LogTestBase extends BrowserTestBase {
 
   /**
-   * Modules to enable.
+   * Modules to install.
    *
    * @var array
-   *
-   * Note that when a child class declares its own $modules list, that list
-   * doesn't override this one, it just extends it.
-   *
-   * @see \Drupal\simpletest\WebTestBase::installModulesFromClassProperty()
    */
   public static $modules = [
     'entity',

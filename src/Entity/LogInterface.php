@@ -23,11 +23,41 @@ interface LogInterface extends ContentEntityInterface, EntityChangedInterface, R
   public function getName();
 
   /**
+   * Sets the log name.
+   *
+   * @param string $name
+   *   The log name.
+   *
+   * @return \Drupal\log\Entity\LogInterface
+   *   The log entity.
+   */
+  public function setName($name);
+
+  /**
    * Gets the log creation timestamp.
    *
    * @return int
    *   Creation timestamp of the log.
    */
   public function getCreatedTime();
+
+  /**
+   * Sets the log creation timestamp.
+   *
+   * @param int $timestamp
+   *   Creation timestamp of the log.
+   *
+   * @return \Drupal\log\Entity\LogInterface
+   *   The log entity.
+   */
+  public function setCreatedTime($timestamp);
+
+  /**
+   * Gets the name pattern from the log type.
+   *
+   * @return string
+   *   The name pattern.
+   */
+  public function getTypeNamePattern();
 
 }

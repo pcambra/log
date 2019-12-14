@@ -17,7 +17,7 @@ class LogListBuilder extends EntityListBuilder {
    */
   public function buildHeader() {
     $header['id'] = $this->t('Log ID');
-    $header['name'] = $this->t('Name');
+    $header['label'] = $this->t('Label');
     $header['type'] = $this->t('Type');
     return $header + parent::buildHeader();
   }

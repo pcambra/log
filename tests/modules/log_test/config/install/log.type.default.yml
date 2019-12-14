@@ -1,7 +1,5 @@
 id: default
 label: default
 description: 'Test log type'
-name_pattern: '[log:id]'
-name_edit: true
-status: true
+name_pattern: ''
 langcode: en

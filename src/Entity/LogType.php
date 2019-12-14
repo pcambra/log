@@ -49,7 +49,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "label",
  *     "description",
  *     "name_pattern",
- *     "name_edit",
  *   }
  * )
  */
@@ -84,13 +83,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   protected $name_pattern;
 
   /**
-   * Log name is user editable.
-   *
-   * @var bool
-   */
-  protected $name_edit = FALSE;
-
-  /**
    * {@inheritdoc}
    */
   public function getDescription() {
@@ -102,13 +94,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
    */
   public function getNamePattern() {
     return $this->name_pattern;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isNameEditable() {
-    return $this->name_edit;
   }
 
   /**

@@ -3,10 +3,8 @@
 namespace Drupal\log\Entity;
 
 use Drupal\Core\Entity\EditorialContentEntityBase;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\user\EntityOwnerTrait;
 
 /**
@@ -26,6 +24,7 @@ use Drupal\user\EntityOwnerTrait;
  *     plural = "@count logs",
  *   ),
  *   handlers = {
+ *     "storage" = "Drupal\log\LogStorage",
  *     "access" = "\Drupal\entity\EntityAccessControlHandler",
  *     "list_builder" = "Drupal\log\LogListBuilder",
  *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
@@ -90,39 +89,8 @@ class Log extends EditorialContentEntityBase implements LogInterface {
   /**
    * {@inheritdoc}
    */
-  public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
-    parent::preCreate($storage_controller, $values);
-    // Set default value for name and done properties.
-    if (!empty($values['type'])) {
-      $type = \Drupal::entityTypeManager()
-        ->getStorage('log_type')
-        ->load($values['type']);
-      $values += [
-        'name' => $type->getNamePattern(),
-      ];
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function preSave(EntityStorageInterface $storage) {
-    parent::preSave($storage);
-    $type = \Drupal::entityTypeManager()
-      ->getStorage('log_type')
-      ->load($this->bundle());
-    if (!$type->isNameEditable() && $this->isNew()) {
-      // Pass in an empty bubbleable metadata object, so we can avoid starting a
-      // renderer, for example if this happens in a REST resource creating
-      // context.
-      $bubbleable_metadata = new BubbleableMetadata();
-      $this->set('name', \Drupal::token()->replace(
-        $type->getNamePattern(),
-        ['log' => $this],
-        [],
-        $bubbleable_metadata
-      ));
-    }
+  public function label() {
+    return $this->getName();
   }
 
   /**
@@ -130,13 +98,6 @@ class Log extends EditorialContentEntityBase implements LogInterface {
    */
   public function getName() {
     return $this->get('name')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function label() {
-    return $this->getName();
   }
 
   /**
@@ -160,6 +121,18 @@ class Log extends EditorialContentEntityBase implements LogInterface {
   public function setCreatedTime($timestamp) {
     $this->set('created', $timestamp);
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTypeNamePattern() {
+    /** @var \Drupal\log\Entity\LogTypeInterface $type */
+    $type = \Drupal::entityTypeManager()
+      ->getStorage('log_type')
+      ->load($this->bundle());
+    $name_pattern = $type->getNamePattern();
+    return $name_pattern ?? '';
   }
 
   /**

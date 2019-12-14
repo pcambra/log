@@ -15,9 +15,6 @@ log.type.*:
     name_pattern:
       type: string
       label: 'Pattern for auto-generating the log name, using tokens.'
-    name_edit:
-      type: boolean
-      label: 'Boolean: log name is user editable.'
 
 condition.plugin.log_type:
   type: condition.plugin

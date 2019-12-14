@@ -18,9 +18,6 @@ log.type.*:
     name_edit:
       type: boolean
       label: 'Boolean: log name is user editable.'
-    done:
-      type: boolean
-      label: 'Boolean: automatically mark logs of this type as done.'
     new_revision:
       type: boolean
       label: 'Whether a new revision should be created by default'

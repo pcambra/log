@@ -50,7 +50,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "description",
  *     "name_pattern",
  *     "name_edit",
- *     "done",
  *     "new_revision",
  *   }
  * )
@@ -93,13 +92,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   protected $name_edit = FALSE;
 
   /**
-   * Automatically mark logs of this type as done.
-   *
-   * @var bool
-   */
-  protected $done = FALSE;
-
-  /**
    * Default value of the 'Create new revision' checkbox of this log type.
    *
    * @var bool
@@ -125,13 +117,6 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
    */
   public function isNameEditable() {
     return $this->name_edit;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isAutomaticallyDone() {
-    return $this->done;
   }
 
   /**

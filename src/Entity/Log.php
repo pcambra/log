@@ -100,7 +100,6 @@ class Log extends EditorialContentEntityBase implements LogInterface {
         ->load($values['type']);
       $values += [
         'name' => $type->getNamePattern(),
-        'done' => $type->isAutomaticallyDone(),
       ];
     }
   }

@@ -400,8 +400,8 @@ display:
           entity_type: log
           entity_field: id
           plugin_id: field
-        name_1:
-          id: name_1
+        name:
+          id: name
           table: log_field_data
           field: name
           relationship: none
@@ -451,7 +451,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: false
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true

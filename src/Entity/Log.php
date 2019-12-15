@@ -25,9 +25,9 @@ use Drupal\user\EntityOwnerTrait;
  *   ),
  *   handlers = {
  *     "storage" = "Drupal\log\LogStorage",
- *     "access" = "\Drupal\entity\EntityAccessControlHandler",
- *     "list_builder" = "Drupal\log\LogListBuilder",
- *     "permission_provider" = "\Drupal\entity\EntityPermissionProvider",
+ *     "access" = "\Drupal\entity\UncacheableEntityAccessControlHandler",
+ *     "list_builder" = "\Drupal\entity\BulkFormEntityListBuilder",
+ *     "permission_provider" = "\Drupal\entity\UncacheableEntityPermissionProvider",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\log\LogViewsData",
  *     "form" = {

@@ -68,7 +68,7 @@ use Drupal\user\EntityOwnerTrait;
  *     "canonical" = "/log/{log}",
  *     "add-page" = "/log/add",
  *     "add-form" = "/log/add/{log_type}",
- *     "collection" = "/admin/content/logs",
+ *     "collection" = "/admin/content/log",
  *     "delete-form" = "/log/{log}/delete",
  *     "delete-multiple-form" = "/log/delete",
  *     "edit-form" = "/log/{log}/edit",

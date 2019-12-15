@@ -5,7 +5,6 @@
  * Builds placeholder replacement tokens for log-related data.
  */
 
-use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\user\Entity\User;
@@ -22,44 +21,44 @@ function log_token_info() {
 
   // Core tokens for logs.
   $log['id'] = [
-    'name' => t("Log ID"),
+    'name' => t('Log ID'),
     'description' => t('The unique ID of the log item.'),
   ];
-  $log['vid'] = [
-    'name' => t("Revision ID"),
+  $log['revision_id'] = [
+    'name' => t('Revision ID'),
     'description' => t("The unique ID of the log's latest revision."),
   ];
   $log['type'] = [
-    'name' => t("Log type"),
+    'name' => t('Log type'),
   ];
   $log['type-name'] = [
-    'name' => t("Log type name"),
-    'description' => t("The human-readable name of the log type."),
+    'name' => t('Log type name'),
+    'description' => t('The human-readable name of the log type.'),
   ];
   $log['name'] = [
-    'name' => t("Name"),
+    'name' => t('Name'),
   ];
   $log['url'] = [
-    'name' => t("URL"),
-    'description' => t("The URL of the log."),
+    'name' => t('URL'),
+    'description' => t('The URL of the log.'),
   ];
   $log['edit-url'] = [
-    'name' => t("Edit URL"),
+    'name' => t('Edit URL'),
     'description' => t("The URL of the log's edit page."),
   ];
 
   // Chained tokens for logs.
   $log['created'] = [
-    'name' => t("Date created"),
+    'name' => t('Date created'),
     'type' => 'date',
   ];
   $log['changed'] = [
-    'name' => t("Date changed"),
-    'description' => t("The date the log was most recently updated."),
+    'name' => t('Date changed'),
+    'description' => t('The date the log was most recently updated.'),
     'type' => 'date',
   ];
   $log['author'] = [
-    'name' => t("Author"),
+    'name' => t('Author'),
     'type' => 'user',
   ];
 
@@ -96,7 +95,7 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           $replacements[$original] = $log->id();
           break;
 
-        case 'vid':
+        case 'revision_id':
           $replacements[$original] = $log->getRevisionId();
           break;
 
@@ -104,8 +103,16 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           $replacements[$original] = $log->bundle();
           break;
 
-        case 'title':
+        case 'type-name':
+          $replacements[$original] = $log->getBundleLabel();
+          break;
+
+        case 'name':
           $replacements[$original] = $log->label();
+          break;
+
+        case 'timestamp':
+          $replacements[$original] = $log->get('timestamp')->value;
           break;
 
         case 'langcode':
@@ -120,7 +127,6 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           $replacements[$original] = $log->toUrl('edit-form', $url_options);
           break;
 
-        // Default values for the chained tokens handled below.
         case 'author':
           $account = $log->getOwner() ? $log->getOwner() : User::load(0);
           $bubbleable_metadata->addCacheableDependency($account);
@@ -128,15 +134,11 @@ function log_tokens($type, $tokens, array $data, array $options, BubbleableMetad
           break;
 
         case 'created':
-          $date_format = DateFormat::load('medium');
-          $bubbleable_metadata->addCacheableDependency($date_format);
-          $replacements[$original] = \Drupal::service('date.formatter')->format($log->getCreatedTime(), 'medium', '', NULL, $langcode);
+          $replacements[$original] = $log->getCreatedTime();
           break;
 
         case 'changed':
-          $date_format = DateFormat::load('medium');
-          $bubbleable_metadata->addCacheableDependency($date_format);
-          $replacements[$original] = Drupal::service('date.formatter')->format($log->getChangedTime(), 'medium', '', NULL, $langcode);
+          $replacements[$original] = $log->getChangedTime();
           break;
       }
     }

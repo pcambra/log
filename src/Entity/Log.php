@@ -142,6 +142,17 @@ class Log extends ContentEntityBase implements LogInterface {
   /**
    * {@inheritdoc}
    */
+  public function getBundleLabel() {
+    /** @var \Drupal\log\Entity\LogTypeInterface $type */
+    $type = \Drupal::entityTypeManager()
+      ->getStorage('log_type')
+      ->load($this->bundle());
+    return $type->label();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getCurrentUserId() {
     return [\Drupal::currentUser()->id()];
   }

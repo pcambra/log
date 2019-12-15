@@ -24,7 +24,7 @@ class LogTypeForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $log_type->label(),
-      '#description' => $this->t("Label for the Log type."),
+      '#description' => $this->t('Label for the Log type.'),
       '#required' => TRUE,
     ];
 
@@ -41,18 +41,24 @@ class LogTypeForm extends EntityForm {
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
       '#default_value' => $log_type->getDescription(),
-      '#description' => $this->t("Log type description."),
     ];
 
+    // Name pattern is displayed even if the token module is not enabled because
+    // the actual token replacement happens in core now.
     $form['name_pattern'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name pattern'),
       '#maxlength' => 255,
       '#default_value' => $log_type->getNamePattern(),
-      '#desription' => $this->t('When a log name is auto-generated, this is the naming pattern that will be used. Available tokens are below.'),
-      // @todo: There is no need to require pattern here.
-      '#required' => TRUE,
+      '#description' => $this->t('When filled in, log names of this type will be auto-generated using this naming pattern. Leave empty for not auto generating log names.'),
     ];
+
+    if (\Drupal::service('module_handler')->moduleExists('token')) {
+      $form['token_help'] = [
+        '#theme' => 'token_tree_link',
+        '#token_types' => ['log'],
+      ];
+    }
 
     return $form;
   }

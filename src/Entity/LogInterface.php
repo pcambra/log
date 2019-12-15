@@ -60,4 +60,12 @@ interface LogInterface extends ContentEntityInterface, EntityChangedInterface, R
    */
   public function getTypeNamePattern();
 
+  /**
+   * Gets the label of the the log type.
+   *
+   * @return string
+   *   The label of the log type.
+   */
+  public function getBundleLabel();
+
 }

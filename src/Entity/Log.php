@@ -40,9 +40,6 @@ use Drupal\user\EntityOwnerTrait;
  *       "revision" = "\Drupal\entity\Routing\RevisionRouteProvider",
  *       "delete-multiple" = "\Drupal\entity\Routing\DeleteMultipleRouteProvider",
  *     },
- *     "local_action_provider" = {
- *       "collection" = "\Drupal\entity\Menu\EntityCollectionLocalActionProvider",
- *     },
  *     "local_task_provider" = {
  *       "default" = "\Drupal\entity\Menu\DefaultEntityLocalTaskProvider",
  *     },

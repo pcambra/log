@@ -2,7 +2,9 @@
 
 namespace Drupal\log\Entity;
 
-use Drupal\Core\Entity\EditorialContentEntityBase;
+use Drupal\Core\Entity\ContentEntityBase;
+use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\user\EntityOwnerTrait;
@@ -58,7 +60,6 @@ use Drupal\user\EntityOwnerTrait;
  *     "owner" = "uid",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode",
- *     "published" = "status",
  *   },
  *   bundle_entity_type = "log_type",
  *   field_ui_base_route = "entity.log_type.edit_form",
@@ -83,9 +84,11 @@ use Drupal\user\EntityOwnerTrait;
  *   },
  * )
  */
-class Log extends EditorialContentEntityBase implements LogInterface {
+class Log extends ContentEntityBase implements LogInterface {
 
+  use EntityChangedTrait;
   use EntityOwnerTrait;
+  use RevisionLogEntityTrait;
 
   /**
    * {@inheritdoc}

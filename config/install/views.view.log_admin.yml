@@ -5,7 +5,7 @@ dependencies:
     - log
     - user
 _core:
-  default_config_hash: 6g9Kds2LPD1WsL0QgAT60zy8FnpEOywcWYHEGUoRuEA
+  default_config_hash: RV6vFo1ksQYNKNUB3vCKzE6aUrm4MzaZ070NrAq5xXo
 id: log_admin
 label: 'Log admin'
 module: views
@@ -154,7 +154,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Log operations bulk form'
+          label: 'Bulk update'
           exclude: false
           alter:
             alter_text: false
@@ -199,9 +199,9 @@ display:
           include_exclude: exclude
           selected_actions: {  }
           entity_type: log
-          plugin_id: log_bulk_form
-        done_1:
-          id: done_1
+          plugin_id: bulk_form
+        done:
+          id: done
           table: log_field_data
           field: done
           relationship: none
@@ -267,8 +267,8 @@ display:
           entity_type: log
           entity_field: done
           plugin_id: field
-        timestamp_1:
-          id: timestamp_1
+        timestamp:
+          id: timestamp
           table: log_field_data
           field: timestamp
           relationship: none
@@ -334,8 +334,8 @@ display:
           entity_type: log
           entity_field: timestamp
           plugin_id: field
-        id_1:
-          id: id_1
+        id:
+          id: id
           table: log_field_data
           field: id
           relationship: none
@@ -465,8 +465,8 @@ display:
           entity_type: log
           entity_field: name
           plugin_id: field
-        type_1:
-          id: type_1
+        type:
+          id: type
           table: log_field_data
           field: type
           relationship: none

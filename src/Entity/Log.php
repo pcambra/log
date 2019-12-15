@@ -31,9 +31,8 @@ use Drupal\user\EntityOwnerTrait;
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "views_data" = "Drupal\log\LogViewsData",
  *     "form" = {
- *       "default" = "Drupal\Core\Entity\ContentEntityForm",
- *       "add" = "Drupal\log\Form\LogAddForm",
- *       "edit" = "Drupal\Core\Entity\ContentEntityForm",
+ *       "add" = "Drupal\log\Form\LogForm",
+ *       "edit" = "Drupal\log\Form\LogForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *     },
  *     "route_provider" = {

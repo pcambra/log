@@ -76,10 +76,15 @@ use Drupal\user\EntityOwnerTrait;
  *     "delete-form" = "/log/{log}/delete",
  *     "delete-multiple-form" = "/log/delete",
  *     "edit-form" = "/log/{log}/edit",
- *     "revision" = "/log/{log}/revisions/{log_revision}/view",
- *     "revision-revert-form" = "/log/{log}/revisions/{log_revision}/revert",
+ *     "revision" = "/log/{log}/revisions/{entity_revision:log}/view",
+ *     "revision-revert-form" = "/log/{log}/revisions/{entity_revision:log}/revert",
  *     "version-history" = "/log/{log}/revisions",
- *   }
+ *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_user",
+ *     "revision_created" = "revision_created",
+ *     "revision_log_message" = "revision_log_message"
+ *   },
  * )
  */
 class Log extends EditorialContentEntityBase implements LogInterface {

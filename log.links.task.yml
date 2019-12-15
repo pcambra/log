@@ -1,10 +1,4 @@
-entity.log.canonical:
-  route_name: entity.log.canonical
-  base_route: entity.log.canonical
-  title: 'View'
-  weight: 0
-
 entity.log.collection:
   route_name: entity.log.collection
   title: 'Logs'
-  base_route: entity.log.collection
+  base_route: system.admin_content

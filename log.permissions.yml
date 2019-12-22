@@ -4,5 +4,5 @@ administer log types:
   restrict access: true
 
 administer logs:
-  title: 'Administer Log entities'
+  title: 'Administer log entities'
   description: 'Allow to access admin properties such as author uid or creation date.'

@@ -235,22 +235,27 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDescription(t('The time the log was last edited.'))
       ->setRevisionable(TRUE);
 
-    $fields['timestamp'] = BaseFieldDefinition::create('timestamp')
-      ->setLabel(t('Date'))
+    $fields['timestamp'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Timestamp'))
       ->setDescription(t('Timestamp of the event being logged.'))
       ->setDefaultValueCallback(static::class . '::getRequestTime')
       ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'datetime',
+      ])
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'timestamp',
-        'weight' => 10,
+        'type' => 'datetime_default',
+        'settings' => [
+          'format_type' => 'medium',
+        ],
       ])
       ->setDisplayOptions('form', [
-        'type' => 'datetime_timestamp',
-        'weight' => 80,
+        'type' => 'datetime_default',
+        'weight' => 10,
       ])
-      ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['done'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Done'))

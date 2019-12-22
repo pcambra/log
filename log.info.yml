@@ -8,5 +8,6 @@ dependencies:
   - entity:entity
   - token:token
   - drupal:system (>=8.6.0)
+  - drupal:datetime
   - drupal:user
   - drupal:views

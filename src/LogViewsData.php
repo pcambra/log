@@ -18,6 +18,7 @@ class LogViewsData extends EntityViewsData {
     // @TODO
     // Left intentionally blank for integrating reverse views relationships in
     // the future.
+    // @see https://www.drupal.org/project/drupal/issues/2706431
     return $data;
   }
 

@@ -50,10 +50,9 @@ abstract class LogTestBase extends BrowserTestBase {
     return [
       'access administration pages',
       'administer log',
-      'view log',
-      'view own unpublished log',
+      'view any log',
       'create default log',
-      'view default log',
+      'view any default log',
       'update own default log',
       'update any default log',
       'delete own default log',

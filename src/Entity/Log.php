@@ -170,6 +170,7 @@ class Log extends ContentEntityBase implements LogInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
     $fields += static::ownerBaseFieldDefinitions($entity_type);
+    $fields += static::revisionLogBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))

@@ -21,7 +21,7 @@ class LogCRUDTest extends LogTestBase {
     $assert_session->fieldExists('name[0][value]');
     $assert_session->fieldExists('timestamp[0][value][date]');
     $assert_session->fieldExists('timestamp[0][value][time]');
-    $assert_session->fieldExists('done[value]');
+    $assert_session->fieldExists('status');
     $assert_session->fieldExists('revision_log_message[0][value]');
     $assert_session->fieldExists('uid[0][target_id]');
     $assert_session->fieldExists('created[0][value][date]');
@@ -32,6 +32,7 @@ class LogCRUDTest extends LogTestBase {
    * Create Log entity.
    */
   public function testCreateLog() {
+    $assert_session = $this->assertSession();
     $name = $this->randomMachineName();
     $edit = [
       'name[0][value]' => $name,
@@ -48,8 +49,8 @@ class LogCRUDTest extends LogTestBase {
     $log = Log::load($log_id);
     $this->assertEquals($log->get('name')->value, $name, 'Log has been saved.');
 
-    $this->assertRaw('Log entity has been saved');
-    $this->assertText($name);
+    $assert_session->pageTextContains("Saved the $name log.");
+    $assert_session->pageTextContains($name);
   }
 
   /**

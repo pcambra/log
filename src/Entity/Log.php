@@ -257,24 +257,40 @@ class Log extends ContentEntityBase implements LogInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['done'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Done'))
-      ->setDescription(t('Boolean indicating whether the log is done (the event happened).'))
+    $fields['status'] = BaseFieldDefinition::create('state')
+      ->setLabel(t('Status'))
+      ->setDescription(t('Indicates the status of the log.'))
       ->setRevisionable(TRUE)
-      ->setDefaultValue(TRUE)
+      ->setRequired(TRUE)
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'boolean',
+        'label' => 'hidden',
+        'type' => 'state_transition_form',
         'weight' => 10,
       ])
       ->setDisplayOptions('form', [
-        'settings' => ['display_label' => TRUE],
-        'weight' => 90,
+        'type' => 'options_select',
+        'weight' => 11,
       ])
+      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setSetting('workflow_callback', ['\Drupal\log\Entity\Log', 'getWorkflowId']);
 
     return $fields;
+  }
+
+  /**
+   * Gets the workflow ID for the state field.
+   *
+   * @param \Drupal\log\Entity\LogInterface $log
+   *   The log entity.
+   *
+   * @return string
+   *   The workflow ID.
+   */
+  public static function getWorkflowId(LogInterface $log) {
+    $workflow = LogType::load($log->bundle())->getWorkflowId();
+    return $workflow;
   }
 
 }

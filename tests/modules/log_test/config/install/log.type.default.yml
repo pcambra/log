@@ -3,3 +3,4 @@ label: default
 description: 'Test log type'
 name_pattern: ''
 langcode: en
+workflow: log_default

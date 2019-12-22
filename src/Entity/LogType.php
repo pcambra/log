@@ -49,6 +49,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "label",
  *     "description",
  *     "name_pattern",
+ *     "workflow",
  *   }
  * )
  */
@@ -81,6 +82,13 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
    * @var string
    */
   protected $name_pattern;
+
+  /**
+   * The log type workflow ID.
+   *
+   * @var string
+   */
+  protected $workflow;
 
   /**
    * {@inheritdoc}
@@ -126,11 +134,30 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   /**
    * {@inheritdoc}
    */
-  public static function postDelete(EntityStorageInterface $storage, array $entities) {
-    parent::postDelete($storage, $entities);
+  public function getWorkflowId() {
+    return $this->workflow;
+  }
 
-    // Clear the log type cache to reflect the removal.
-    $storage->resetCache(array_keys($entities));
+  /**
+   * {@inheritdoc}
+   */
+  public function setWorkflowId($workflow_id) {
+    $this->workflow = $workflow_id;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    parent::calculateDependencies();
+
+    // The log type must depend on the module that provides the workflow.
+    $workflow_manager = \Drupal::service('plugin.manager.workflow');
+    $workflow = $workflow_manager->createInstance($this->getWorkflowId());
+    $this->calculatePluginDependencies($workflow);
+
+    return $this;
   }
 
 }

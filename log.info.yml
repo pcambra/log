@@ -6,6 +6,7 @@ core_version_requirement: ^8 || ^9
 package: Log
 dependencies:
   - entity:entity
+  - token:token
   - drupal:system (>=8.6.0)
   - drupal:user
   - drupal:views

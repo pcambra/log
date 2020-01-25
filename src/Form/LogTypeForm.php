@@ -89,6 +89,12 @@ class LogTypeForm extends EntityForm {
       '#description' => $this->t('Used by all logs of this type.'),
     ];
 
+    $form['new_revision'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Create new revision'),
+      '#default_value' => $log_type->shouldCreateNewRevision(),
+    ];
+
     if (\Drupal::service('module_handler')->moduleExists('token')) {
       $form['token_help'] = [
         '#theme' => 'token_tree_link',

@@ -4,3 +4,4 @@ description: 'Test log type (with name pattern)'
 name_pattern: '[log:id:value]'
 langcode: en
 workflow: log_default
+new_revision: TRUE

@@ -50,6 +50,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "description",
  *     "name_pattern",
  *     "workflow",
+ *     "new_revision",
  *   }
  * )
  */
@@ -91,10 +92,24 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
   protected $workflow;
 
   /**
+   * Default value of the 'Create new revision' checkbox of this log type.
+   *
+   * @var bool
+   */
+  protected $new_revision = TRUE;
+
+  /**
    * {@inheritdoc}
    */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description) {
+    return $this->set('description', $description);
   }
 
   /**
@@ -158,6 +173,20 @@ class LogType extends ConfigEntityBundleBase implements LogTypeInterface {
     $this->calculatePluginDependencies($workflow);
 
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function shouldCreateNewRevision() {
+    return $this->new_revision;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setNewRevision($new_revision) {
+    return $this->set('new_revision', $new_revision);
   }
 
 }

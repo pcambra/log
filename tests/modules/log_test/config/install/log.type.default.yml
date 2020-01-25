@@ -4,3 +4,4 @@ description: 'Test log type'
 name_pattern: ''
 langcode: en
 workflow: log_default
+new_revision: TRUE

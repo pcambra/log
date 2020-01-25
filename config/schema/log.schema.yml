@@ -18,6 +18,9 @@ log.type.*:
     workflow:
       type: string
       label: 'Workflow'
+    new_revision:
+      type: boolean
+      label: 'Create new revision'
 
 condition.plugin.log_type:
   type: condition.plugin

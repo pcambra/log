@@ -8,5 +8,8 @@
   "support": {
     "issues": "http://drupal.org/project/issues/log",
     "source": "http://cgit.drupalcode.org/log"
+  },
+  "suggest": {
+    "drupal/token": "Enhance token UI support."
   }
 }

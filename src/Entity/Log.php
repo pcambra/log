@@ -2,11 +2,13 @@
 
 namespace Drupal\log\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\user\EntityOwnerTrait;
 
 /**
@@ -191,15 +193,10 @@ class Log extends ContentEntityBase implements LogInterface {
       ])
       ->setDisplayConfigurable('form', TRUE);
 
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Changed'))
-      ->setDescription(t('The time the log was last edited.'))
-      ->setRevisionable(TRUE);
-
     $fields['timestamp'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Timestamp'))
       ->setDescription(t('Timestamp of the event being logged.'))
-      ->setDefaultValueCallback(static::class . '::getRequestTime')
+      ->setDefaultValue(DrupalDateTime::createFromTimestamp(\Drupal::time()->getRequestTime(), DateTimeItemInterface::STORAGE_TIMEZONE)->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT))
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'datetime',
@@ -276,6 +273,11 @@ class Log extends ContentEntityBase implements LogInterface {
         'weight' => 13,
       ])
       ->setDisplayConfigurable('form', TRUE);
+
+    $fields['changed'] = BaseFieldDefinition::create('changed')
+      ->setLabel(t('Changed'))
+      ->setDescription(t('The time the log was last edited.'))
+      ->setRevisionable(TRUE);
 
     return $fields;
   }

@@ -29,3 +29,17 @@ condition.plugin.log_type:
       type: sequence
       sequence:
         type: string
+
+views.sort.log_timestamp_id:
+  type: views_sort
+  label: 'Log Timestamp Id'
+  mapping:
+    timestamp_order:
+      type: string
+      label: 'Timestamp order'
+    id_order:
+      type: string
+      label: 'ID order'
+    granularity:
+      type: string
+      label: 'Granularity'

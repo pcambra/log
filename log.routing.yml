@@ -1,0 +1,6 @@
+log.autocomplete.name:
+  path: '/log/{log_bundle}/autocomplete'
+  defaults:
+    _controller: '\Drupal\log\Controller\LogAutocompleteController::autocomplete'
+  requirements:
+    _entity_create_access: 'log:{log_bundle}'

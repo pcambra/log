@@ -176,7 +176,7 @@ class Log extends ContentEntityBase implements LogInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the log.'))
+      ->setDescription(t('The name of the log. Leave this blank to automatically generate a name.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
       ->setDefaultValue('')

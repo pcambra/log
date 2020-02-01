@@ -12,7 +12,7 @@ use Drupal\views\Views;
 /**
  * Tests for Drupal\log\Plugin\views\sort\LogTimestampIdSort handler.
  *
- * @group views
+ * @group Log
  */
 class SortTimestampIdTest extends ViewsKernelTestBase {
 

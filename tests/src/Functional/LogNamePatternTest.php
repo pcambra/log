@@ -7,9 +7,14 @@ use Drupal\log\Entity\Log;
 /**
  * Tests the Log name pattern.
  *
- * @group log
+ * @group Log
  */
 class LogNamePatternTest extends LogTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
 
   /**
    * Tests creating a log entity without name.

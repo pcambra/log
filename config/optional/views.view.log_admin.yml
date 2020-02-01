@@ -23,7 +23,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'administer logs'
+          perm: 'administer log'
       cache:
         type: tag
         options: {  }

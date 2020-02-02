@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\Tests\log\Kernel\Handler;
+namespace Drupal\Tests\log\Kernel;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drupal\log\Entity\Log;
+use Drupal\Tests\log\Traits\LogCreationTrait;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Views;
@@ -15,6 +15,8 @@ use Drupal\views\Views;
  * @group Log
  */
 class SortTimestampIdTest extends ViewsKernelTestBase {
+
+  use LogCreationTrait;
 
   /**
    * {@inheritdoc}
@@ -107,27 +109,6 @@ class SortTimestampIdTest extends ViewsKernelTestBase {
       ['name' => $second_entity->get('name')->value, 'id' => $second_entity->id()],
       ['name' => $first_entity->get('name')->value, 'id' => $first_entity->id()],
     ];
-  }
-
-  /**
-   * Creates a log entity.
-   *
-   * @param array $values
-   *   Array of values to feed the entity.
-   *
-   * @return \Drupal\log\Entity\LogInterface
-   *   The log entity.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  protected function createLogEntity(array $values = []) {
-    /** @var \Drupal\log\Entity\LogInterface $entity */
-    $entity = Log::create($values + [
-      'name' => $this->randomMachineName(),
-      'type' => 'default',
-    ]);
-    $entity->save();
-    return $entity;
   }
 
   /**

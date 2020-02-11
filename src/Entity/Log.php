@@ -3,12 +3,12 @@
 namespace Drupal\log\Entity;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\entity\Revision\RevisionableContentEntityBase;
 use Drupal\user\EntityOwnerTrait;
 
 /**
@@ -75,8 +75,8 @@ use Drupal\user\EntityOwnerTrait;
  *     "delete-form" = "/log/{log}/delete",
  *     "delete-multiple-form" = "/log/delete",
  *     "edit-form" = "/log/{log}/edit",
- *     "revision" = "/log/{log}/revisions/{entity_revision:log}/view",
- *     "revision-revert-form" = "/log/{log}/revisions/{entity_revision:log}/revert",
+ *     "revision" = "/log/{log}/revisions/{log_revision}/view",
+ *     "revision-revert-form" = "/log/{log}/revisions/{log_revision}/revert",
  *     "version-history" = "/log/{log}/revisions",
  *   },
  *   revision_metadata_keys = {
@@ -86,7 +86,7 @@ use Drupal\user\EntityOwnerTrait;
  *   },
  * )
  */
-class Log extends ContentEntityBase implements LogInterface {
+class Log extends RevisionableContentEntityBase implements LogInterface {
 
   use EntityChangedTrait;
   use EntityOwnerTrait;

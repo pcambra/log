@@ -7,9 +7,14 @@ use Drupal\log\Entity\Log;
 /**
  * Tests the Log CRUD.
  *
- * @group log
+ * @group Log
  */
 class LogCRUDTest extends LogTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
 
   /**
    * Fields are displayed correctly.
@@ -99,7 +104,7 @@ class LogCRUDTest extends LogTestBase {
 
     $this->drupalPostForm($log->toUrl('delete-form'), [], t('Delete'));
     $this->assertRaw(t('The @entity-type %label has been deleted.', [
-      '@entity-type' => $log->getEntityType()->getLowercaseLabel(),
+      '@entity-type' => $log->getEntityType()->getSingularLabel(),
       '%label' => $label,
     ]));
     $this->assertNull(Log::load($log_id));

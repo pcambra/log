@@ -729,10 +729,10 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts:
-        log_timestamp_id:
-          id: log_timestamp_id
+        timestamp:
+          id: timestamp
           table: log_field_data
-          field: log_timestamp_id
+          field: timestamp
           relationship: none
           group_type: group
           admin_label: ''
@@ -741,10 +741,9 @@ display:
           expose:
             label: ''
           granularity: second
-          timestamp_order: DESC
-          id_order: ASC
           entity_type: log
-          plugin_id: log_timestamp_id
+          entity_field: timestamp
+          plugin_id: log_standard
       title: Logs
       header: {  }
       footer: {  }

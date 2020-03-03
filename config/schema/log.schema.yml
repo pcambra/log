@@ -30,16 +30,10 @@ condition.plugin.log_type:
       sequence:
         type: string
 
-views.sort.log_timestamp_id:
+views.sort.log_standard:
   type: views_sort
-  label: 'Log Timestamp Id'
+  label: 'Date sort'
   mapping:
-    timestamp_order:
-      type: string
-      label: 'Timestamp order'
-    id_order:
-      type: string
-      label: 'ID order'
     granularity:
       type: string
       label: 'Granularity'

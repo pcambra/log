@@ -31,32 +31,18 @@ class SortTimestampIdTest extends ViewsKernelTestBase {
   public static $testViews = ['log_test_view'];
 
   /**
-   * ASC-DESC expected result.
+   * ASC expected result.
    *
    * @var array
    */
-  protected $expectedResultASCDESC = [];
+  protected $expectedResultASC = [];
 
   /**
-   * ASC-ASC expected result.
+   * DESC expected result.
    *
    * @var array
    */
-  protected $expectedResultASCASC = [];
-
-  /**
-   * DESC-ASC expected result.
-   *
-   * @var array
-   */
-  protected $expectedResultDESCASC = [];
-
-  /**
-   * DESC-DESC expected result.
-   *
-   * @var array
-   */
-  protected $expectedResultDESCDESC = [];
+  protected $expectedResultDESC = [];
 
   /**
    * {@inheritdoc}
@@ -88,23 +74,13 @@ class SortTimestampIdTest extends ViewsKernelTestBase {
       'timestamp' => $second_timestamp,
     ]);
 
-    // Fill the expected results for the four possible combinations.
-    $this->expectedResultASCDESC = [
-      ['name' => $second_entity->get('name')->value, 'id' => $second_entity->id()],
-      ['name' => $first_entity->get('name')->value, 'id' => $first_entity->id()],
-      ['name' => $third_entity->get('name')->value, 'id' => $third_entity->id()],
-    ];
-    $this->expectedResultASCASC = [
+    // Fill the expected results for the combinations.
+    $this->expectedResultASC = [
       ['name' => $first_entity->get('name')->value, 'id' => $first_entity->id()],
       ['name' => $second_entity->get('name')->value, 'id' => $second_entity->id()],
       ['name' => $third_entity->get('name')->value, 'id' => $third_entity->id()],
     ];
-    $this->expectedResultDESCASC = [
-      ['name' => $third_entity->get('name')->value, 'id' => $third_entity->id()],
-      ['name' => $first_entity->get('name')->value, 'id' => $first_entity->id()],
-      ['name' => $second_entity->get('name')->value, 'id' => $second_entity->id()],
-    ];
-    $this->expectedResultDESCDESC = [
+    $this->expectedResultDESC = [
       ['name' => $third_entity->get('name')->value, 'id' => $third_entity->id()],
       ['name' => $second_entity->get('name')->value, 'id' => $second_entity->id()],
       ['name' => $first_entity->get('name')->value, 'id' => $first_entity->id()],
@@ -112,108 +88,59 @@ class SortTimestampIdTest extends ViewsKernelTestBase {
   }
 
   /**
-   * Tests the default sorting (Timestamp DESC, ID ASC).
+   * Tests the sorting: Timestamp /ID ASC.
    */
-  public function testLogTimestampIdDefaultSort() {
-    $view = Views::getView('log_test_view');
-    $view->setDisplay();
-    $this->executeView($view);
-
-    $this->assertEqual(3, count($view->result), 'The number of returned rows match.');
-    $this->assertIdenticalResultset($view, $this->expectedResultDESCASC, [
-      'name' => 'name',
-      'id' => 'id',
-    ], 'Default sort displays as expected');
-    $view->destroy();
-    unset($view);
-  }
-
-  /**
-   * Tests the sorting: Timestamp ASC, ID DESC.
-   */
-  public function testLogTimestampIdAscDescSort() {
+  public function testLogTimestampIdAscSort() {
     $view = Views::getView('log_test_view');
     $view->setDisplay();
 
-    // Change the ordering to be Timestamp ASC, id DESC.
     $view->displayHandlers->get('default')->overrideOption('sorts', [
-      'log_timestamp_id' => [
-        'id' => 'log_timestamp_id',
+      'timestamp' => [
+        'id' => 'timestamp',
         'table' => 'log_field_data',
-        'field' => 'log_timestamp_id',
+        'field' => 'timestamp',
         'relationship' => 'none',
-        'timestamp_order' => 'ASC',
-        'id_order' => 'DESC',
+        'order' => 'ASC',
+        'plugin_id' => 'log_standard',
       ],
     ]);
 
     $this->executeView($view);
 
     $this->assertEqual(3, count($view->result), 'The number of returned rows match.');
-    $this->assertIdenticalResultset($view, $this->expectedResultASCDESC, [
+    $this->assertIdenticalResultset($view, $this->expectedResultASC, [
       'name' => 'name',
       'id' => 'id',
-    ], 'ASC DESC sort displays as expected');
+    ], 'ASC sort displays as expected');
     $view->destroy();
     unset($view);
   }
 
   /**
-   * Tests the sorting: Timestamp ASC, ID ASC.
+   * Tests the sorting: Timestamp/ID DESC.
    */
-  public function testLogTimestampIdAscAscSort() {
+  public function testLogTimestampIdDescSort() {
     $view = Views::getView('log_test_view');
     $view->setDisplay();
 
-    // Change the ordering to be Timestamp ASC, id DESC.
     $view->displayHandlers->get('default')->overrideOption('sorts', [
-      'log_timestamp_id' => [
-        'id' => 'log_timestamp_id',
+      'timestamp' => [
+        'id' => 'timestamp',
         'table' => 'log_field_data',
-        'field' => 'log_timestamp_id',
+        'field' => 'timestamp',
         'relationship' => 'none',
-        'timestamp_order' => 'ASC',
-        'id_order' => 'ASC',
+        'order' => 'DESC',
+        'plugin_id' => 'log_standard',
       ],
     ]);
 
     $this->executeView($view);
 
     $this->assertEqual(3, count($view->result), 'The number of returned rows match.');
-    $this->assertIdenticalResultset($view, $this->expectedResultASCASC, [
+    $this->assertIdenticalResultset($view, $this->expectedResultDESC, [
       'name' => 'name',
       'id' => 'id',
-    ], 'ASC ASC sort displays as expected');
-    $view->destroy();
-    unset($view);
-  }
-
-  /**
-   * Tests the sorting: Timestamp DESC, ID DESC.
-   */
-  public function testLogTimestampIdDescDescSort() {
-    $view = Views::getView('log_test_view');
-    $view->setDisplay();
-
-    // Change the ordering to be Timestamp ASC, id DESC.
-    $view->displayHandlers->get('default')->overrideOption('sorts', [
-      'log_timestamp_id' => [
-        'id' => 'log_timestamp_id',
-        'table' => 'log_field_data',
-        'field' => 'log_timestamp_id',
-        'relationship' => 'none',
-        'timestamp_order' => 'DESC',
-        'id_order' => 'DESC',
-      ],
-    ]);
-
-    $this->executeView($view);
-
-    $this->assertEqual(3, count($view->result), 'The number of returned rows match.');
-    $this->assertIdenticalResultset($view, $this->expectedResultDESCDESC, [
-      'name' => 'name',
-      'id' => 'id',
-    ], 'DESC DESC sort displays as expected');
+    ], 'DESC sort displays as expected');
     $view->destroy();
     unset($view);
   }
